@@ -8,7 +8,7 @@
 #' from the start, and only the data points are shown incrementally. With `"axis"` and `"label"`,
 #' both the data and the corresponding axes and facet labels, respectively, are shown
 #' incrementally. With `"everything"`, the entire panels are shown incrementally.
-#' @return A list of ggplot2 objects, which can be passed [reveal_save]
+#' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples
 #' # Create full plot
@@ -21,6 +21,7 @@
 #'              group = factor(vs))) +
 #'   geom_point() +
 #'   geom_smooth(method="lm",
+#'               formula = 'y ~ x',
 #'               linewidth=1) +
 #'   facet_wrap(~am)
 #' p

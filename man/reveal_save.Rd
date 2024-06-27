@@ -27,6 +27,7 @@ p <- mtcars |>
              group = factor(vs))) +
   geom_point() +
   geom_smooth(method="lm",
+              formula = 'y ~ x',
               linewidth=1) +
   facet_wrap(~am)
 p

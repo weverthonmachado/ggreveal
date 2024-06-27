@@ -3,7 +3,7 @@
 #' Creates a list of plots, showing data incrementally by layers.
 #'
 #' @param p A ggplot2 object, in which a `group` aesthetic is used.
-#' @return A list of ggplot2 objects, which can be passed [reveal_save]
+#' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples
 #' # Create full plot
@@ -16,6 +16,7 @@
 #'              group = factor(vs))) +
 #'   geom_point() +
 #'   geom_smooth(method="lm",
+#'               formula = 'y ~ x',
 #'               linewidth=1) +
 #'   facet_wrap(~am)
 #' p

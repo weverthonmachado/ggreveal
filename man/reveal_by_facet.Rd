@@ -16,7 +16,7 @@ both the data and the corresponding axes and facet labels, respectively, are sho
 incrementally. With \code{"everything"}, the entire panels are shown incrementally.}
 }
 \value{
-A list of ggplot2 objects, which can be passed \link{reveal_save}
+A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
 Creates a list of plots, showing data incrementally by layers.
@@ -32,6 +32,7 @@ p <- mtcars |>
              group = factor(vs))) +
   geom_point() +
   geom_smooth(method="lm",
+              formula = 'y ~ x',
               linewidth=1) +
   facet_wrap(~am)
 p

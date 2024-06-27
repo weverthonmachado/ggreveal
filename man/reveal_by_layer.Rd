@@ -10,7 +10,7 @@ reveal_by_layer(p)
 \item{p}{A ggplot2 object, in which a \code{group} aesthetic is used.}
 }
 \value{
-A list of ggplot2 objects, which can be passed \link{reveal_save}
+A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
 Creates a list of plots, showing data incrementally by layers.
@@ -26,6 +26,7 @@ p <- mtcars |>
              group = factor(vs))) +
   geom_point() +
   geom_smooth(method="lm",
+              formula = 'y ~ x',
               linewidth=1) +
   facet_wrap(~am)
 p
