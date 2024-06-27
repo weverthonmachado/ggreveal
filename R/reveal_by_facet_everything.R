@@ -1,3 +1,4 @@
+#' @noRd
 reveal_by_facet_everything <- function(p, axis = F, label = F){
 
   p_gt <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))
@@ -50,7 +51,7 @@ reveal_by_facet_everything <- function(p, axis = F, label = F){
 }
 
 
-
+#' @noRd
 make_step_by_facet_everything <- function(p_gt, panels_increment, show_layout = F){
 
   drop <- !(p_gt$layout$name %in% unlist(panels_increment))
@@ -68,7 +69,7 @@ make_step_by_facet_everything <- function(p_gt, panels_increment, show_layout = 
 
 }
 
-
+#' @noRd
 #' @importFrom rlang .data
 select_sort_elements <- function(layout_obj,
                                  element=c("panel","axis", "strip"),
@@ -86,7 +87,7 @@ select_sort_elements <- function(layout_obj,
 
     # Sort panels by row,  using t and l coordinates
     # (To sort by col, just do by l then t)
-    out <-  dplyr::arrange(.data$panel_df,.data$ panel_t, .data$panel_l)
+    out <-  dplyr::arrange(panel_df, .data$panel_t, .data$panel_l)
     out <-  dplyr::pull(out, .data$panel_name)
 
 
@@ -125,7 +126,7 @@ select_sort_elements <- function(layout_obj,
                            .data$panel_t, .data$panel_l, .data$letter, .data$dist_sum)
       v <- dplyr::filter(v,
                          dplyr::row_number()==1)
-      v <- dplyr::pull(v$element_name)
+      v <- dplyr::pull(v, .data$element_name)
 
 
     } else if (type_facet=="wrap"){
@@ -143,7 +144,7 @@ select_sort_elements <- function(layout_obj,
       v <- dplyr::group_by(v, .data$panel_name)
       v <- dplyr::arrange(v, .data$panel_t, .data$panel_l, .data$dist_sum)
       v <- dplyr::filter(v, dplyr::row_number() <= n_elements)
-      v <- dplyr::pull(v$element_name)
+      v <- dplyr::pull(v, .data$element_name)
 
     }
 
