@@ -1,0 +1,9 @@
+url: http://www.weverthon.com/ggreveal/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+authors:
+  Weverthon Machado:
+    href: https://weverthon.com
