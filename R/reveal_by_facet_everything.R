@@ -69,6 +69,7 @@ make_step_by_facet_everything <- function(p_gt, panels_increment, show_layout = 
 }
 
 
+#' @importFrom rlang .data
 select_sort_elements <- function(layout_obj,
                                  element=c("panel","axis", "strip"),
                                  type_facet = c("wrap", "grid")) {
@@ -77,7 +78,7 @@ select_sort_elements <- function(layout_obj,
   type_facet <- rlang::arg_match(type_facet)
 
   panel_df <- layout_obj
-  panel_df <- dplyr::filter(panel_df, stringr::str_detect(name, "panel"))
+  panel_df <- dplyr::filter(panel_df, stringr::str_detect(.data$name, "panel"))
   panel_df <- dplyr::rename_all(panel_df, ~paste0("panel_", .))
 
 
@@ -85,15 +86,15 @@ select_sort_elements <- function(layout_obj,
 
     # Sort panels by row,  using t and l coordinates
     # (To sort by col, just do by l then t)
-    out <-  dplyr::arrange(panel_df, panel_t, panel_l)
-    out <-  dplyr::pull(out, panel_name)
+    out <-  dplyr::arrange(.data$panel_df,.data$ panel_t, .data$panel_l)
+    out <-  dplyr::pull(out, .data$panel_name)
 
 
   } else {
 
 
     element_df <- layout_obj
-    element_df <-  dplyr::filter(element_df, stringr::str_detect(name, element))
+    element_df <-  dplyr::filter(element_df, stringr::str_detect(.data$name, element))
     element_df <-  dplyr::rename_all(element_df, ~paste0("element_", .))
 
     n_panels <- NROW(panel_df)
@@ -106,7 +107,7 @@ select_sort_elements <- function(layout_obj,
 
     panel_element_df <- panel_df
     panel_element_df <- dplyr::mutate(panel_element_df, elements = element_df_list)
-    panel_element_df <- tidyr::unnest(panel_element_df, cols = elements)
+    panel_element_df <- tidyr::unnest(panel_element_df, cols = .data$elements)
 
 
     if (type_facet=="grid"){
@@ -114,17 +115,17 @@ select_sort_elements <- function(layout_obj,
       # Closest =  minimum sum of t and l coordinates
       v <- panel_element_df
       v <- dplyr::mutate(v,
-                         letter = stringr::str_extract(element_name, "\\w(?=-\\d)"),
-                         dist_t = abs(panel_t-element_t),
-                         dist_l = abs(panel_l-element_l),
-                         dist_sum = dist_t+dist_l)
+                         letter = stringr::str_extract(.data$element_name, "\\w(?=-\\d)"),
+                         dist_t = abs(.data$panel_t - .data$element_t),
+                         dist_l = abs(.data$panel_l - .data$element_l),
+                         dist_sum = .data$dist_t + .data$dist_l)
       v <- dplyr::group_by(v,
-                           panel_name, letter)
+                           .data$panel_name, .data$letter)
       v <-  dplyr::arrange(v,
-                          panel_t, panel_l, letter, dist_sum)
+                           .data$panel_t, .data$panel_l, .data$letter, .data$dist_sum)
       v <- dplyr::filter(v,
                          dplyr::row_number()==1)
-      v <- dplyr::pull(v,element_name)
+      v <- dplyr::pull(v$element_name)
 
 
     } else if (type_facet=="wrap"){
@@ -136,13 +137,13 @@ select_sort_elements <- function(layout_obj,
 
       v <- panel_element_df
       v <- dplyr::mutate(v,
-                          dist_t = abs(panel_t-element_t),
-                          dist_l = abs(panel_l-element_l),
-                          dist_sum = dist_t+dist_l)
-      v <- dplyr::group_by(v, panel_name)
-      v <- dplyr::arrange(v, panel_t, panel_l,dist_sum)
+                          dist_t = abs(.data$panel_t - .data$element_t),
+                          dist_l = abs(.data$panel_l - .data$element_l),
+                          dist_sum = .data$dist_t + .data$dist_l)
+      v <- dplyr::group_by(v, .data$panel_name)
+      v <- dplyr::arrange(v, .data$panel_t, .data$panel_l, .data$dist_sum)
       v <- dplyr::filter(v, dplyr::row_number() <= n_elements)
-      v <- dplyr::pull(v, element_name)
+      v <- dplyr::pull(v$element_name)
 
     }
 
