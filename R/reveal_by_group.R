@@ -8,6 +8,10 @@ reveal_by_group <- function(p){
 
   # Note: gets group levels from first layer
   groups_all <- sort(unique(p_build$data[[1]]$group))
+  length(groups_all) > 1 ||  rlang::abort(paste("Plot is not grouped or there is",
+                                                "only one group. Maybe use",
+                                                "reveal_by_facet or reveal_by_layer?")
+                                          )
   groups_increment <- c()
   plot_list <- list()
 
