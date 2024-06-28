@@ -19,13 +19,13 @@
     <loc>http://www.weverthon.com/ggreveal/reference/index.html</loc>
   </url>
   <url>
-    <loc>http://www.weverthon.com/ggreveal/reference/reveal_by_facet.html</loc>
-  </url>
-  <url>
     <loc>http://www.weverthon.com/ggreveal/reference/reveal_by_group.html</loc>
   </url>
   <url>
     <loc>http://www.weverthon.com/ggreveal/reference/reveal_by_layer.html</loc>
+  </url>
+  <url>
+    <loc>http://www.weverthon.com/ggreveal/reference/reveal_by_panel.html</loc>
   </url>
   <url>
     <loc>http://www.weverthon.com/ggreveal/reference/reveal_save.html</loc>
