@@ -1,13 +1,13 @@
 #' @noRd
-reveal_by_panel_everything <- function(p, axis = F, label = F){
+reveal_by_panel_everything <- function(p, order, omit_blank, axis = F, label = F){
 
   p_gt <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))
   layout_obj <- p_gt$layout
   type_facet <- stringr::str_extract(tolower(class(p$facet)[1]), "grid|wrap")
 
-  panels <- select_sort_elements(layout_obj, "panel")
-  strips <- select_sort_elements(layout_obj, "strip", type_facet)
-  axes <- select_sort_elements(layout_obj, "axis", type_facet)
+  panels <- select_sort_elements(layout_obj, "panel")[order]
+  strips <- select_sort_elements(layout_obj, "strip", type_facet)[order]
+  axes <- select_sort_elements(layout_obj, "axis", type_facet)[order]
   rest <- layout_obj$name[!(stringr::str_detect(layout_obj$name, "panel|strip|axis"))]
 
   panels_increment <- list(rest)
@@ -31,8 +31,10 @@ reveal_by_panel_everything <- function(p, axis = F, label = F){
   }
 
   # Make step and append
-  p_step <- make_step_by_panel_everything(p_gt, panels_increment)
-  plot_list <- append(plot_list, list(p_step))
+  if (!omit_blank){
+    p_step <- make_step_by_panel_everything(p_gt, panels_increment)
+    plot_list <- append(plot_list, list(p_step))
+  }
 
 
   for (i in seq_along(panels)) {

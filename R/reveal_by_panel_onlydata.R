@@ -1,15 +1,17 @@
 #' @noRd
-reveal_by_panel_onlydata <- function(p) {
+reveal_by_panel_onlydata <- function(p, order, omit_blank) {
 
   p_build <- ggplot2::ggplot_build(p)
 
-  panels_all <- sort(unique(p_build$layout$layout$PANEL))
+  panels_all <- sort(unique(p_build$layout$layout$PANEL))[order]
   panels_increment <- c()
   plot_list <- list()
 
   # Make step and append
-  p_step <- make_step_by_panel_onlydata(p, p_build, panels_increment)
-  plot_list <- append(plot_list, list(p_step))
+  if (!omit_blank){
+    p_step <- make_step_by_panel_onlydata(p, p_build, panels_increment)
+    plot_list <- append(plot_list, list(p_step))
+  }
 
 
   for (i in seq_along(panels_all)) {
@@ -24,7 +26,7 @@ reveal_by_panel_onlydata <- function(p) {
 
   return(plot_list)
 
-}
+  }
 
 
 

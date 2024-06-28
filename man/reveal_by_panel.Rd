@@ -4,16 +4,17 @@
 \alias{reveal_by_panel}
 \title{Reveal plot by facet}
 \usage{
-reveal_by_panel(p, what = c("data", "everything"))
+reveal_by_panel(p, order = NULL, what = c("data", "everything"))
 }
 \arguments{
 \item{p}{A ggplot2 object, in which a \code{group} aesthetic is used.}
 
-\item{what}{one of \code{"data"} (the default), \code{"axis"}, \code{"label"} or \code{"everything"}.
-With \code{"data"}, the basic graph layout (including axes and facet labels) is shown
-from the start, and only the data points are shown incrementally. With \code{"axis"} and \code{"label"},
-both the data and the corresponding axes and facet labels, respectively, are shown
-incrementally. With \code{"everything"}, the entire panels are shown incrementally.}
+\item{order}{(optional) A numeric vector specifying in which order to reveal the panels.}
+
+\item{what}{(optional) one of \code{"data"} or \code{"everything"}.' With \code{"data"},
+the basic graph layout (including axes and facet labels) is shown from the start,
+and only the data points are shown incrementally. With \code{"everything"},
+the entire panels are shown incrementally.}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
@@ -38,13 +39,13 @@ p <- mtcars |>
 p
 
 # Only data
-plot_list <- reveal_by_panel(p, "data")
+plot_list <- reveal_by_panel(p, what = "data")
 plot_list[[1]]
 plot_list[[2]]
 plot_list[[3]]
 
 # Everything
-plot_list <- reveal_by_panel(p, "everything")
+plot_list <- reveal_by_panel(p, what = "everything")
 plot_list[[1]]
 plot_list[[2]]
 plot_list[[3]]

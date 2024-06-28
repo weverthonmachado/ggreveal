@@ -3,6 +3,7 @@
 #' Creates a list of plots, showing data incrementally by groups.
 #'
 #' @param p A ggplot2 object, in which a `group` aesthetic is used.
+#' @param order (optional) A numeric vector specifying in which order to reveal the groups. 
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples
@@ -30,12 +31,26 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot", width = 8, height = 4)
 #' }
-reveal_by_group <- function(p){
+reveal_by_group <- function(p, order = NULL){
 
 
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
                                                "is not a ggplot object"))
+  
+  omit_blank <- FALSE
+  if (!is.null(order)) {
+    if (is.numeric(order)){
+      order <- unique(order)
+      omit_blank <- -1 %in% order
+      order <- order[order != -1]
+      if (length(order)==0) {
+        order <- NULL
+      }
+    } else {
+      rlang::warn("Argument 'order' is not a numeric vector and will be ignored.")
+    }  
+  } 
 
   # Check if there is explicit grouping, starting with th e main function call,
   # then for each layer.
@@ -55,17 +70,24 @@ reveal_by_group <- function(p){
   p_build <- ggplot2::ggplot_build(p)
 
   # Note: gets group levels from all layers
-  groups_all <- unique(unlist(lapply(p_build$data, function(x) unique(x$group))))
+  groups_all <- sort(unique(unlist(lapply(p_build$data, function(x) unique(x$group)))))
   length(groups_all) > 1 ||  rlang::abort(paste("Plot is not grouped or there is",
                                                 "only one group. Maybe use",
                                                 "reveal_by_panel or reveal_by_layer?")
                                           )
+  # Reorder group levels
+  if (!is.null(order)) {
+    groups_all <- groups_all[order]
+  }
+
   groups_increment <- c()
   plot_list <- list()
 
   # Make step and append
-  p_step <- make_step_by_group(p, p_build, groups_increment)
-  plot_list <- append(plot_list, list(p_step))
+  if (!omit_blank) {
+    p_step <- make_step_by_group(p, p_build, groups_increment)
+    plot_list <- append(plot_list, list(p_step))
+  }
 
 
   for (i in seq_along(groups_all)) {

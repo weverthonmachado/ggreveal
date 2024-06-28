@@ -4,10 +4,12 @@
 \alias{reveal_by_group}
 \title{Reveal plot by group}
 \usage{
-reveal_by_group(p)
+reveal_by_group(p, order = NULL)
 }
 \arguments{
 \item{p}{A ggplot2 object, in which a \code{group} aesthetic is used.}
+
+\item{order}{(optional) A numeric vector specifying in which order to reveal the groups.}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}

@@ -3,11 +3,11 @@
 #' Creates a list of plots, showing data incrementally by layers.
 #'
 #' @param p A ggplot2 object, in which a `group` aesthetic is used.
-#' @param what one of `"data"` (the default), `"axis"`, `"label"` or `"everything"`.
-#' With `"data"`, the basic graph layout (including axes and facet labels) is shown
-#' from the start, and only the data points are shown incrementally. With `"axis"` and `"label"`,
-#' both the data and the corresponding axes and facet labels, respectively, are shown
-#' incrementally. With `"everything"`, the entire panels are shown incrementally.
+#' @param order (optional) A numeric vector specifying in which order to reveal the panels. 
+#' @param what (optional) one of `"data"` or `"everything"`.' With `"data"`, 
+#' the basic graph layout (including axes and facet labels) is shown from the start, 
+#' and only the data points are shown incrementally. With `"everything"`,
+#' the entire panels are shown incrementally.
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples
@@ -27,13 +27,13 @@
 #' p
 #'
 #' # Only data
-#' plot_list <- reveal_by_panel(p, "data")
+#' plot_list <- reveal_by_panel(p, what = "data")
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
 #'
 #' # Everything
-#' plot_list <- reveal_by_panel(p, "everything")
+#' plot_list <- reveal_by_panel(p, what = "everything")
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
@@ -42,7 +42,7 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot", width = 8, height = 4)
 #' }
-reveal_by_panel <- function(p, what = c("data", "everything")){
+reveal_by_panel <- function(p, order = NULL, what = c("data", "everything")){
 
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
@@ -54,13 +54,32 @@ reveal_by_panel <- function(p, what = c("data", "everything")){
                                                   "facet_grid. Maybe use",
                                                   "reveal_by_group or reveal_by_layer?")
                                                                 )
+  
+  omit_blank <- FALSE
+  n_panels <- length(unique(ggplot2::ggplot_build(p)$layout$layout$PANEL))
+  if (!is.null(order)) {
+    if (is.numeric(order)){
+      order <- unique(order)
+      omit_blank <- -1 %in% order
+      order <- order[order != -1]
+      order <- order[order <= n_panels] # ignore numbers beyond total of panels
+      if (length(order)==0) {
+        order <- 1:n_panels
+      }
+    } else {
+      rlang::warn("Argument 'order' is not a numeric vector and will be ignored.")
+    }  
+  } else {
+    order <- 1:n_panels
+  }
 
-  what <- rlang::arg_match(what)
+
+  what = what <- rlang::arg_match(what)
 
   if (what=="data") {
-    plot_list <- reveal_by_panel_onlydata(p)
+    plot_list <- reveal_by_panel_onlydata(p, order, omit_blank)
   } else {
-    plot_list <- reveal_by_panel_everything(p, axis = T, label = T)
+    plot_list <- reveal_by_panel_everything(p, order, omit_blank, axis = T, label = T)
   }
 
   return(plot_list)
