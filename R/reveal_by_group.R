@@ -58,7 +58,7 @@ reveal_by_group <- function(p){
   groups_all <- unique(unlist(lapply(p_build$data, function(x) unique(x$group))))
   length(groups_all) > 1 ||  rlang::abort(paste("Plot is not grouped or there is",
                                                 "only one group. Maybe use",
-                                                "reveal_by_facet or reveal_by_layer?")
+                                                "reveal_by_panel or reveal_by_layer?")
                                           )
   groups_increment <- c()
   plot_list <- list()

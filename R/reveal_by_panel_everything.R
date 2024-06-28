@@ -1,5 +1,5 @@
 #' @noRd
-reveal_by_facet_everything <- function(p, axis = F, label = F){
+reveal_by_panel_everything <- function(p, axis = F, label = F){
 
   p_gt <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))
   layout_obj <- p_gt$layout
@@ -31,7 +31,7 @@ reveal_by_facet_everything <- function(p, axis = F, label = F){
   }
 
   # Make step and append
-  p_step <- make_step_by_facet_everything(p_gt, panels_increment)
+  p_step <- make_step_by_panel_everything(p_gt, panels_increment)
   plot_list <- append(plot_list, list(p_step))
 
 
@@ -41,7 +41,7 @@ reveal_by_facet_everything <- function(p, axis = F, label = F){
                                list(c(panels[i], strip_list[[i]], axes_list[[i]])))
 
     # Make step and append
-    p_step <- make_step_by_facet_everything(p_gt, panels_increment)
+    p_step <- make_step_by_panel_everything(p_gt, panels_increment)
     plot_list <- append(plot_list, list(p_step))
 
   }
@@ -52,7 +52,7 @@ reveal_by_facet_everything <- function(p, axis = F, label = F){
 
 
 #' @noRd
-make_step_by_facet_everything <- function(p_gt, panels_increment, show_layout = F){
+make_step_by_panel_everything <- function(p_gt, panels_increment, show_layout = F){
 
   drop <- !(p_gt$layout$name %in% unlist(panels_increment))
   gt_step <- p_gt

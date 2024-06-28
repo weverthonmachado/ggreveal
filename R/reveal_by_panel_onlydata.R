@@ -1,5 +1,5 @@
 #' @noRd
-reveal_by_facet_onlydata <- function(p) {
+reveal_by_panel_onlydata <- function(p) {
 
   p_build <- ggplot2::ggplot_build(p)
 
@@ -9,7 +9,7 @@ reveal_by_facet_onlydata <- function(p) {
   plot_list <- list()
 
   # Make step and append
-  p_step <- make_step_by_facet_onlydata(p, p_build, panels_increment)
+  p_step <- make_step_by_panel_onlydata(p, p_build, panels_increment)
   plot_list <- append(plot_list, list(p_step))
 
 
@@ -18,7 +18,7 @@ reveal_by_facet_onlydata <- function(p) {
     panels_increment <- c(panels_increment,  panels_all[i])
 
     # Make step and append
-    p_step <- make_step_by_facet_onlydata(p, p_build, panels_increment)
+    p_step <- make_step_by_panel_onlydata(p, p_build, panels_increment)
     plot_list <- append(plot_list, list(p_step))
 
   }
@@ -30,7 +30,7 @@ reveal_by_facet_onlydata <- function(p) {
 
 
 #' @noRd
-make_step_by_facet_onlydata <- function(p, p_build, panels_increment){
+make_step_by_panel_onlydata <- function(p, p_build, panels_increment){
 
   p_step <- p
   p_step <- ggplot2::ggplot_build(p_step)

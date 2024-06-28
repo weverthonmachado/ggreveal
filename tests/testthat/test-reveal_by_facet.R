@@ -10,11 +10,11 @@ p <- ggplot(mtcars, aes(mpg, hp)) +
 
 
 test_that("execution fails if there are no facets in the plot", {
-  expect_error(reveal_by_facet(p_fail))
+  expect_error(reveal_by_panel(p_fail))
 })
 
 
 test_that("output has correct type", {
-  expect_type(reveal_by_facet(p), "list")
-  expect_s3_class(reveal_by_facet(p)[[1]], "ggplot")
+  expect_type(reveal_by_panel(p), "list")
+  expect_s3_class(reveal_by_panel(p)[[1]], "ggplot")
 })

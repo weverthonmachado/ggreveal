@@ -27,13 +27,13 @@
 #' p
 #'
 #' # Only data
-#' plot_list <- reveal_by_facet(p, "data")
+#' plot_list <- reveal_by_panel(p, "data")
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
 #'
 #' # Everything
-#' plot_list <- reveal_by_facet(p, "everything")
+#' plot_list <- reveal_by_panel(p, "everything")
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
@@ -42,7 +42,7 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot", width = 8, height = 4)
 #' }
-reveal_by_facet <- function(p, what = c("data", "axis", "label", "everything")){
+reveal_by_panel <- function(p, what = c("data", "axis", "label", "everything")){
 
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
@@ -58,7 +58,7 @@ reveal_by_facet <- function(p, what = c("data", "axis", "label", "everything")){
   what <- rlang::arg_match(what)
 
   if (what=="data") {
-    plot_list <- reveal_by_facet_onlydata(p)
+    plot_list <- reveal_by_panel_onlydata(p)
   } else {
     axis_opt <- ifelse(what=="everything", TRUE,
                       ifelse(what=="axis", TRUE, FALSE))
@@ -66,7 +66,7 @@ reveal_by_facet <- function(p, what = c("data", "axis", "label", "everything")){
     label_opt <- ifelse(what=="everything", TRUE,
                        ifelse(what=="label", TRUE, FALSE))
 
-    plot_list <- reveal_by_facet_everything(p, axis = axis_opt, label = label_opt)
+    plot_list <- reveal_by_panel_everything(p, axis = axis_opt, label = label_opt)
   }
 
   return(plot_list)

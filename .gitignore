@@ -6,3 +6,4 @@
 .quarto
 _draft.R
 docs
+*.png
