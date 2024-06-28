@@ -2,7 +2,7 @@ url: http://www.weverthon.com/ggreveal/
 
 template:
   bootstrap: 5
-  bootswatch: flatly
+  bootswatch: lumen
 
 authors:
   Weverthon Machado:
