@@ -3,8 +3,7 @@ reveal_by_panel_onlydata <- function(p) {
 
   p_build <- ggplot2::ggplot_build(p)
 
-  # Note: gets panel levels from first layer
-  panels_all <- sort(unique(p_build$data[[1]]$PANEL))
+  panels_all <- sort(unique(p_build$layout$layout$PANEL))
   panels_increment <- c()
   plot_list <- list()
 

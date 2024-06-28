@@ -42,7 +42,7 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot", width = 8, height = 4)
 #' }
-reveal_by_panel <- function(p, what = c("data", "axis", "label", "everything")){
+reveal_by_panel <- function(p, what = c("data", "everything")){
 
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
@@ -60,13 +60,7 @@ reveal_by_panel <- function(p, what = c("data", "axis", "label", "everything")){
   if (what=="data") {
     plot_list <- reveal_by_panel_onlydata(p)
   } else {
-    axis_opt <- ifelse(what=="everything", TRUE,
-                      ifelse(what=="axis", TRUE, FALSE))
-
-    label_opt <- ifelse(what=="everything", TRUE,
-                       ifelse(what=="label", TRUE, FALSE))
-
-    plot_list <- reveal_by_panel_everything(p, axis = axis_opt, label = label_opt)
+    plot_list <- reveal_by_panel_everything(p, axis = T, label = T)
   }
 
   return(plot_list)
