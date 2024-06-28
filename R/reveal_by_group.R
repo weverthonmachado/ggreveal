@@ -32,14 +32,30 @@
 #' }
 reveal_by_group <- function(p){
 
+
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
                                                "is not a ggplot object"))
 
+  # Check if there is explicit grouping, starting with th e main function call,
+  # then for each layer.
+  search_list <- list(p)
+  search_list <- append(search_list, p$layers)
+  explicit <- sapply(search_list, function(x) {"quosure" %in% class(x$mapping$group)})
+  # Stop if:
+  # There's more than one group aes (e.g. in main call an in a layer) OR
+  # There's only one group aes, which is not defined in the main call AND the plot
+  # has more than one layer. (If only layer, the group main call will not matter)
+  if (!any(explicit)){
+    rlang::inform("Plot does not explicitly define a group aesthetic. Using default grouping set by ggplot2.")
+  } else if(sum(explicit) > 1 | (sum(explicit)==1 & !explicit[1] & length(p$layers)>1)) {
+    rlang::abort("It seems that the groups differ across layers. Please use reveal_by_layer() instead.")
+  }
+
   p_build <- ggplot2::ggplot_build(p)
 
-  # Note: gets group levels from first layer
-  groups_all <- sort(unique(p_build$data[[1]]$group))
+  # Note: gets group levels from all layers
+  groups_all <- unique(unlist(lapply(p_build$data, function(x) unique(x$group))))
   length(groups_all) > 1 ||  rlang::abort(paste("Plot is not grouped or there is",
                                                 "only one group. Maybe use",
                                                 "reveal_by_facet or reveal_by_layer?")
