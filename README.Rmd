@@ -55,16 +55,16 @@ p <-  ggplot(penguins[!is.na(penguins$sex),],
 p
 ```
 
-Then use one of `reveal_by_panel()`, `reveal_by_group()` or `reveal_by_layer()` to obtain a list of plots that show elements incrementally. 
+Then use one of `reveal_panels()`, `reveal_groups()` or `reveal_layers()` to obtain a list of plots that show elements incrementally. 
 
 ```{r, dpi=300, out.width="70%"}
 library(ggreveal)
-plot_list <- reveal_by_group(p)
+plot_list <- reveal_groups(p)
 plot_list
 ```
 
 You can save these graphs using `reveal_save()`, so you can, e.g., include them later in slides:
-```{r, dpi=300}
+```r
 reveal_save(plot_list, "myplot", width = 8, height = 4)
 ```
 
@@ -75,7 +75,7 @@ reveal_save(plot_list, "myplot", width = 8, height = 4)
 Yes and no. `ggplot` is composable by design, so it is straightforward to do some of the things in the package manually, especially the reveal by layer. For example, you can create the graph in steps and save the steps separately:
 
 ```r
-data("mtcars)
+data("mtcars")
 p1 <- ggplot(mtcars, 
             aes(mpg, wt)) +
      geom_point() 
@@ -83,7 +83,7 @@ p1 <- ggplot(mtcars,
 p2 <- p1 + geom_smooth() 
 ```
 
-The problem is: as you add layers and other elements, several visual aspects of the graph — e.g. range of axes, legends — can (and will often) change. Some of this is easily solvable (e.g. set `limits` to fix the axis range), some are not. Showing changes in graph layout as you add elements is useful if you are teaching **how to make graphs in ggplot2** (see package [`flipbookr`](https://github.com/EvaMaeRey/flipbookr), which makes it even easier), but it is distracting when you want to focus on the **results** presented in the plot. 
+The problem is: as you add layers and other elements, several visual aspects of the graph — e.g. range of axes, legends — can (and will often) change. Some of this is easily solvable (e.g. set `limits` to fix the axis range), some are not. Showing changes in graph layout as you add elements is useful if you are teaching *how to make graphs in ggplot2* (see package [`flipbookr`](https://github.com/EvaMaeRey/flipbookr), which makes it even easier), but it is distracting when you want to focus on the *results* presented in the plot. 
 
 
 

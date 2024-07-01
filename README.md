@@ -48,13 +48,13 @@ p
 
 <img src="man/figures/example-1.png" width="100%" />
 
-Then use one of `reveal_by_panel()`, `reveal_by_group()` or
-`reveal_by_layer()` to obtain a list of plots that show elements
+Then use one of `reveal_panels()`, `reveal_groups()` or
+`reveal_layers()` to obtain a list of plots that show elements
 incrementally.
 
 ``` r
 library(ggreveal)
-plot_list <- reveal_by_group(p)
+plot_list <- reveal_groups(p)
 plot_list
 #> [[1]]
 ```
@@ -76,12 +76,6 @@ include them later in slides:
 
 ``` r
 reveal_save(plot_list, "myplot", width = 8, height = 4)
-#> 
-#> ── Saving incremental plots ──
-#> 
-#> ✔ myplot_1.png
-#> ✔ myplot_2.png
-#> ✔ myplot_3_full.png
 ```
 
 # <a id="why"></a> Wait, can’t ggplot2 do this already?
@@ -92,7 +86,7 @@ by layer. For example, you can create the graph in steps and save the
 steps separately:
 
 ``` r
-data("mtcars)
+data("mtcars")
 p1 <- ggplot(mtcars, 
             aes(mpg, wt)) +
      geom_point() 
@@ -104,8 +98,8 @@ The problem is: as you add layers and other elements, several visual
 aspects of the graph — e.g. range of axes, legends — can (and will
 often) change. Some of this is easily solvable (e.g. set `limits` to fix
 the axis range), some are not. Showing changes in graph layout as you
-add elements is useful if you are teaching **how to make graphs in
-ggplot2** (see package
+add elements is useful if you are teaching *how to make graphs in
+ggplot2* (see package
 [`flipbookr`](https://github.com/EvaMaeRey/flipbookr), which makes it
 even easier), but it is distracting when you want to focus on the
-**results** presented in the plot.
+*results* presented in the plot.

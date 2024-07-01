@@ -1,5 +1,5 @@
 #' @noRd
-reveal_by_panel_onlydata <- function(p, order, omit_blank) {
+reveal_panels_onlydata <- function(p, order, omit_blank) {
 
   p_build <- ggplot2::ggplot_build(p)
 

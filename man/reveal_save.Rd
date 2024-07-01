@@ -7,7 +7,7 @@
 reveal_save(plot_list, basename = "plot", ...)
 }
 \arguments{
-\item{plot_list}{A list of plots created by \code{\link[=reveal_by_group]{reveal_by_group()}}, \code{\link[=reveal_by_layer]{reveal_by_layer()}} or \code{\link[=reveal_by_panel]{reveal_by_panel()}}}
+\item{plot_list}{A list of plots created by \code{\link[=reveal_groups]{reveal_groups()}}, \code{\link[=reveal_layers]{reveal_layers()}} or \code{\link[=reveal_panels]{reveal_panels()}}}
 
 \item{basename}{The base file name that will be used for saving}
 
@@ -32,7 +32,7 @@ p <- mtcars |>
   facet_wrap(~am)
 p
 
-plot_list <- reveal_by_group(p)
+plot_list <- reveal_groups(p)
 plot_list[[1]]
 plot_list[[2]]
 plot_list[[3]]

@@ -22,7 +22,7 @@
 #'   facet_wrap(~am)
 #' p
 #'
-#' plot_list <- reveal_by_group(p)
+#' plot_list <- reveal_groups(p)
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
@@ -31,7 +31,7 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot", width = 8, height = 4)
 #' }
-reveal_by_group <- function(p, order = NULL){
+reveal_groups <- function(p, order = NULL){
 
 
   # Check arguments
@@ -62,7 +62,7 @@ reveal_by_group <- function(p, order = NULL){
   # There's only one group aes, which is not defined in the main call AND the plot
   # has more than one layer. (If only layer, the group main call will not matter)
   if(sum(explicit) > 1 | (sum(explicit)==1 & !explicit[1] & length(p$layers)>1)) {
-    rlang::abort("It seems that the groups differ across layers. Please use reveal_by_layer() instead.")
+    rlang::abort("It seems that the groups differ across layers. Please use reveal_layers() instead.")
   }
 
   p_build <- ggplot2::ggplot_build(p)
@@ -71,7 +71,7 @@ reveal_by_group <- function(p, order = NULL){
   groups_all <- sort(unique(unlist(lapply(p_build$data, function(x) unique(x$group)))))
 
   if (length(groups_all) <= 1 ){
-    rlang::warn("Plot is not grouped or there is only one group. Maybe use reveal_by_panel or reveal_by_layer?")
+    rlang::warn("Plot is not grouped or there is only one group. Maybe use reveal_panels or reveal_layers?")
   } else if (!any(explicit)){
     rlang::inform("Plot does not explicitly define a group aesthetic. Using default grouping set by ggplot2.")
   }

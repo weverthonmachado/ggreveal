@@ -1,5 +1,5 @@
 #' @noRd
-reveal_by_panel_everything <- function(p, order, omit_blank, axis = F, label = F){
+reveal_panels_everything <- function(p, order, omit_blank, axis = F, label = F){
 
   p_gt <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))
   layout_obj <- p_gt$layout
