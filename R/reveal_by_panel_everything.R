@@ -110,7 +110,7 @@ select_sort_elements <- function(layout_obj,
 
     panel_element_df <- panel_df
     panel_element_df <- dplyr::mutate(panel_element_df, elements = element_df_list)
-    panel_element_df <- tidyr::unnest(panel_element_df, cols = .data$elements)
+    panel_element_df <- tidyr::unnest(panel_element_df, cols = "elements")
 
 
     if (type_facet=="grid"){

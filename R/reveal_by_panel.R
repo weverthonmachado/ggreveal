@@ -3,11 +3,12 @@
 #' Creates a list of plots, showing data incrementally by layers.
 #'
 #' @param p A ggplot2 object, in which a `group` aesthetic is used.
-#' @param order (optional) A numeric vector specifying in which order to reveal the panels. 
-#' @param what (optional) one of `"data"` or `"everything"`.' With `"data"`, 
-#' the basic graph layout (including axes and facet labels) is shown from the start, 
-#' and only the data points are shown incrementally. With `"everything"`,
-#' the entire panels are shown incrementally.
+#' @param order (optional) A numeric vector specifying in which order to reveal
+#' the panels. 
+#' @param what (optional) one of `"data"` or `"everything"`.' With `"data"`, the
+#' basic graph layout (including axes and facet labels) is shown from the start,
+#' and only the data points are shown incrementally. With `"everything"`, the
+#' entire panels are shown incrementally.
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples

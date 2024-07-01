@@ -9,12 +9,13 @@ reveal_by_panel(p, order = NULL, what = c("data", "everything"))
 \arguments{
 \item{p}{A ggplot2 object, in which a \code{group} aesthetic is used.}
 
-\item{order}{(optional) A numeric vector specifying in which order to reveal the panels.}
+\item{order}{(optional) A numeric vector specifying in which order to reveal
+the panels.}
 
-\item{what}{(optional) one of \code{"data"} or \code{"everything"}.' With \code{"data"},
-the basic graph layout (including axes and facet labels) is shown from the start,
-and only the data points are shown incrementally. With \code{"everything"},
-the entire panels are shown incrementally.}
+\item{what}{(optional) one of \code{"data"} or \code{"everything"}.' With \code{"data"}, the
+basic graph layout (including axes and facet labels) is shown from the start,
+and only the data points are shown incrementally. With \code{"everything"}, the
+entire panels are shown incrementally.}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
