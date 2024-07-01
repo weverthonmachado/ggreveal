@@ -61,9 +61,7 @@ reveal_by_group <- function(p, order = NULL){
   # There's more than one group aes (e.g. in main call an in a layer) OR
   # There's only one group aes, which is not defined in the main call AND the plot
   # has more than one layer. (If only layer, the group main call will not matter)
-  if (!any(explicit)){
-    rlang::inform("Plot does not explicitly define a group aesthetic. Using default grouping set by ggplot2.")
-  } else if(sum(explicit) > 1 | (sum(explicit)==1 & !explicit[1] & length(p$layers)>1)) {
+  if(sum(explicit) > 1 | (sum(explicit)==1 & !explicit[1] & length(p$layers)>1)) {
     rlang::abort("It seems that the groups differ across layers. Please use reveal_by_layer() instead.")
   }
 
@@ -71,10 +69,13 @@ reveal_by_group <- function(p, order = NULL){
 
   # Note: gets group levels from all layers
   groups_all <- sort(unique(unlist(lapply(p_build$data, function(x) unique(x$group)))))
-  length(groups_all) > 1 ||  rlang::abort(paste("Plot is not grouped or there is",
-                                                "only one group. Maybe use",
-                                                "reveal_by_panel or reveal_by_layer?")
-                                          )
+
+  if (length(groups_all) <= 1 ){
+    rlang::warn("Plot is not grouped or there is only one group. Maybe use reveal_by_panel or reveal_by_layer?")
+  } else if (!any(explicit)){
+    rlang::inform("Plot does not explicitly define a group aesthetic. Using default grouping set by ggplot2.")
+  }
+
   # Reorder group levels
   if (!is.null(order)) {
     groups_all <- groups_all[order]
