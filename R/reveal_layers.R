@@ -22,7 +22,7 @@
 #'   facet_wrap(~am)
 #' p
 #'
-#' plot_list <- reveal_by_layer(p)
+#' plot_list <- reveal_layers(p)
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
@@ -31,7 +31,7 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot", width = 8, height = 4)
 #' }
-reveal_by_layer <- function(p, order = NULL){
+reveal_layers <- function(p, order = NULL){
 
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),

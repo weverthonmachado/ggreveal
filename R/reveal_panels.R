@@ -28,13 +28,13 @@
 #' p
 #'
 #' # Only data
-#' plot_list <- reveal_by_panel(p, what = "data")
+#' plot_list <- reveal_panels(p, what = "data")
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
 #'
 #' # Everything
-#' plot_list <- reveal_by_panel(p, what = "everything")
+#' plot_list <- reveal_panels(p, what = "everything")
 #' plot_list[[1]]
 #' plot_list[[2]]
 #' plot_list[[3]]
@@ -43,7 +43,7 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot", width = 8, height = 4)
 #' }
-reveal_by_panel <- function(p, order = NULL, what = c("data", "everything")){
+reveal_panels <- function(p, order = NULL, what = c("data", "everything")){
 
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
@@ -53,7 +53,7 @@ reveal_by_panel <- function(p, order = NULL, what = c("data", "everything")){
             tolower(class(p$facet)[1]),
             "grid|wrap")) ||  rlang::abort(paste("Plot does not use facet_wrap or",
                                                   "facet_grid. Maybe use",
-                                                  "reveal_by_group or reveal_by_layer?")
+                                                  "reveal_groups or reveal_layers?")
                                                                 )
   
   omit_blank <- FALSE
@@ -78,9 +78,9 @@ reveal_by_panel <- function(p, order = NULL, what = c("data", "everything")){
   what = what <- rlang::arg_match(what)
 
   if (what=="data") {
-    plot_list <- reveal_by_panel_onlydata(p, order, omit_blank)
+    plot_list <- reveal_panels_onlydata(p, order, omit_blank)
   } else {
-    plot_list <- reveal_by_panel_everything(p, order, omit_blank, axis = T, label = T)
+    plot_list <- reveal_panels_everything(p, order, omit_blank, axis = T, label = T)
   }
 
   return(plot_list)
