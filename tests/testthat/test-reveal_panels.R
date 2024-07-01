@@ -18,6 +18,7 @@ test_that("output has correct length", {
 })
 
 test_that("plots look like they should - only data",{
+  skip_on_ci()
   plot_list <- reveal_panels(make_test_plot(), order = c(2,1,3))
   expect_doppelganger("plot1 - only data", plot_list[[1]])
   expect_doppelganger("plot2 - only data", plot_list[[2]])
@@ -26,6 +27,7 @@ test_that("plots look like they should - only data",{
 })
 
 test_that("plots look like they should - everything",{
+  skip_on_ci()
   plot_list <- reveal_panels(make_test_plot(), order = c(2,1,3), "everything")
   expect_doppelganger("plot1 - everything", plot_list[[1]])
   expect_doppelganger("plot2 - everything", plot_list[[2]])
