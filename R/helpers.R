@@ -1,30 +1,31 @@
 make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet")) {
-  suppressWarnings(withr::local_package("ggplot2"))
+
+ `%+%` <- ggplot2::`%+%`
 
   type <- rlang::arg_match(type)
 
-  df <- dplyr::filter(diamonds,
+  df <- dplyr::filter(ggplot2::diamonds,
           cut %in% c("Fair", "Good", "Premium"),
           color %in% c("E", "F", "G"),
           clarity %in% c("SI2", "SI1",  "VS2")) 
 
 
-  mapping <- aes(carat, price,
+  mapping <- ggplot2::aes(carat, price,
                 color = cut,
                 fill = cut,
                 group = cut)
 
   layers <- list(
-            geom_point(),
-            geom_smooth(method="lm", formula = "y ~ x"),
-            geom_rug()
+             ggplot2::geom_point(),
+             ggplot2::geom_smooth(method="lm", formula = "y ~ x"),
+             ggplot2::geom_rug()
             )
 
-  facet <- facet_grid(color ~ clarity) 
+  facet <- ggplot2::facet_grid(color ~ clarity) 
 
   if (type=="nogroup") {
 
-    mapping <- aes(carat, price)
+    mapping <- ggplot2::aes(carat, price)
 
   } else if (type=="nolayer") {
 
@@ -36,8 +37,8 @@ make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet"))
 
   }
 
-  p <- ggplot(df, mapping) +
-      layers +
+  p <- ggplot2::ggplot(df, mapping) %+%
+      layers %+%
       facet
 
   suppressWarnings(return(p))

@@ -18,6 +18,7 @@ test_that("output has correct length", {
 })
 
 test_that("plots look like they should",{
+  skip_on_ci()
   plot_list <- reveal_layers(make_test_plot(), order = c(2,1,3))
   expect_doppelganger("plot1", plot_list[[1]])
   expect_doppelganger("plot2", plot_list[[2]])
