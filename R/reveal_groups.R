@@ -100,7 +100,7 @@ reveal_groups <- function(p, order = NULL){
     plot_list <- append(plot_list, list(p_step))
 
   }
-
+  attr(plot_list, "omit_blank") <- omit_blank
   return(plot_list)
 
 }

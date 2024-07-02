@@ -6,16 +6,31 @@
 #' @param ... Additional arguments (e.g. width, height) to be passed to [ggplot2::ggsave()]
 #' @export
 #' @inherit reveal_groups examples
-reveal_save <- function(plot_list, basename = "plot", ...) {
+reveal_save <- function(plot_list, basename = "plot.png", ...) {
 
   cli::cli_h2("Saving incremental plots")
 
   paths <- c()
+
+  omit_blank <- ifelse(is.null(attr(plots,"omit_blank")), 
+                       FALSE,
+                       attr(plots,"omit_blank"))
+  offset <- ifelse(omit_blank, 0, 1)
+  
   for (i in 1:length(plot_list)) {
-    suffix <- ifelse(i == length(plot_list),
-                     paste0("_", i, "_full"),
-                     paste0("_", i))
-    filename <- paste0(basename, suffix, ".png")
+    number <- ifelse(i == length(plot_list),
+                          paste0("_", i-offset, "_last"),
+                          paste0("_", i-offset))
+    
+    ext <- tools::file_ext(basename)
+
+    if (ext != ""){
+      suffix <- paste0(number, ".", ext)
+    } else {
+      suffix <- number
+    }
+
+    filename <- paste0(tools::file_path_sans_ext(basename), suffix)
     
     filename <- ggplot2::ggsave(filename, plot_list[[i]], ...)
     paths <- c(paths, filename)

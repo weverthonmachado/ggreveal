@@ -23,7 +23,7 @@ reveal_panels_onlydata <- function(p, order, omit_blank) {
     plot_list <- append(plot_list, list(p_step))
 
   }
-
+  attr(plot_list, "omit_blank") <- omit_blank
   return(plot_list)
 
   }
