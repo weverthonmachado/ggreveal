@@ -26,11 +26,20 @@ test_that("plots look like they should - only data",{
   expect_doppelganger("plot4 - only data", plot_list[[4]])
 })
 
-test_that("plots look like they should - everything",{
+test_that("plots look like they should - everything - grid",{
   skip_on_ci()
   plot_list <- reveal_panels(make_test_plot(), order = c(2,1,3), "everything")
-  expect_doppelganger("plot1 - everything", plot_list[[1]])
-  expect_doppelganger("plot2 - everything", plot_list[[2]])
-  expect_doppelganger("plot3 - everything", plot_list[[3]])
-  expect_doppelganger("plot4 - everything", plot_list[[4]])
+  expect_doppelganger("plot1 - everything - grid", plot_list[[1]])
+  expect_doppelganger("plot2 - everything - grid", plot_list[[2]])
+  expect_doppelganger("plot3 - everything - grid", plot_list[[3]])
+  expect_doppelganger("plot4 - everything - grid", plot_list[[4]])
+})
+
+test_that("plots look like they should - everything - wrap",{
+  skip_on_ci()
+  plot_list <- reveal_panels(make_test_plot("facet_wrap"), order = c(2,1,3), "everything")
+  expect_doppelganger("plot1 - everything - wrap", plot_list[[1]])
+  expect_doppelganger("plot2 - everything - wrap", plot_list[[2]])
+  expect_doppelganger("plot3 - everything - wrap", plot_list[[3]])
+  expect_doppelganger("plot4 - everything - wrap", plot_list[[4]])
 })

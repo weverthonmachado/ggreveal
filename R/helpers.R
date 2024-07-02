@@ -1,4 +1,4 @@
-make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet")) {
+make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap")) {
 
  `%+%` <- ggplot2::`%+%`
 
@@ -34,6 +34,10 @@ make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet"))
   } else if (type=="nofacet") {
 
     facet <- NULL
+
+  } else if (type=="facet_wrap") {
+
+    facet <- ggplot2::facet_wrap(color ~ clarity) 
 
   }
 

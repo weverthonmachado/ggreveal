@@ -49,12 +49,6 @@ reveal_panels <- function(p, order = NULL, what = c("data", "everything")){
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
                                         "is not a ggplot object"))
 
-  !is.na(stringr::str_extract(
-            tolower(class(p$facet)[1]),
-            "grid|wrap")) ||  rlang::abort(paste("Plot does not use facet_wrap or",
-                                                  "facet_grid. Maybe use",
-                                                  "reveal_groups or reveal_layers?")
-                                                                )
   
   omit_blank <- FALSE
   n_panels <- length(unique(ggplot2::ggplot_build(p)$layout$layout$PANEL))

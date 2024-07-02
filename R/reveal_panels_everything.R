@@ -2,12 +2,12 @@
 reveal_panels_everything <- function(p, order, omit_blank, axis = F, label = F){
 
   p_gt <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))
-  layout_obj <- p_gt$layout
-  type_facet <- stringr::str_extract(tolower(class(p$facet)[1]), "grid|wrap")
+  is_zerogrob <- unlist(lapply(p_gt$grobs, function(x) "zeroGrob" %in% class(x)))
+  layout_obj <- p_gt$layout[!is_zerogrob, ]
 
   panels <- select_sort_elements(layout_obj, "panel")[order]
-  strips <- select_sort_elements(layout_obj, "strip", type_facet)[order]
-  axes <- select_sort_elements(layout_obj, "axis", type_facet)[order]
+  strips <- select_sort_elements(layout_obj, "strip")[order]
+  axes <- select_sort_elements(layout_obj, "axis")[order]
   rest <- layout_obj$name[!(stringr::str_detect(layout_obj$name, "panel|strip|axis"))]
 
   panels_increment <- list(rest)
@@ -74,11 +74,9 @@ make_step_by_panel_everything <- function(p_gt, panels_increment, show_layout = 
 #' @noRd
 #' @importFrom rlang .data
 select_sort_elements <- function(layout_obj,
-                                 element=c("panel","axis", "strip"),
-                                 type_facet = c("wrap", "grid")) {
+                                 element=c("panel","axis", "strip")) {
 
   element <- rlang::arg_match(element)
-  type_facet <- rlang::arg_match(type_facet)
 
   panel_df <- layout_obj
   panel_df <- dplyr::filter(panel_df, stringr::str_detect(.data$name, "panel"))
@@ -107,48 +105,25 @@ select_sort_elements <- function(layout_obj,
       element_df_list <- append(element_df_list, list(element_df))
     }
 
-
     panel_element_df <- panel_df
     panel_element_df <- dplyr::mutate(panel_element_df, elements = element_df_list)
     panel_element_df <- tidyr::unnest(panel_element_df, cols = "elements")
 
-
-    if (type_facet=="grid"){
-      # If facet_grid, get the closest axis/strip by letter (t, b, l, r)
-      # Closest =  minimum sum of t and l coordinates
-      v <- panel_element_df
-      v <- dplyr::mutate(v,
-                         letter = stringr::str_extract(.data$element_name, "\\w(?=-\\d)"),
-                         dist_t = abs(.data$panel_t - .data$element_t),
-                         dist_l = abs(.data$panel_l - .data$element_l),
-                         dist_sum = .data$dist_t + .data$dist_l)
-      v <- dplyr::group_by(v,
-                           .data$panel_name, .data$letter)
-      v <-  dplyr::arrange(v,
-                           .data$panel_t, .data$panel_l, .data$letter, .data$dist_sum)
-      v <- dplyr::filter(v,
-                         dplyr::row_number()==1)
-      v <- dplyr::pull(v, .data$element_name)
-
-
-    } else if (type_facet=="wrap"){
-      # If facet_wrap, get a number of closest axes/strips
-      # Closest =  minimum sum of t and l coordinates
-
-      # How many to get per panel?
-      n_elements <- NROW(element_df)/n_panels
-
-      v <- panel_element_df
-      v <- dplyr::mutate(v,
-                          dist_t = abs(.data$panel_t - .data$element_t),
-                          dist_l = abs(.data$panel_l - .data$element_l),
-                          dist_sum = .data$dist_t + .data$dist_l)
-      v <- dplyr::group_by(v, .data$panel_name)
-      v <- dplyr::arrange(v, .data$panel_t, .data$panel_l, .data$dist_sum)
-      v <- dplyr::filter(v, dplyr::row_number() <= n_elements)
-      v <- dplyr::pull(v, .data$element_name)
-
-    }
+    # Get the closest axis/strip by letter (t, b, l, r)
+    # Closest =  minimum sum of t and l coordinates
+    v <- panel_element_df
+    v <- dplyr::mutate(v,
+                        letter = stringr::str_extract(.data$element_name, "\\w(?=-\\d)"),
+                        dist_t = abs(.data$panel_t - .data$element_t),
+                        dist_l = abs(.data$panel_l - .data$element_l),
+                        dist_sum = .data$dist_t + .data$dist_l)
+    v <- dplyr::group_by(v,
+                          .data$panel_name, .data$letter)
+    v <-  dplyr::arrange(v,
+                          .data$panel_t, .data$panel_l, .data$letter, .data$dist_sum)
+    v <- dplyr::filter(v,
+                        dplyr::row_number()==1)
+    v <- dplyr::pull(v, .data$element_name)
 
     # Split vector into list
     out <- split(v, ceiling(seq_along(v) / (length(v)/n_panels)))
