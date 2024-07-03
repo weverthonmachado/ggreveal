@@ -12,9 +12,9 @@ reveal_save <- function(plot_list, basename = "plot.png", ...) {
 
   paths <- c()
 
-  omit_blank <- ifelse(is.null(attr(plots,"omit_blank")), 
+  omit_blank <- ifelse(is.null(attr(plot_list,"omit_blank")), 
                        FALSE,
-                       attr(plots,"omit_blank"))
+                       attr(plot_list,"omit_blank"))
   offset <- ifelse(omit_blank, 0, 1)
   
   for (i in 1:length(plot_list)) {

@@ -35,7 +35,7 @@ data("mtcars")
 p <- mtcars |>
   ggplot(aes(factor(vs), 
              color = gear,
-             fill=ger, 
+             fill= gear, 
              group = gear)) +
   geom_bar() +
   facet_wrap(~am)

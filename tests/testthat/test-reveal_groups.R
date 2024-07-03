@@ -1,4 +1,4 @@
-test_that("execution fails if there are no groups in the plot", {
+test_that("warn if there are no groups in the plot", {
   expect_warning((reveal_groups(make_test_plot("nogroup"))))
 })
 
