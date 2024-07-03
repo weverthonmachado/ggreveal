@@ -57,17 +57,14 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><p>[WORK IN PROGRESS]</p>
-<div class="section level1">
-<div class="page-header"><h1 id="ggreveal-">ggreveal <img src="reference/figures/magic.gif" align="right" alt="" width="200"><a class="anchor" aria-label="anchor" href="#ggreveal-"></a>
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="ggreveal">ggreveal<a class="anchor" aria-label="anchor" href="#ggreveal"></a>
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of <code>ggreveal</code> is to make it easy to present data on ggplot graphs incrementally. <em>Why</em> would you want to do that? Because it’s fun, and often useful in teaching and academic presentations.</p>
-<p>You can reveal the data by group:</p>
-<p>By panel:</p>
-<p>Or by layer:</p>
-<p>See <a href="#why">below</a> for an explanation of why these functions are needed.</p>
+<p><code>ggreveal</code> makes it easy to present data on ggplot2 graphs incrementally. The functions in this package take a plot and break it down into a series of intermediary plots that can be shown in sequence (e.g. in different slides). Like this:</p>
+<p><img src="reference/figures/unnamed-chunk-2-1.gif" width="100%"></p>
+<p><em>Why</em> would you want to do that? Because it’s fun — and often very useful in teaching and academic presentations.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -77,10 +74,11 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>Create a ggplot as you would usually do.</p>
+<p>Create a graph with ggplot2 as usual.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/" class="external-link">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.weverthon.com/ggreveal/">ggreveal</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span>,<span class="op">]</span>,</span>
 <span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">body_mass_g</span>, <span class="va">bill_length_mm</span>,</span>
@@ -90,38 +88,43 @@
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
-<p><img src="reference/figures/example-1.png" width="100%"></p>
-<p>Then use one of <code><a href="reference/reveal_panels.html">reveal_panels()</a></code>, <code><a href="reference/reveal_groups.html">reveal_groups()</a></code> or <code><a href="reference/reveal_layers.html">reveal_layers()</a></code> to obtain a list of plots that show elements incrementally.</p>
+<p><img src="reference/figures/unnamed-chunk-3-1.png" width="100%"></p>
+<p>Then use one of <code><a href="reference/reveal_panels.html">reveal_panels()</a></code>, <code><a href="reference/reveal_groups.html">reveal_groups()</a></code>, <code><a href="reference/reveal_layers.html">reveal_layers()</a></code> or <code><a href="reference/reveal_axis.html">reveal_axis()</a></code> to obtain a list of plots that show elements incrementally.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.weverthon.com/ggreveal/">ggreveal</a></span><span class="op">)</span></span>
-<span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reveal_groups.html">reveal_groups</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reveal_groups.html">reveal_groups</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="va">plot_list</span></span>
 <span><span class="co">#&gt; [[1]]</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-2-1.png" width="70%"></p>
+<p><img src="reference/figures/unnamed-chunk-4-1.png" width="70%"></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-2-2.png" width="70%"></p>
+<p><img src="reference/figures/unnamed-chunk-4-2.png" width="70%"></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-2-3.png" width="70%"></p>
-<p>You can save these graphs using <code><a href="reference/reveal_save.html">reveal_save()</a></code>, so you can, e.g., include them later in slides:</p>
+<p><img src="reference/figures/unnamed-chunk-4-3.png" width="70%"></p>
+<p>You probably want to save these graphs using <code><a href="reference/reveal_save.html">reveal_save()</a></code>, so you can easily include them later in a presentation:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/reveal_save.html">reveal_save</a></span><span class="op">(</span><span class="va">plot_list</span>, <span class="st">"myplot"</span>, width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/reveal_save.html">reveal_save</a></span><span class="op">(</span><span class="va">plot_list</span>, <span class="st">"myplot.png"</span>, width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>── Saving incremental plots ──</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>✔ myplot_0.png</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>✔ myplot_1.png</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>✔ myplot_2_last.png</span></code></pre></div>
+<p><img src="reference/figures/magic.gif" style="max-width: 60%; margin-left: auto; margin-right: auto; height: auto; display: block"></p>
 </div>
 </div>
 <div class="section level1">
 <h1 id="id_-wait-cant-ggplot2-do-this-already">
 <a id="why"></a> Wait, can’t ggplot2 do this already?<a class="anchor" aria-label="anchor" href="#id_-wait-cant-ggplot2-do-this-already"></a>
 </h1>
-<p>Yes and no. <code>ggplot</code> is composable by design, so it is straightforward to do some of the things in the package manually, especially the reveal by layer. For example, you can create the graph in steps and save the steps separately:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>Yes and no. <code>ggplot2</code> is composable by design, so it is straightforward to do some incremental reveal out of the box. For example, you can create the plot in steps and save the steps separately:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"mtcars"</span><span class="op">)</span></span>
 <span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, </span>
 <span>            <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">wt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span>     </span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
-<p>The problem is: as you add layers and other elements, several visual aspects of the graph — e.g. range of axes, legends — can (and will often) change. Some of this is easily solvable (e.g. set <code>limits</code> to fix the axis range), some are not. Showing changes in graph layout as you add elements is useful if you are teaching <em>how to make graphs in ggplot2</em> (see package <a href="https://github.com/EvaMaeRey/flipbookr" class="external-link"><code>flipbookr</code></a>, which makes it even easier), but it is distracting when you want to focus on the <em>results</em> presented in the plot.</p>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span>, formula<span class="op">=</span><span class="st">"y~x"</span><span class="op">)</span> </span></code></pre></div>
+<p>The problem is: as you add layers and other elements, several visual aspects of the plot — e.g. range of axes, legends — can, and will often, change. Showing how the layout changes as you add elements is useful for teaching <em>how to make graphs in ggplot2</em>, but it is distracting when you want to focus on the <em>results</em>. Keeping the layout fixed is sometimes easy (e.g. set the <code>limits</code> argument for the x/y scale), but in many cases it requires tinkering with the internals of the ggplot object.</p>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
