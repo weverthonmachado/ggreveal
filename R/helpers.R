@@ -18,7 +18,7 @@ make_step <- function(p, p_build, var, increment){
 
 
 
-make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap")) {
+make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar")) {
 
  `%+%` <- ggplot2::`%+%`
 
@@ -58,6 +58,19 @@ make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", 
   } else if (type=="facet_wrap") {
 
     facet <- ggplot2::facet_wrap(color ~ clarity) 
+
+  } else if (type=="bar") {
+
+    mapping <- ggplot2::aes(x = color, 
+                            color = cut,
+                            fill = cut, 
+                            group = cut)
+    
+    layers <- list(
+      ggplot2::geom_bar()
+      )
+                 
+    facet <- ggplot2::facet_wrap(~ clarity) 
 
   }
 
