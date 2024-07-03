@@ -1,7 +1,7 @@
 #' Saves incremental plots
 #'
 #'
-#' @param plot_list A list of plots created by [reveal_groups()], [reveal_layers()] or [reveal_panels()]
+#' @param plot_list A list of plots created by [reveal_groups()], [reveal_layers()], [reveal_panels()] or [reveal_axis()]
 #' @param basename The base file name that will be used for saving
 #' @param ... Additional arguments (e.g. width, height) to be passed to [ggplot2::ggsave()]
 #' @export

@@ -1,12 +1,12 @@
 #' Reveal plot by axis
 #'
-#' Creates a list of plots, showing data incrementally by axis (x or y) values. The specified axis must 
-#' must be mapped to a discrete variable. `reveal_x()` and `reveal_y()` are wrappers that call
-#'  `reveal_axis()` for the respective axes.
+#' Creates a list of plots, showing data incrementally by categories in the x or y axis. The specified axis must 
+#' must be mapped to a discrete variable. `reveal_x()` and `reveal_y()` are useful wrappers that call the main function 
+#' with axis specified. 
 #'
 #' @param p A ggplot2 object
-#' @param order (optional) A numeric vector specifying in which order to reveal the groups. 
-#' @param which (optional) "x" or "y", to specify the axis to be revealed. "x" is the default. 
+#' @param order (optional) A numeric vector specifying in which order to reveal the categories
+#' @param axis (optional) "x" or "y", to specify the axis to be revealed. "x" is the default
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples
@@ -30,16 +30,16 @@
 #'
 #'\dontrun{
 #' # Save plots
-#' reveal_save(plot_list, "myplot", width = 8, height = 4)
+#' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 #' }
-reveal_axis <- function(p, order = NULL, which = c("x", "y")){
+reveal_axis <- function(p, order = NULL, axis = c("x", "y")){
 
 
   # Check arguments
   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
                                                "is not a ggplot object"))
   
-  which <- rlang::arg_match(which)
+  axis <- rlang::arg_match(axis)
 
   omit_blank <- FALSE
   if (!is.null(order)) {
@@ -60,23 +60,23 @@ reveal_axis <- function(p, order = NULL, which = c("x", "y")){
   # Check if axis is defined more than once, starting eith the maain fucntion call
   search_list <- list(p)
   search_list <- append(search_list, p$layers)
-  def <- sapply(search_list, function(x) {"quosure" %in% class(x$mapping[[which]])})
+  def <- sapply(search_list, function(x) {"quosure" %in% class(x$mapping[[axis]])})
   # Stop if:
   # There's more than one x (or y) aes (e.g. in main call and in a layer)
   # There are no x (or y) aes
   if(sum(def) > 1) {
-    cli::cli_abort("It seems that the definition of axis '{which}' varies across layers. Please use reveal_layers() instead.")
+    cli::cli_abort("It seems that the definition of axis '{axis}' varies across layers. Please use reveal_layers() instead.")
   } else if (sum(def) == 0){
-    cli::cli_abort("aes '{which}' is not defined in any layer.")
+    cli::cli_abort("aes '{axis}' is not defined in any layer.")
   }
-  axis_var_name <- rlang::quo_name(search_list[def][[1]]$mapping[[which]])
+  axis_var_name <- rlang::quo_name(search_list[def][[1]]$mapping[[axis]])
 
   # Check whether axis is a factor variable
   # TODO: If numeric, perhaps allow for a maximum number of unique values
-  "mapped_discrete" %in% class(p_build$data[[1]][, which]) || cli::cli_abort("'{axis_var_name}' is not a discrete variable.")
+  "mapped_discrete" %in% class(p_build$data[[1]][, axis]) || cli::cli_abort("'{axis_var_name}' is not a discrete variable.")
 
   # Note: gets axis values from all layers
-  axis_values_all <- sort(unique(unlist(lapply(p_build$data, function(x) unique(x[, which])))))
+  axis_values_all <- sort(unique(unlist(lapply(p_build$data, function(x) unique(x[, axis])))))
 
   # if (length(groups_all) <= 1 ){
   #   rlang::warn("Plot is not grouped or there is only one group. Maybe use reveal_panels or reveal_layers?")
@@ -94,7 +94,7 @@ reveal_axis <- function(p, order = NULL, which = c("x", "y")){
 
   # Make step and append
   if (!omit_blank) {
-    p_step <- make_step(p, p_build, which, increment)
+    p_step <- make_step(p, p_build, axis, increment)
     plot_list <- append(plot_list, list(p_step))
   }
 
@@ -104,7 +104,7 @@ reveal_axis <- function(p, order = NULL, which = c("x", "y")){
     increment <- c(increment,  axis_values_all[i])
 
     # Make step and append
-    p_step <- make_step(p, p_build, which, increment)
+    p_step <- make_step(p, p_build, axis, increment)
     plot_list <- append(plot_list, list(p_step))
 
   }

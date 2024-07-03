@@ -2,9 +2,9 @@
 #'
 #' Creates a list of plots, showing data incrementally by layers.
 #'
-#' @param p A ggplot2 object, in which a `group` aesthetic is used.
+#' @param p A ggplot2 objecc
 #' @param order (optional) A numeric vector specifying in which order to reveal
-#' the panels. 
+#' the panels
 #' @param what (optional) one of `"data"` or `"everything"`.' With `"data"`, the
 #' basic graph layout (including axes and facet labels) is shown from the start,
 #' and only the data points are shown incrementally. With `"everything"`, the
@@ -41,7 +41,7 @@
 #'
 #'\dontrun{
 #' # Save plots
-#' reveal_save(plot_list, "myplot", width = 8, height = 4)
+#' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 #' }
 reveal_panels <- function(p, order = NULL, what = c("data", "everything")){
 

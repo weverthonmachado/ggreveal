@@ -7,7 +7,7 @@
 reveal_groups(p, order = NULL)
 }
 \arguments{
-\item{p}{A ggplot2 object, in which a \code{group} aesthetic is used.}
+\item{p}{A ggplot2 object}
 
 \item{order}{(optional) A numeric vector specifying in which order to reveal the groups.}
 }
@@ -40,6 +40,6 @@ plot_list[[3]]
 
 \dontrun{
 # Save plots
-reveal_save(plot_list, "myplot", width = 8, height = 4)
+reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 }
 }

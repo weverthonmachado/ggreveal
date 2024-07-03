@@ -2,7 +2,7 @@
 #'
 #' Creates a list of plots, showing data incrementally by groups.
 #'
-#' @param p A ggplot2 object, in which a `group` aesthetic is used.
+#' @param p A ggplot2 object
 #' @param order (optional) A numeric vector specifying in which order to reveal the groups. 
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
@@ -29,7 +29,7 @@
 #'
 #'\dontrun{
 #' # Save plots
-#' reveal_save(plot_list, "myplot", width = 8, height = 4)
+#' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 #' }
 reveal_groups <- function(p, order = NULL){
 

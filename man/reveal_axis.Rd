@@ -6,7 +6,7 @@
 \alias{reveal_y}
 \title{Reveal plot by axis}
 \usage{
-reveal_axis(p, order = NULL, which = c("x", "y"))
+reveal_axis(p, order = NULL, axis = c("x", "y"))
 
 reveal_x(p, order = NULL)
 
@@ -15,17 +15,17 @@ reveal_y(p, order = NULL)
 \arguments{
 \item{p}{A ggplot2 object}
 
-\item{order}{(optional) A numeric vector specifying in which order to reveal the groups.}
+\item{order}{(optional) A numeric vector specifying in which order to reveal the categories}
 
-\item{which}{(optional) "x" or "y", to specify the axis to be revealed. "x" is the default.}
+\item{axis}{(optional) "x" or "y", to specify the axis to be revealed. "x" is the default}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
-Creates a list of plots, showing data incrementally by axis (x or y) values. The specified axis must
-must be mapped to a discrete variable. \code{reveal_x()} and \code{reveal_y()} are wrappers that call
-\code{reveal_axis()} for the respective axes.
+Creates a list of plots, showing data incrementally by categories in the x or y axis. The specified axis must
+must be mapped to a discrete variable. \code{reveal_x()} and \code{reveal_y()} are useful wrappers that call the main function
+with axis specified.
 }
 \examples{
 # Create full plot
@@ -48,6 +48,6 @@ plot_list[[3]]
 
 \dontrun{
 # Save plots
-reveal_save(plot_list, "myplot", width = 8, height = 4)
+reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 }
 }

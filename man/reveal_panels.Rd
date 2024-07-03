@@ -7,10 +7,10 @@
 reveal_panels(p, order = NULL, what = c("data", "everything"))
 }
 \arguments{
-\item{p}{A ggplot2 object, in which a \code{group} aesthetic is used.}
+\item{p}{A ggplot2 objecc}
 
 \item{order}{(optional) A numeric vector specifying in which order to reveal
-the panels.}
+the panels}
 
 \item{what}{(optional) one of \code{"data"} or \code{"everything"}.' With \code{"data"}, the
 basic graph layout (including axes and facet labels) is shown from the start,
@@ -53,6 +53,6 @@ plot_list[[3]]
 
 \dontrun{
 # Save plots
-reveal_save(plot_list, "myplot", width = 8, height = 4)
+reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 }
 }
