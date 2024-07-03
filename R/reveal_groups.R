@@ -86,7 +86,7 @@ reveal_groups <- function(p, order = NULL){
 
   # Make step and append
   if (!omit_blank) {
-    p_step <- make_step_by_group(p, p_build, groups_increment)
+    p_step <- make_step(p, p_build, "group", groups_increment)
     plot_list <- append(plot_list, list(p_step))
   }
 
@@ -96,7 +96,7 @@ reveal_groups <- function(p, order = NULL){
     groups_increment <- c(groups_increment,  groups_all[i])
 
     # Make step and append
-    p_step <- make_step_by_group(p, p_build, groups_increment)
+    p_step <- make_step(p, p_build, "group", groups_increment)
     plot_list <- append(plot_list, list(p_step))
 
   }
@@ -104,26 +104,4 @@ reveal_groups <- function(p, order = NULL){
   return(plot_list)
 
 }
-
-
-
-#' @noRd
-make_step_by_group <- function(p, p_build, groups_increment){
-
-  p_step <- p
-  p_step <- ggplot2::ggplot_build(p_step)
-
-  for (d in seq_along(p_step$data)) {
-    filter <- p_step$data[[d]]$group %in% groups_increment
-    p_step$data[[d]] <- p_step$data[[d]][filter,]
-  }
-
-  p_step$layout <- p_build$layout
-  p_step$plot$guides <- p_build$plot$guides
-  p_step$plot$scales <- p_build$plot$scales
-  p_step <- ggplotify::as.ggplot(ggplot2::ggplot_gtable(p_step))
-
-  return(p_step)
-}
-
 

@@ -1,3 +1,23 @@
+make_step <- function(p, p_build, var, increment){
+
+  p_step <- p
+  p_step <- ggplot2::ggplot_build(p_step)
+
+  for (d in seq_along(p_step$data)) {
+    filter <- p_step$data[[d]][, var] %in% increment
+    p_step$data[[d]] <- p_step$data[[d]][filter,]
+  }
+
+  p_step$layout <- p_build$layout
+  p_step$plot$guides <- p_build$plot$guides
+  p_step$plot$scales <- p_build$plot$scales
+  p_step <- ggplotify::as.ggplot(ggplot2::ggplot_gtable(p_step))
+
+  return(p_step)
+}
+
+
+
 make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap")) {
 
  `%+%` <- ggplot2::`%+%`
