@@ -18,7 +18,7 @@ make_step <- function(p, p_build, var, increment){
 
 
 
-make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar")) {
+make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar", "multiple_axis")) {
 
  `%+%` <- ggplot2::`%+%`
 
@@ -68,6 +68,20 @@ make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", 
     
     layers <- list(
       ggplot2::geom_bar()
+      )
+                 
+    facet <- ggplot2::facet_wrap(~ clarity) 
+
+  } else if (type=="multiple_axis") {
+
+    mapping <- ggplot2::aes(x = color, 
+                            color = cut,
+                            fill = cut, 
+                            group = cut)
+    
+    layers <- list(
+      ggplot2::geom_bar(),
+      ggplot2::geom_boxplot(ggplot2::aes(x= cut, y = price))
       )
                  
     facet <- ggplot2::facet_wrap(~ clarity) 

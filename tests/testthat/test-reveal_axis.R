@@ -1,11 +1,11 @@
 test_that("execution fails if axis is not defined", {
-  expect_error((reveal_axis(make_test_plot("bar"), which = "y")))
+  expect_error((reveal_y(make_test_plot("bar"))))
 })
 
 test_that("output has correct type", {
   p <- make_test_plot("bar")
-  expect_type(reveal_axis(p), "list")
-  expect_s3_class(reveal_axis(p)[[1]], "ggplot")
+  expect_type(reveal_x(p), "list")
+  expect_s3_class(reveal_x(p)[[1]], "ggplot")
 })
 
 test_that("output has correct length", {
@@ -24,4 +24,14 @@ test_that("plots look like they should",{
   expect_doppelganger("plot2", plot_list[[2]])
   expect_doppelganger("plot3", plot_list[[3]])
   expect_doppelganger("plot4", plot_list[[4]])
+})
+
+test_that("fails for non-discrete variables", {
+  p <- make_test_plot()
+  expect_error(reveal_axis(p, axis = "x"), "'carat' is not a discrete variable.")
+})
+
+test_that("fails with multiple definitions of axis", {
+  p <- make_test_plot("multiple_axis")
+  expect_error(reveal_axis(p))
 })

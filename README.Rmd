@@ -23,7 +23,8 @@ p <-  ggplot(penguins[!is.na(penguins$sex),],
       geom_point() +
       geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
       facet_wrap(~species) +
-      theme_minimal()
+      theme_minimal() +
+      theme(plot.title = element_text(size = 16, hjust = 0.5))
 
 p
 

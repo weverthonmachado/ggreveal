@@ -67,6 +67,7 @@ plot_list
 
 <img src="man/figures/unnamed-chunk-4-3.png" width="70%" />
 
+
 You probably want to save these graphs using `reveal_save()`, so you can
 easily include them later in a presentation:
 
