@@ -1,9 +1,8 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-07-03T15:40Z
+last_built: 2024-07-08T20:12Z
 urls:
   reference: http://www.weverthon.com/ggreveal/reference
   article: http://www.weverthon.com/ggreveal/articles
-
