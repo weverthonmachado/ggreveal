@@ -47,7 +47,9 @@ reveal_panels_everything <- function(p, order, omit_blank, axis = F, label = F){
     plot_list <- append(plot_list, list(p_step))
 
   }
-  attr(plot_list, "omit_blank") <- omit_blank
+  if (omit_blank) {
+    attr(plot_list, "omit_blank") <- omit_blank
+  }
   return(plot_list)
 
 }

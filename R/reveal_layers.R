@@ -76,7 +76,9 @@ reveal_layers <- function(p, order = NULL){
 
 
   }
-  attr(plot_list, "omit_blank") <- omit_blank
+  if (omit_blank) {
+    attr(plot_list, "omit_blank") <- omit_blank
+  }
   return(plot_list)
 
 }
