@@ -9,13 +9,23 @@ reveal_layers(p, order = NULL)
 \arguments{
 \item{p}{A ggplot2 object}
 
-\item{order}{(optional) A numeric vector specifying in which order to reveal the layers}
+\item{order}{(optional) A numeric vector specifying in which order to reveal the layers
+
+For example, if there are three layers in the plot, \code{order = c(3, 2, 1)} will invert the order in which they are revealed.
+
+Any layer not included in the vector will be omitted from the incremental
+plots. E.g.: with \code{order = c(3, 1)}, the second layer is not shown.
+
+By default, the first plot is blank, showing layout elements (title,
+legends, axes, etc) but no data. To omit the blank plot, include \code{-1}: e.g.
+\code{order = c(-1, 3, 1)}, or \code{order = -1}.}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
-Creates a list of plots, showing data incrementally by layers.
+Turns a ggplot into a list of plots, showing data incrementally by
+layers.
 }
 \examples{
 # Create full plot

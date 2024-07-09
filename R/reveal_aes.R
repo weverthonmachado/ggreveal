@@ -1,3 +1,11 @@
+#' Reveal by aes
+#'
+#' @param p A ggplot2 object
+#' @param aes which aes to reveal E.g.: group, colour, shape, linetype
+#' @param order (optional) A numeric vector specifying in which order to reveal levels of the specified aes
+#' @param max maximum number of unique levels of aes to be used
+#' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
+#' @noRd
 reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
 
   # Check arguments

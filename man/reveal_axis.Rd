@@ -15,17 +15,27 @@ reveal_y(p, order = NULL)
 \arguments{
 \item{p}{A ggplot2 object}
 
-\item{order}{(optional) A numeric vector specifying in which order to reveal the categories}
+\item{order}{(optional) A numeric vector specifying in which order to reveal the categories
 
-\item{axis}{(optional) "x" or "y", to specify the axis to be revealed. "x" is the default}
+For example, if there are three categories in the axis, \code{order = c(3, 2, 1)} will invert the order in which they are revealed.
+
+Any category not included in the vector will be omitted from the incremental
+plots. E.g.: with \code{order = c(3, 1)}, the second category is not shown.
+
+By default, the first plot is blank, showing layout elements (title,
+legends, axes, etc) but no data. To omit the blank plot, include \code{-1}: e.g.
+\code{order = c(-1, 3, 1)}, or \code{order = -1}.}
+
+\item{axis}{(optional) "x" or "y", to specify the axis to be revealed. "x" is
+the default}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
-Creates a list of plots, showing data incrementally by categories in the x or y axis. The specified axis must
-must be mapped to a discrete variable. \code{reveal_x()} and \code{reveal_y()} are useful wrappers that call the main function
-with the axis specified.
+Turns a ggplot into a list of plots, showing data incrementally by the
+categories in the x or y axis. \code{reveal_x()} and \code{reveal_y()} are useful
+wrappers that call the main function with the axis specified.
 }
 \examples{
 # Create full plot

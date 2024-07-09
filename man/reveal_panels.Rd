@@ -9,19 +9,28 @@ reveal_panels(p, order = NULL, what = c("data", "everything"))
 \arguments{
 \item{p}{A ggplot2 object}
 
-\item{order}{(optional) A numeric vector specifying in which order to reveal
-the panels}
+\item{order}{(optional) A numeric vector specifying in which order to reveal the panels
 
-\item{what}{(optional) one of \code{"data"} or \code{"everything"}.' With \code{"data"}, the
-basic graph layout (including axes and facet labels) is shown from the start,
-and only the data points are shown incrementally. With \code{"everything"}, the
-entire panels are shown incrementally.}
+For example, if there are three panels in the plot, \code{order = c(3, 2, 1)} will invert the
+order in which they are revealed.
+
+Any panel not included in the vector will be omitted from the incremental
+plots. E.g.: with \code{order = c(3, 1)}, the second panel is not shown.
+
+By default, the first plot is blank, showing layout elements (title,
+legends, axes, etc) but no data. To omit the blank plot, include \code{-1}: e.g.
+\code{order = c(-1, 3, 1)}, or \code{order = -1}.}
+
+\item{what}{(optional) one of \code{"data"} or \code{"everything"}.' With \code{"data"} (the
+default), the basic graph layout, including axes and facet labels, is shown
+from the start, and only the data points are shown incrementally. With
+\code{"everything"}, the entire panels are shown incrementally.}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
-Creates a list of plots, showing data incrementally by panels.
+Turns a ggplot into a list of plots, showing data incrementally by panels.
 }
 \examples{
 # Create full plot

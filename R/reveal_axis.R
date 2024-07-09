@@ -1,12 +1,24 @@
 #' Reveal plot by axis
 #'
-#' Creates a list of plots, showing data incrementally by categories in the x or y axis. The specified axis must 
-#' must be mapped to a discrete variable. `reveal_x()` and `reveal_y()` are useful wrappers that call the main function 
-#' with the axis specified. 
+#' Turns a ggplot into a list of plots, showing data incrementally by the
+#' categories in the x or y axis. `reveal_x()` and `reveal_y()` are useful
+#' wrappers that call the main function with the axis specified. 
 #'
 #' @param p A ggplot2 object
 #' @param order (optional) A numeric vector specifying in which order to reveal the categories
-#' @param axis (optional) "x" or "y", to specify the axis to be revealed. "x" is the default
+#'   
+#'   For example, if there are three categories in the axis, `order = c(3, 2,
+#'   1)` will invert the order in which they are revealed. 
+#' 
+#'   Any category not included in the vector will be omitted from the incremental
+#'   plots. E.g.: with `order = c(3, 1)`, the second category is not shown.
+#' 
+#'   By default, the first plot is blank, showing layout elements (title,
+#'   legends, axes, etc) but no data. To omit the blank plot, include `-1`: e.g. 
+#'   `order = c(-1, 3, 1)`, or `order = -1`.
+#' 
+#' @param axis (optional) "x" or "y", to specify the axis to be revealed. "x" is
+#' the default
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples

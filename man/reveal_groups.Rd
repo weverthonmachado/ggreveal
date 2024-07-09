@@ -7,15 +7,28 @@
 reveal_groups(p, order = NULL)
 }
 \arguments{
-\item{p}{A ggplot2 object}
+\item{p}{A ggplot2 objects}
 
-\item{order}{(optional) A numeric vector specifying in which order to reveal the groups.}
+\item{order}{(optional) A numeric vector specifying in which order to reveal the groups
+
+For example, if there are three groups in the plot, \code{order = c(3, 2, 1)} will invert the
+order in which they are revealed.
+
+Any group not included in the vector will be omitted from the incremental
+plots. E.g.: with \code{order = c(3, 1)}, the second group is not shown.
+
+By default, the first plot is blank, showing layout elements (title,
+legends, axes, etc) but no data. To omit the blank plot, include \code{-1}: e.g.
+\code{order = c(-1, 3, 1)}, or \code{order = -1}.}
 }
 \value{
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
-Creates a list of plots, showing data incrementally by groups.
+Turns a ggplot into a list of plots, showing data incrementally by groups.
+Note that if the \code{group} aesthetic is not explicitly defined in the original
+plot, \code{ggplot2} will set it to the interaction of all discrete variables (see
+\link[ggplot2:aes_group_order]{ggplot2::aes_group_order}).
 }
 \examples{
 # Create full plot

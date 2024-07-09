@@ -4,7 +4,9 @@ Version: 0.0.0.9001
 Authors@R: 
     person("Weverthon", "Machado", , "weverthonmachado@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9919-4738"))
-Description: What the package does (one paragraph).
+Description: Provides functions that make it easy to reveal ggplot2 graphs incrementally. 
+    The functions take a ggplot2 object and return a list of plots shown data incrementally by 
+    panels, layers, groups or axis values. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -1,14 +1,24 @@
 #' Reveal plot by panel
 #'
-#' Creates a list of plots, showing data incrementally by panels.
+#' Turns a ggplot into a list of plots, showing data incrementally by panels.
 #'
 #' @param p A ggplot2 object
-#' @param order (optional) A numeric vector specifying in which order to reveal
-#' the panels
-#' @param what (optional) one of `"data"` or `"everything"`.' With `"data"`, the
-#' basic graph layout (including axes and facet labels) is shown from the start,
-#' and only the data points are shown incrementally. With `"everything"`, the
-#' entire panels are shown incrementally.
+#' @param order (optional) A numeric vector specifying in which order to reveal the panels
+#'   
+#'   For example, if there are three panels in the plot, `order = c(3, 2, 1)` will invert the 
+#'   order in which they are revealed. 
+#' 
+#'   Any panel not included in the vector will be omitted from the incremental
+#'   plots. E.g.: with `order = c(3, 1)`, the second panel is not shown.
+#' 
+#'   By default, the first plot is blank, showing layout elements (title,
+#'   legends, axes, etc) but no data. To omit the blank plot, include `-1`: e.g.
+#'   `order = c(-1, 3, 1)`, or `order = -1`.
+#' 
+#' @param what (optional) one of `"data"` or `"everything"`.' With `"data"` (the
+#' default), the basic graph layout, including axes and facet labels, is shown
+#' from the start, and only the data points are shown incrementally. With
+#' `"everything"`, the entire panels are shown incrementally.
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @examples
