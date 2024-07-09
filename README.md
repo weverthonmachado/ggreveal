@@ -21,6 +21,7 @@ useful in teaching and academic presentations.
 ## Installation
 
 ``` r
+# install.packages("remotes")
 remotes::install_github("weverthonmachado/ggreveal")
 ```
 

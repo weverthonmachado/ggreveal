@@ -60,6 +60,7 @@ gif
 ## Installation
 
 ``` r
+# install.packages("remotes")
 remotes::install_github("weverthonmachado/ggreveal")
 ```
 

@@ -21,7 +21,8 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0),
     withr,
-    vdiffr
+    vdiffr,
+    mockery
 Config/testthat/edition: 3
 URL: http://www.weverthon.com/ggreveal/, https://github.com/weverthonmachado/ggreveal
 BugReports: https://github.com/weverthonmachado/ggreveal/issues
