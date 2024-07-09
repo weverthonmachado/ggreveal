@@ -32,6 +32,7 @@ test_that("reveal_aes respects 'order' parameter", {
   result <- reveal_aes(p, aes = "color", order = c(2, 1))
   expect_type(result, "list")
   expect_true(length(result) > 0)
+  expect_warning(reveal_aes(p, aes = "color", order = "a"))
 })
 
 test_that("reveal_aes limits levels with 'max' parameter", {
