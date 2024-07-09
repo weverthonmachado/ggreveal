@@ -1,8 +1,8 @@
-#' Reveal plot by facet
+#' Reveal plot by panel
 #'
-#' Creates a list of plots, showing data incrementally by layers.
+#' Creates a list of plots, showing data incrementally by panels.
 #'
-#' @param p A ggplot2 objecc
+#' @param p A ggplot2 object
 #' @param order (optional) A numeric vector specifying in which order to reveal
 #' the panels
 #' @param what (optional) one of `"data"` or `"everything"`.' With `"data"`, the

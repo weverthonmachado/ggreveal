@@ -2,7 +2,7 @@
 #'
 #' Creates a list of plots, showing data incrementally by categories in the x or y axis. The specified axis must 
 #' must be mapped to a discrete variable. `reveal_x()` and `reveal_y()` are useful wrappers that call the main function 
-#' with axis specified. 
+#' with the axis specified. 
 #'
 #' @param p A ggplot2 object
 #' @param order (optional) A numeric vector specifying in which order to reveal the categories
