@@ -1,5 +1,5 @@
-test_that("execution fails if there are no facets in the plot", {
-  expect_error(reveal_panels(make_test_plot("nopanel")))
+test_that("warning if there are no facets in the plot", {
+  expect_warning(reveal_panels(make_test_plot("nofacet")))
 })
 
 test_that("output has correct type", {

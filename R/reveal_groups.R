@@ -33,75 +33,7 @@
 #' }
 reveal_groups <- function(p, order = NULL){
 
-
-  # Check arguments
-  "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
-                                               "is not a ggplot object"))
+  reveal_aes(p, "group", order)
   
-  omit_blank <- FALSE
-  if (!is.null(order)) {
-    if (is.numeric(order)){
-      order <- unique(order)
-      omit_blank <- -1 %in% order
-      order <- order[order != -1]
-      if (length(order)==0) {
-        order <- NULL
-      }
-    } else {
-      rlang::warn("Argument 'order' is not a numeric vector and will be ignored.")
-    }  
-  } 
-
-  # Check if there is explicit grouping, starting with th e main function call,
-  # then for each layer.
-  search_list <- list(p)
-  search_list <- append(search_list, p$layers)
-  explicit <- sapply(search_list, function(x) {"quosure" %in% class(x$mapping$group)})
-  # Stop if:
-  # There's more than one group aes (e.g. in main call an in a layer) OR
-  # There's only one group aes, which is not defined in the main call AND the plot
-  # has more than one layer. (If only layer, the group main call will not matter)
-  if(sum(explicit) > 1 | (sum(explicit)==1 & !explicit[1] & length(p$layers)>1)) {
-    rlang::abort("It seems that the groups differ across layers. Please use reveal_layers() instead.")
-  }
-
-  p_build <- ggplot2::ggplot_build(p)
-
-  # Note: gets group levels from all layers
-  groups_all <- sort(unique(unlist(lapply(p_build$data, function(x) unique(x$group)))))
-
-  if (length(groups_all) <= 1 ){
-    rlang::warn("Plot is not grouped or there is only one group. Maybe use reveal_panels or reveal_layers?")
-  } else if (!any(explicit)){
-    rlang::inform("Plot does not explicitly define a group aesthetic. Using default grouping set by ggplot2.")
-  }
-
-  # Reorder group levels
-  if (!is.null(order)) {
-    groups_all <- groups_all[order]
-  }
-
-  groups_increment <- c()
-  plot_list <- list()
-
-  # Make step and append
-  if (!omit_blank) {
-    p_step <- make_step(p, p_build, "group", groups_increment)
-    plot_list <- append(plot_list, list(p_step))
-  }
-
-
-  for (i in seq_along(groups_all)) {
-
-    groups_increment <- c(groups_increment,  groups_all[i])
-
-    # Make step and append
-    p_step <- make_step(p, p_build, "group", groups_increment)
-    plot_list <- append(plot_list, list(p_step))
-
-  }
-  attr(plot_list, "omit_blank") <- omit_blank
-  return(plot_list)
-
 }
 

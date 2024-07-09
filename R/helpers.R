@@ -4,10 +4,12 @@ make_step <- function(p, p_build, var, increment){
   p_step <- ggplot2::ggplot_build(p_step)
 
   for (d in seq_along(p_step$data)) {
-    filter <- p_step$data[[d]][, var] %in% increment
-    p_step$data[[d]] <- p_step$data[[d]][filter,]
+    if (var %in% names(p_step$data[[d]])) {
+      filter <- p_step$data[[d]][, var] %in% increment
+      p_step$data[[d]] <- p_step$data[[d]][filter,]
+    }
   }
-
+  
   p_step$layout <- p_build$layout
   p_step$plot$guides <- p_build$plot$guides
   p_step$plot$scales <- p_build$plot$scales
@@ -18,29 +20,34 @@ make_step <- function(p, p_build, var, increment){
 
 
 
-make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar", "multiple_axis")) {
-
- `%+%` <- ggplot2::`%+%`
-
+make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar", "multiple_axis"),
+                           custom_aes = NULL) {
+  `%+%` <- ggplot2::`%+%`
   type <- rlang::arg_match(type)
-
   df <- dplyr::filter(ggplot2::diamonds,
-          cut %in% c("Fair", "Good", "Premium"),
-          color %in% c("E", "F", "G"),
-          clarity %in% c("SI2", "SI1",  "VS2")) 
-
-
+                      cut %in% c("Fair", "Good", "Premium"),
+                      color %in% c("E", "F", "G"),
+                      clarity %in% c("SI2", "SI1",  "VS2")) 
+  # Default mapping
   mapping <- ggplot2::aes(carat, price,
-                color = cut,
-                fill = cut,
-                group = cut)
-
+                          color = cut,
+                          fill = cut,
+                          group = cut)
+  
+  # Apply custom aesthetics if provided
+  if (!is.null(custom_aes)) {
+    if (is.function(custom_aes)) {
+      mapping <- custom_aes(mapping)
+    } else if (inherits(custom_aes, "uneval")) {
+      mapping <- custom_aes
+    }
+  }
+  
   layers <- list(
-             ggplot2::geom_point(),
-             ggplot2::geom_smooth(method="lm", formula = "y ~ x"),
-             ggplot2::geom_rug()
-            )
-
+    ggplot2::geom_point(),
+    ggplot2::geom_smooth(method="lm", formula = "y ~ x"),
+    ggplot2::geom_rug()
+  )
   facet <- ggplot2::facet_grid(color ~ clarity) 
 
   if (type=="nogroup") {

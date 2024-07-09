@@ -2,12 +2,12 @@
 % Please edit documentation in R/reveal_panels.R
 \name{reveal_panels}
 \alias{reveal_panels}
-\title{Reveal plot by facet}
+\title{Reveal plot by panel}
 \usage{
 reveal_panels(p, order = NULL, what = c("data", "everything"))
 }
 \arguments{
-\item{p}{A ggplot2 objecc}
+\item{p}{A ggplot2 object}
 
 \item{order}{(optional) A numeric vector specifying in which order to reveal
 the panels}
@@ -21,7 +21,7 @@ entire panels are shown incrementally.}
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
-Creates a list of plots, showing data incrementally by layers.
+Creates a list of plots, showing data incrementally by panels.
 }
 \examples{
 # Create full plot

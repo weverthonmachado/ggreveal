@@ -45,37 +45,41 @@
 #' }
 reveal_panels <- function(p, order = NULL, what = c("data", "everything")){
 
-  # Check arguments
-  "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
+  what <- rlang::arg_match(what)
+
+  if (what=="data") {
+
+    plot_list <- reveal_aes(p, "panel", order)
+
+  } else {
+
+    # Check arguments
+   "ggplot" %in% class(p) || rlang::abort(paste(deparse(substitute(p)),
                                         "is not a ggplot object"))
 
   
-  omit_blank <- FALSE
-  n_panels <- length(unique(ggplot2::ggplot_build(p)$layout$layout$PANEL))
-  if (!is.null(order)) {
-    if (is.numeric(order)){
-      order <- unique(order)
-      omit_blank <- -1 %in% order
-      order <- order[order != -1]
-      order <- order[order <= n_panels] # ignore numbers beyond total of panels
-      if (length(order)==0) {
-        order <- 1:n_panels
-      }
+    omit_blank <- FALSE
+    n_panels <- length(unique(ggplot2::ggplot_build(p)$layout$layout$PANEL))
+    if (!is.null(order)) {
+      if (is.numeric(order)){
+        order <- unique(order)
+        omit_blank <- -1 %in% order
+        order <- order[order != -1]
+        order <- order[order <= n_panels] # ignore numbers beyond total of panels
+        if (length(order)==0) {
+          order <- 1:n_panels
+        }
+      } else {
+        rlang::warn("Argument 'order' is not a numeric vector and will be ignored.")
+      }  
     } else {
-      rlang::warn("Argument 'order' is not a numeric vector and will be ignored.")
-    }  
-  } else {
-    order <- 1:n_panels
-  }
+      order <- 1:n_panels
+    }
 
-
-  what = what <- rlang::arg_match(what)
-
-  if (what=="data") {
-    plot_list <- reveal_panels_onlydata(p, order, omit_blank)
-  } else {
     plot_list <- reveal_panels_everything(p, order, omit_blank, axis = T, label = T)
+
   }
 
   return(plot_list)
+  
 }

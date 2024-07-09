@@ -25,7 +25,7 @@ A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reve
 \description{
 Creates a list of plots, showing data incrementally by categories in the x or y axis. The specified axis must
 must be mapped to a discrete variable. \code{reveal_x()} and \code{reveal_y()} are useful wrappers that call the main function
-with axis specified.
+with the axis specified.
 }
 \examples{
 # Create full plot

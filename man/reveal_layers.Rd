@@ -7,7 +7,7 @@
 reveal_layers(p, order = NULL)
 }
 \arguments{
-\item{p}{A ggplot2 object.}
+\item{p}{A ggplot2 object}
 
 \item{order}{(optional) A numeric vector specifying in which order to reveal the layers}
 }
