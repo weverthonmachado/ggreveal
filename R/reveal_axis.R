@@ -1,8 +1,7 @@
 #' Reveal plot by axis
 #'
 #' Turns a ggplot into a list of plots, showing data incrementally by the
-#' categories in the x or y axis. `reveal_x()` and `reveal_y()` are useful
-#' wrappers that call the main function with the axis specified. 
+#' categories in the x or y axis. 
 #'
 #' @param p A ggplot2 object
 #' @param order (optional) A numeric vector specifying in which order to reveal the categories
@@ -21,6 +20,7 @@
 #' the default
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
+#' @rdname reveal_axis
 #' @examples
 #' # Create full plot
 #' library(ggplot2)
@@ -44,15 +44,6 @@
 #' # Save plots
 #' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 #' }
-reveal_axis <- function(p, order = NULL, axis = c("x", "y")){
-
-  axis <- rlang::arg_match(axis)
-  reveal_aes(p, axis, order)
-
-}
-
-#' @export
-#' @rdname reveal_axis
 reveal_x <- function(p, order = NULL){
 
   reveal_aes(p, "x", order)
@@ -67,5 +58,12 @@ reveal_y <- function(p, order = NULL){
 
 }
 
+#' @noRd
+reveal_axis <- function(p, order = NULL, axis = c("x", "y")){
+
+  axis <- rlang::arg_match(axis)
+  reveal_aes(p, axis, order)
+
+}
 
 

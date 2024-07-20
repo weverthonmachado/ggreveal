@@ -35,7 +35,20 @@ plots_panel <- reveal_save(reveal_panels(p + labs(title = "reveal_panels()")),
 plots_layer <- reveal_save(reveal_layers(p + labs(title = "reveal_layers()")), 
                           "layer.png", width=9, height=5, bg = "white", path = tempdir())
 
-img_list <- lapply(c(plots_group, plots_panel, plots_layer), image_read)
+
+p2 <- ggplot(penguins[!is.na(penguins$sex),],
+             aes(x = year,
+                 group=species, 
+                 fill=species)) +
+      geom_bar(position = position_dodge(.9)) +
+      theme_minimal() +
+      theme(plot.title = element_text(size = 16, hjust = 0.5)) +
+      labs(title = "reveal_x()")
+
+plots_x <- reveal_save(reveal_x(p2), 
+                          "x.png", width=9, height=5, bg = "white", path = tempdir())
+
+img_list <- lapply(c(plots_group, plots_panel, plots_layer, plots_x), image_read)
 img_joined <- image_join(img_list)
 gif <- image_animate(img_joined, fps = 1)
 ```
@@ -85,7 +98,7 @@ p
 p
 ```
 
-Then use one of `reveal_panels()`, `reveal_groups()`, `reveal_layers()` or `reveal_axis()` to obtain a list of plots that show elements incrementally. 
+Then use one of one of the `reveal_*` functions (e.g. `reveal_groups`, `reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show elements incrementally. 
 
 ```{r, dpi=300, out.width="70%"}
 plot_list <- reveal_groups(p)

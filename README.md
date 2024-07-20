@@ -8,18 +8,15 @@
 [![R-CMD-check](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`ggreveal` makes it easy to present data on ggplot2 graphs
-incrementally. The functions in this package take a plot and break it
-down into a series of intermediary plots that can be shown in sequence
-(e.g. in different slides). Like this:
+`ggreveal` is an R package that makes it easy to present data on ggplot2
+graphs incrementally. The functions in this package take a plot and
+break it down into a series of intermediary plots that can be shown in
+sequence (e.g. in different slides). Like this:
 
 <img src="man/figures/unnamed-chunk-2-1.gif" width="100%" />
 
 *Why* would you want to do that? Because it’s fun — and often very
-useful in teaching and academic presentations.[^1]
-
-[^1]: Note
-
+useful in teaching and academic presentations.
 
 ## Installation
 
@@ -49,9 +46,9 @@ p
 
 <img src="man/figures/unnamed-chunk-3-1.png" width="100%" />
 
-Then use one of `reveal_panels()`, `reveal_groups()`, `reveal_layers()`
-or `reveal_axis()` to obtain a list of plots that show elements
-incrementally.
+Then use one of one of the `reveal_*` functions (e.g. `reveal_groups`,
+`reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show
+elements incrementally.
 
 ``` r
 plot_list <- reveal_groups(p)
@@ -71,9 +68,8 @@ plot_list
 
 <img src="man/figures/unnamed-chunk-4-3.png" width="70%" />
 
-
-You probably want to save these graphs using `reveal_save()`, so you can
-easily include them later in a presentation:
+You probably want to save these plots to include them later in a
+presentation. Use `reveal_save()`:
 
 ``` r
 reveal_save(plot_list, "myplot.png", width = 8, height = 4)

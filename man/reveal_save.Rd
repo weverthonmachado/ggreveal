@@ -7,7 +7,7 @@
 reveal_save(plot_list, basename = "plot.png", ...)
 }
 \arguments{
-\item{plot_list}{A list of plots created by \code{\link[=reveal_groups]{reveal_groups()}}, \code{\link[=reveal_layers]{reveal_layers()}}, \code{\link[=reveal_panels]{reveal_panels()}} or \code{\link[=reveal_axis]{reveal_axis()}}}
+\item{plot_list}{A list of plots created by one of the \verb{reveal_*} functions (e.g. \code{\link[=reveal_groups]{reveal_groups()}}, \code{\link[=reveal_layers]{reveal_layers()}}, \code{\link[=reveal_aes]{reveal_aes()}}]}
 
 \item{basename}{The base file name that will be used for saving}
 
