@@ -19,7 +19,7 @@ make_step <- function(p_build, p_build_original, var, increment){
 
 
 
-make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar", "multiple_axis"),
+make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar", "multiple_axis", "grouped_bar"),
                            custom_aes = NULL) {
   `%+%` <- ggplot2::`%+%`
   type <- rlang::arg_match(type)
@@ -88,6 +88,17 @@ make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", 
     layers <- list(
       ggplot2::geom_bar(),
       ggplot2::geom_boxplot(ggplot2::aes(x= cut, y = price))
+      )
+                 
+    facet <- ggplot2::facet_wrap(~ clarity) 
+
+  } else if (type=="grouped_bar") {
+
+    mapping <- ggplot2::aes(x = color, 
+                            fill = cut)
+    
+    layers <- list(
+      ggplot2::geom_bar(position = position_dodge(1))
       )
                  
     facet <- ggplot2::facet_wrap(~ clarity) 

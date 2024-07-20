@@ -76,6 +76,11 @@ reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
         }
       })))
     
+    if (aes %in% c("x", "y")) {
+      aes_levels_original <- aes_levels
+      aes_levels <- unique(round(aes_levels))
+    }
+    
     if (aes %in% c("group", "PANEL", "x", "y")) {
       aes_levels <- sort(aes_levels)
     }
@@ -158,14 +163,19 @@ reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
     
   
   for (i in seq_along(aes_levels)) {
-
-    levels_increment <- c(levels_increment,  aes_levels[i])
+    
+    if (aes %in% c("x", "y")) {
+      levels_increment <- c(levels_increment, 
+                            aes_levels_original[round(aes_levels_original)==aes_levels[i]])
+    } else {
+      levels_increment <- c(levels_increment,  aes_levels[i])
+    }
 
     # Make step and append
     p_step <- make_step(p_build, p_build_original, aes, levels_increment)
     plot_list <- append(plot_list, list(p_step))
 
-  }
+    }
   
   # Adding layers without the aes 
   if (!all(aes_in_layer) & aes_in_layer[1]) {
