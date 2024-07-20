@@ -11,8 +11,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Reveal a ggplot incrementally">
-<meta name="description" content="Provides functions that make it easy to reveal ggplot2 graphs incrementally. The functions take a ggplot2 object and return a list of plots shown data incrementally by panels, layers, groups or axis values.">
-<meta property="og:description" content="Provides functions that make it easy to reveal ggplot2 graphs incrementally. The functions take a ggplot2 object and return a list of plots shown data incrementally by panels, layers, groups or axis values.">
+<meta name="description" content="Provides functions that make it easy to reveal ggplot2 graphs incrementally. The functions take a ggplot2 object and return a list of plots showing data incrementally by panels, layers, groups, the values in an axis or any arbitrary aesthetic.">
+<meta property="og:description" content="Provides functions that make it easy to reveal ggplot2 graphs incrementally. The functions take a ggplot2 object and return a list of plots showing data incrementally by panels, layers, groups, the values in an axis or any arbitrary aesthetic.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -52,7 +52,7 @@
 
 <p><code>ggreveal</code> makes it easy to present data on ggplot2 graphs incrementally. The functions in this package take a plot and break it down into a series of intermediary plots that can be shown in sequence (e.g. in different slides). Like this:</p>
 <p><img src="reference/figures/unnamed-chunk-2-1.gif" width="100%"></p>
-<p><em>Why</em> would you want to do that? Because it’s fun — and often very useful in teaching and academic presentations.</p>
+<p><em>Why</em> would you want to do that? Because it’s fun — and often very useful in teaching and academic presentations.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Note&lt;/p&gt;"><sup>1</sup></a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -115,6 +115,7 @@
 <span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span>, formula<span class="op">=</span><span class="st">"y~x"</span><span class="op">)</span> </span></code></pre></div>
 <p>The problem is: as you add layers and other elements, several visual aspects of the plot — e.g. range of axes, legends — can, and will often, change. Showing how the layout changes as you add elements is useful for teaching <em>how to make graphs in ggplot2</em>, but it is distracting when you want to focus on the <em>results</em>. Keeping the layout fixed is sometimes easy (e.g. set the <code>limits</code> argument for the x/y scale), but in many cases it requires tinkering with the internals of the ggplot object.</p>
 </div>
+
 
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
