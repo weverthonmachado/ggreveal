@@ -1,11 +1,49 @@
 #' Reveal by aes
 #'
+#' #' Turns a ggplot into a list of plots, showing data incrementally by an
+#' arbitrary aesthetic. 
+#' 
 #' @param p A ggplot2 object
-#' @param aes which aes to reveal E.g.: group, colour, shape, linetype
-#' @param order (optional) A numeric vector specifying in which order to reveal levels of the specified aes
-#' @param max maximum number of unique levels of aes to be used
+#' @param aes which aesthetic to reveal E.g.: group, colour, shape, linetype
+#' @param order (optional) A numeric vector specifying in which order to reveal
+#' levels of the specified aesthetic.
+#' 
+#'   For example, if `aes='shape'` and the plot uses three shapes, `order = c(3,
+#'   2, 1)` will invert the order in which they are revealed. 
+#' 
+#'   Any shape not included in the vector will be omitted from the incremental
+#'   plots. E.g.: with `order = c(3, 1)`, the second shape is not shown.
+#' 
+#'   By default, the first plot is blank, showing layout elements (title,
+#'   legends, axes, etc) but no data. To omit the blank plot, include `-1`: e.g. 
+#'   `order = c(-1, 3, 1)`, or `order = -1`.
+#' 
+#' @param max maximum number of unique levels of aesthetic to be used
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
-#' @noRd
+#' @export
+#' @examples
+#' # Create full plot
+#' library(ggplot2)
+#' library(palmerpenguins)
+#' 
+#' p <- ggplot(penguins[!is.na(penguins$sex),],
+#' aes(body_mass_g, bill_length_mm,
+#'   group = island,
+#'   color = island)) +
+#' geom_point(aes(shape=sex)) +
+#' geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
+#' theme_minimal()
+#'
+#' plot_list <- reveal_aes(p, "shape")
+#' plot_list[[1]]
+#' plot_list[[2]]
+#' plot_list[[3]]
+#' plot_list[[4]]
+#'
+#'\dontrun{
+#' # Save plots
+#' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
+#' }
 reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
 
   # Check arguments
@@ -26,14 +64,21 @@ reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
   # present even it they are not mapped to a variable)
   # If present, get its unique values (across al layers)
   p_build <- ggplot2::ggplot_build(p)
-  aes_names_data <- unique(unlist(lapply(p_build$data, names)))
+  p_build_original <- p_build
+  aes_names_data_list <- lapply(p_build$data, names)
+  aes_names_data <- unique(unlist(aes_names_data_list))
   if (aes %in% aes_names_data){
-    aes_levels <- sort(unique(unlist(lapply(p_build$data, 
+    aes_levels <- unique(unlist(lapply(p_build$data, 
       function(x) {
         if (aes %in% names(x)) {
           return(x[, aes])
         }
-      }))))
+      })))
+    
+    if (aes %in% c("group", "PANEL", "x", "y")) {
+      aes_levels <- sort(aes_levels)
+    }
+    
   }
 
 
@@ -83,20 +128,49 @@ reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
 
   # Make step and append
   if (!omit_blank) {
-    p_step <- make_step(p, p_build, aes, levels_increment)
+    p_step <- make_step_by_layer(p, p_build, layers_increment = list())
     plot_list <- append(plot_list, list(p_step))
   }
 
+  # By this point, we know aes, whether explicitly defined in the function call
+  # or not, is present in at least one layer (i.e. the layer data)
+  # has a column for the aes). But it might not present in all layers.
+  aes_in_layer <- sapply(aes_names_data_list, function(x) aes %in% x)                                                                                                                  
 
+  if (!all(aes_in_layer)) {
+    layers_without_aes <- p$layers[!aes_in_layer]
+    # If the first layer does not have the aes, add all layers without the aes 
+    # before start revealing by aes
+    # If the first layer has the aes, all layers without the aes will be added 
+    # in the end
+    if (!aes_in_layer[1]) {
+      p_step <- make_step_by_layer(p, p_build, layers_increment = layers_without_aes)
+      plot_list <- append(plot_list, list(p_step))
+    } else {
+      for (d in seq_along(p_build$data)) {
+          filter <- aes_in_layer[d]
+          p_build$data[[d]] <- p_build$data[[d]][filter,]
+      }
+    }
+  }
+
+    
+  
   for (i in seq_along(aes_levels)) {
 
     levels_increment <- c(levels_increment,  aes_levels[i])
 
     # Make step and append
-    p_step <- make_step(p, p_build, aes, levels_increment)
+    p_step <- make_step(p_build, p_build_original, aes, levels_increment)
     plot_list <- append(plot_list, list(p_step))
 
   }
+  
+  # Adding layers without the aes 
+  if (!all(aes_in_layer) & aes_in_layer[1]) {
+    plot_list <- append(plot_list, list(p))
+  }
+  
   if (omit_blank) {
     attr(plot_list, "omit_blank") <- omit_blank
   }

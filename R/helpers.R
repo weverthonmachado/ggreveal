@@ -1,7 +1,6 @@
-make_step <- function(p, p_build, var, increment){
+make_step <- function(p_build, p_build_original, var, increment){
 
-  p_step <- p
-  p_step <- ggplot2::ggplot_build(p_step)
+  p_step <- p_build
 
   for (d in seq_along(p_step$data)) {
     if (var %in% names(p_step$data[[d]])) {
@@ -10,9 +9,9 @@ make_step <- function(p, p_build, var, increment){
     }
   }
   
-  p_step$layout <- p_build$layout
-  p_step$plot$guides <- p_build$plot$guides
-  p_step$plot$scales <- p_build$plot$scales
+  p_step$layout <- p_build_original$layout
+  p_step$plot$guides <- p_build_original$plot$guides
+  p_step$plot$scales <- p_build_original$plot$scales
   p_step <- ggplotify::as.ggplot(ggplot2::ggplot_gtable(p_step))
 
   return(p_step)
