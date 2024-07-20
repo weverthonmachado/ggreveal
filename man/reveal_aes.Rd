@@ -29,11 +29,12 @@ legends, axes, etc) but no data. To omit the blank plot, include \code{-1}: e.g.
 A list of ggplot2 objects, which can be passed to \code{\link[=reveal_save]{reveal_save()}}
 }
 \description{
-#' Turns a ggplot into a list of plots, showing data incrementally by an
+Turns a ggplot into a list of plots, showing data incrementally by an
 arbitrary aesthetic.
 }
 \examples{
 # Create full plot
+library(ggplot2)
 
  p <- mtcars |>
    ggplot(aes(mpg, wt,

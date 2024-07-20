@@ -1,6 +1,6 @@
 #' Reveal by aes
 #'
-#' #' Turns a ggplot into a list of plots, showing data incrementally by an
+#' Turns a ggplot into a list of plots, showing data incrementally by an
 #' arbitrary aesthetic. 
 #' 
 #' @param p A ggplot2 object
@@ -23,7 +23,7 @@
 #' @export
 #' @examples
 #' # Create full plot
-# library(ggplot2)
+#' library(ggplot2)
 #'
 #'  p <- mtcars |>
 #'    ggplot(aes(mpg, wt,
