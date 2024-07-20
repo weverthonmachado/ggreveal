@@ -46,7 +46,7 @@ p
 
 <img src="man/figures/unnamed-chunk-3-1.png" width="100%" />
 
-Then use one of one of the `reveal_*` functions (e.g. `reveal_groups`,
+Then use one of one of the `reveal_*` functions (e.g. `reveal_groups()`,
 `reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show
 elements incrementally.
 

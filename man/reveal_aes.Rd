@@ -2,7 +2,7 @@
 % Please edit documentation in R/reveal_aes.R
 \name{reveal_aes}
 \alias{reveal_aes}
-\title{Reveal by aes}
+\title{Reveal plot by aes}
 \usage{
 reveal_aes(p, aes = "group", order = NULL, max = 20)
 }

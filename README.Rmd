@@ -98,7 +98,7 @@ p
 p
 ```
 
-Then use one of one of the `reveal_*` functions (e.g. `reveal_groups`, `reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show elements incrementally. 
+Then use one of one of the `reveal_*` functions (e.g. `reveal_groups()`, `reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show elements incrementally. 
 
 ```{r, dpi=300, out.width="70%"}
 plot_list <- reveal_groups(p)
