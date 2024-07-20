@@ -34,22 +34,22 @@ arbitrary aesthetic.
 }
 \examples{
 # Create full plot
-library(ggplot2)
-library(palmerpenguins)
 
-p <- ggplot(penguins[!is.na(penguins$sex),],
-aes(body_mass_g, bill_length_mm,
-  group = island,
-  color = island)) +
-geom_point(aes(shape=sex)) +
-geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
-theme_minimal()
+ p <- mtcars |>
+   ggplot(aes(mpg, wt,
+              color = factor(vs),
+              group = factor(vs))) +
+   geom_point(aes(shape=factor(am)), size=2) +
+   geom_smooth(method="lm",
+               formula = 'y ~ x',
+               linewidth=1) 
+ p
 
-plot_list <- reveal_aes(p, "shape")
-plot_list[[1]]
-plot_list[[2]]
-plot_list[[3]]
-plot_list[[4]]
+ plot_list <- reveal_aes(p, "shape")
+ plot_list[[1]]
+ plot_list[[2]]
+ plot_list[[3]]
+ plot_list[[4]]
 
 \dontrun{
 # Save plots

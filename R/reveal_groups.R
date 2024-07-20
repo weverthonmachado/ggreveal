@@ -5,7 +5,7 @@
 #' plot, `ggplot2` will set it to the interaction of all discrete variables (see
 #' [ggplot2::aes_group_order]).
 #'
-#' @param p A ggplot2 objects
+#' @param p A ggplot2 object
 #' @param order (optional) A numeric vector specifying in which order to reveal the groups
 #'   
 #'   For example, if there are three groups in the plot, `order = c(3, 2, 1)` will invert the 

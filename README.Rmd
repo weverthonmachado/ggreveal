@@ -47,8 +47,7 @@ gif <- image_animate(img_joined, fps = 1)
 [![R-CMD-check](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`ggreveal` makes it easy to present data on ggplot2 graphs incrementally. The functions in this package take a plot and 
-break it down into a series of intermediary plots that can be shown in sequence (e.g. in different slides). Like this:
+`ggreveal` is an R package that makes it easy to present data on ggplot2 graphs incrementally. The functions in this package take a plot and break it down into a series of intermediary plots that can be shown in sequence (e.g. in different slides). Like this:
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE, dpi=300}
 gif
@@ -93,7 +92,7 @@ plot_list <- reveal_groups(p)
 plot_list
 ```
 
-You probably want to save these graphs using `reveal_save()`, so you can easily include them later in a presentation:
+You probably want to save these plots to include them later in a presentation. Use `reveal_save()`:
 ```r
 reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 ```

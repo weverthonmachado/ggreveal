@@ -16,7 +16,10 @@ down into a series of intermediary plots that can be shown in sequence
 <img src="man/figures/unnamed-chunk-2-1.gif" width="100%" />
 
 *Why* would you want to do that? Because it’s fun — and often very
-useful in teaching and academic presentations.
+useful in teaching and academic presentations.[^1]
+
+[^1]: Note
+
 
 ## Installation
 
