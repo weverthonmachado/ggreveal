@@ -1,4 +1,4 @@
-#' Reveal by aes
+#' Reveal plot by aes
 #'
 #' Turns a ggplot into a list of plots, showing data incrementally by an
 #' arbitrary aesthetic. 

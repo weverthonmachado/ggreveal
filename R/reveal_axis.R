@@ -16,8 +16,6 @@
 #'   legends, axes, etc) but no data. To omit the blank plot, include `-1`: e.g. 
 #'   `order = c(-1, 3, 1)`, or `order = -1`.
 #' 
-#' @param axis (optional) "x" or "y", to specify the axis to be revealed. "x" is
-#' the default
 #' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 #' @rdname reveal_axis
