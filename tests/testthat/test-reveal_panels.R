@@ -25,6 +25,7 @@ test_that("output has correct length", {
 
 test_that("plots look like they should - only data",{
   skip_on_ci()
+  skip_on_cran()
   plot_list <- reveal_panels(make_test_plot(), order = c(2,1,3))
   expect_doppelganger("plot1 - only data", plot_list[[1]])
   expect_doppelganger("plot2 - only data", plot_list[[2]])
@@ -34,6 +35,7 @@ test_that("plots look like they should - only data",{
 
 test_that("plots look like they should - everything - grid",{
   skip_on_ci()
+  skip_on_cran()
   plot_list <- reveal_panels(make_test_plot(), order = c(2,1,3), "everything")
   expect_doppelganger("plot1 - everything - grid", plot_list[[1]])
   expect_doppelganger("plot2 - everything - grid", plot_list[[2]])
@@ -43,6 +45,7 @@ test_that("plots look like they should - everything - grid",{
 
 test_that("plots look like they should - everything - wrap",{
   skip_on_ci()
+  skip_on_cran()
   plot_list <- reveal_panels(make_test_plot("facet_wrap"), order = c(2,1,3), "everything")
   expect_doppelganger("plot1 - everything - wrap", plot_list[[1]])
   expect_doppelganger("plot2 - everything - wrap", plot_list[[2]])

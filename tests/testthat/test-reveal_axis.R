@@ -19,6 +19,7 @@ test_that("output has correct length", {
 
 test_that("plots look like they should - stacked bar",{
   skip_on_ci()
+  skip_on_cran()
   plot_list <- reveal_axis(make_test_plot("bar"), order = c(2,1,3))
   expect_doppelganger("plot1", plot_list[[1]])
   expect_doppelganger("plot2", plot_list[[2]])
@@ -28,6 +29,7 @@ test_that("plots look like they should - stacked bar",{
 
 test_that("plots look like they should - dodged bar",{
   skip_on_ci()
+  skip_on_cran()
   plot_list <- reveal_axis(make_test_plot("grouped_bar"), order = c(2,1,3))
   expect_doppelganger("plot1 - grouped_bar", plot_list[[1]])
   expect_doppelganger("plot2 - grouped_bar", plot_list[[2]])
