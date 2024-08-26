@@ -7,4 +7,7 @@
 ^pkgdown$
 ^\.github$
 ^cran-comments\.md$
-^R\_draft\.R$
+^R/_draft\.R$
+^CRAN-SUBMISSION$
+magic\.gif
+README_files/

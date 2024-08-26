@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/ggreveal)](https://cran.r-project.org/package=ggreveal)
 [![R-CMD-check](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -21,8 +23,7 @@ useful in teaching and academic presentations.
 ## Installation
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("weverthonmachado/ggreveal")
+install.packages("ggreveal")
 ```
 
 ## Usage
@@ -46,7 +47,7 @@ p
 
 <img src="man/figures/unnamed-chunk-3-1.png" width="100%" />
 
-Then use one of one of the `reveal_*` functions (e.g. `reveal_groups()`,
+Then use one of the `reveal_*` functions (e.g. `reveal_groups()`,
 `reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show
 elements incrementally.
 
@@ -81,8 +82,6 @@ reveal_save(plot_list, "myplot.png", width = 8, height = 4)
     ✔ myplot_1.png
     ✔ myplot_2_last.png
 
-<img src="man/figures/magic.gif" style="max-width: 60%; margin-left: auto; margin-right: auto; height: auto; display: block" />
-
 # <a id="why"></a> Wait, can’t ggplot2 do this already?
 
 Yes and no. `ggplot2` is composable by design, so it is straightforward
@@ -98,10 +97,11 @@ p1 <- ggplot(mtcars,
 p2 <- p1 + geom_smooth(method="lm", formula="y~x") 
 ```
 
-The problem is: as you add layers and other elements, several visual
-aspects of the plot — e.g. range of axes, legends — can, and will often,
-change. Showing how the layout changes as you add elements is useful for
-teaching *how to make graphs in ggplot2*, but it is distracting when you
-want to focus on the *results*. Keeping the layout fixed is sometimes
-easy (e.g. set the `limits` argument for the x/y scale), but in many
-cases it requires tinkering with the internals of the ggplot object.
+The problem is that, as you add layers and other elements, several
+visual aspects of the plot — e.g. range of axes, legends — can, and will
+often, change. Showing how the layout changes as you add elements is
+useful for teaching *how to make graphs in ggplot2*, but it is
+distracting when you want to focus on the *results*. Keeping the layout
+fixed is sometimes easy (e.g. setting the `limits` argument for the x/y
+scale), but in many cases it requires tinkering with the internals of
+the ggplot object.

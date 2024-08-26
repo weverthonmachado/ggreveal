@@ -1,11 +1,11 @@
 Package: ggreveal
 Title: Reveal a 'ggplot' Incrementally
-Version: 0.1.0
+Version: 0.1.2
 Authors@R: 
     person("Weverthon", "Machado", , "weverthonmachado@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-9919-4738"))
-Description: Provides functions that make it easy to reveal ggplot2 graphs incrementally. 
-    The functions take a ggplot2 object and return a list of plots showing data incrementally by 
+Description: Provides functions that make it easy to reveal 'ggplot2' graphs incrementally. 
+    The functions take a plot produced with 'ggplot2' and return a list of plots showing data incrementally by 
     panels, layers, groups, the values in an axis or any arbitrary aesthetic.
 License: MIT + file LICENSE
 Encoding: UTF-8
