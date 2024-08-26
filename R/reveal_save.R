@@ -7,7 +7,7 @@
 #' @return The paths of the saved plots, invisibly
 #' @export
 #' @inherit reveal_groups examples
-reveal_save <- function(plot_list,  basename = file.path(tempdir(), "plot.png"), ...) {
+reveal_save <- function(plot_list,  basename, ...) {
 
   cli::cli_h2("Saving incremental plots")
 

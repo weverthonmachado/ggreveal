@@ -4,7 +4,7 @@
 \alias{reveal_save}
 \title{Saves incremental plots}
 \usage{
-reveal_save(plot_list, basename = file.path(tempdir(), "plot.png"), ...)
+reveal_save(plot_list, basename, ...)
 }
 \arguments{
 \item{plot_list}{A list of plots created by one of the \verb{reveal_*} functions (e.g. \code{\link[=reveal_groups]{reveal_groups()}}, \code{\link[=reveal_layers]{reveal_layers()}}, \code{\link[=reveal_aes]{reveal_aes()}}]}
