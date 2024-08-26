@@ -4,14 +4,17 @@
 \alias{reveal_save}
 \title{Saves incremental plots}
 \usage{
-reveal_save(plot_list, basename = "plot.png", ...)
+reveal_save(plot_list, basename = file.path(tempdir(), "plot.png"), ...)
 }
 \arguments{
 \item{plot_list}{A list of plots created by one of the \verb{reveal_*} functions (e.g. \code{\link[=reveal_groups]{reveal_groups()}}, \code{\link[=reveal_layers]{reveal_layers()}}, \code{\link[=reveal_aes]{reveal_aes()}}]}
 
-\item{basename}{The base file name that will be used for saving}
+\item{basename}{The base file name that will be used for saving.}
 
 \item{...}{Additional arguments (e.g. width, height) to be passed to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}}
+}
+\value{
+The paths of the saved plots, invisibly
 }
 \description{
 Saves incremental plots
@@ -37,8 +40,9 @@ plot_list[[1]]
 plot_list[[2]]
 plot_list[[3]]
 
-\dontrun{
 # Save plots
 reveal_save(plot_list, "myplot.png", width = 8, height = 4)
-}
+
+# Clean temp files
+file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 
 }

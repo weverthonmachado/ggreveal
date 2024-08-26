@@ -41,10 +41,13 @@
 #'  plot_list[[3]]
 #'  plot_list[[4]]
 #'
-#'\dontrun{
+#'
 #' # Save plots
 #' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
-#' }
+#' 
+#' # Clean temp files
+#' file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 
+
 reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
 
   # Check arguments

@@ -2,16 +2,17 @@
 #'
 #'
 #' @param plot_list A list of plots created by one of the `reveal_*` functions (e.g. [reveal_groups()], [reveal_layers()], [reveal_aes()]]
-#' @param basename The base file name that will be used for saving
+#' @param basename The base file name that will be used for saving. 
 #' @param ... Additional arguments (e.g. width, height) to be passed to [ggplot2::ggsave()]
+#' @return The paths of the saved plots, invisibly
 #' @export
 #' @inherit reveal_groups examples
-reveal_save <- function(plot_list, basename = "plot.png", ...) {
+reveal_save <- function(plot_list,  basename = file.path(tempdir(), "plot.png"), ...) {
 
   cli::cli_h2("Saving incremental plots")
 
   paths <- c()
-
+  
   omit_blank <- ifelse(is.null(attr(plot_list,"omit_blank")), 
                        FALSE,
                        attr(plot_list,"omit_blank"))

@@ -49,10 +49,11 @@
 #' plot_list[[2]]
 #' plot_list[[3]]
 #'
-#'\dontrun{
 #' # Save plots
 #' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
-#' }
+#' 
+#' # Clean temp files
+#' file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 
 reveal_panels <- function(p, order = NULL, what = c("data", "everything")){
 
   what <- rlang::arg_match(what)
