@@ -42,7 +42,7 @@
 #' plot_list[[3]]
 #'
 #' # Save plots
-#' reveal_save(plot_list, "myplot.png", width = 8, height = 4)
+#' reveal_save(plot_list, "myplot.png", width = 8, height = 4, path = tempdir())
 #' 
 #' # Clean temp files
 #' file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 
