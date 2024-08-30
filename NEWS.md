@@ -1,3 +1,3 @@
-# ggreveal 0.1.0
+# ggreveal 0.1.3
 
-* Initial CRAN submission.
+* First version on CRAN. 
