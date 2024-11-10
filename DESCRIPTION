@@ -1,6 +1,6 @@
 Package: ggreveal
 Title: Reveal a 'ggplot' Incrementally
-Version: 0.1.3
+Version: 0.1.4
 Authors@R: 
     person("Weverthon", "Machado", , "weverthonmachado@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-9919-4738"))
