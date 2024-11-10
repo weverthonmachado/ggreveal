@@ -67,7 +67,7 @@ gif <- image_animate(img_joined, fps = 1)
 gif
 ```
 
-*Why* would you want to do that? Because it's fun — and often very useful in teaching and academic presentations. 
+*Why* would you want to do that? Because it's fun — and often very useful for teaching and giving talks. 
 
 
 ## Installation

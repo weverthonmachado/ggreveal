@@ -18,7 +18,7 @@ sequence (e.g. in different slides). Like this:
 <img src="man/figures/unnamed-chunk-2-1.gif" width="100%" />
 
 *Why* would you want to do that? Because it’s fun — and often very
-useful in teaching and academic presentations.
+useful for teaching and giving talks.
 
 ## Installation
 
