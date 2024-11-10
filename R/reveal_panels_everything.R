@@ -56,7 +56,7 @@ reveal_panels_everything <- function(p, order, omit_blank, axis = F, label = F){
 
 
 #' @noRd
-make_step_by_panel_everything <- function(p_gt, panels_increment, show_layout = F){
+make_step_by_panel_everything <- function(p_gt, panels_increment){
 
   drop <- !(p_gt$layout$name %in% unlist(panels_increment))
   gt_step <- p_gt
@@ -64,10 +64,6 @@ make_step_by_panel_everything <- function(p_gt, panels_increment, show_layout = 
   gt_step$layout <- gt_step$layout[!drop, ]
 
   p_step <- ggplotify::as.ggplot(gt_step)
-
-  if (show_layout) {
-    lemon::gtable_show_names(gt_step)
-  }
 
   return(p_step)
 
