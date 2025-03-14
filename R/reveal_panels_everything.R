@@ -56,7 +56,7 @@ reveal_panels_everything <- function(p, order, omit_blank, axis = F, label = F){
 
 
 #' @noRd
-make_step_by_panel_everything <- function(p_gt, panels_increment){
+make_step_by_panel_everything <- function(p_gt, panels_increment, return_gt = F){
 
   drop <- !(p_gt$layout$name %in% unlist(panels_increment))
   gt_step <- p_gt
@@ -64,7 +64,9 @@ make_step_by_panel_everything <- function(p_gt, panels_increment){
   gt_step$layout <- gt_step$layout[!drop, ]
 
   p_step <- ggplotify::as.ggplot(gt_step)
-
+  if (return_gt){
+    p_step <- gt_step
+  }
   return(p_step)
 
 }
@@ -72,7 +74,7 @@ make_step_by_panel_everything <- function(p_gt, panels_increment){
 #' @noRd
 #' @importFrom rlang .data
 select_sort_elements <- function(layout_obj,
-                                 element=c("panel","axis", "strip")) {
+                                 element=c("panel","axis", "strip", "patch")) {
 
   element <- rlang::arg_match(element)
 
@@ -88,6 +90,10 @@ select_sort_elements <- function(layout_obj,
     out <-  dplyr::arrange(panel_df, .data$panel_t, .data$panel_l)
     out <-  dplyr::pull(out, .data$panel_name)
 
+  } else if(element=="patch"){
+
+    out <- dplyr::filter(layout_obj, stringr::str_detect(.data$name, "panel|patchwork-table"))
+    out <- out$name
 
   } else {
 
