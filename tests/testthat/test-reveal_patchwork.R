@@ -1,0 +1,63 @@
+test_that("basic plot works", {
+  p <- make_test_patchwork()
+  plot_list <- reveal_patchwork(p)
+  expect_type(plot_list, "list")
+  expect_s3_class(plot_list[[1]], "ggplot")
+  expect_length(plot_list, 2)
+  expect_doppelganger("plot1 - basic", plot_list[[1]])
+  expect_doppelganger("plot2 - basic", plot_list[[2]])
+})
+
+test_that("annotated plot works", {
+  p <- make_test_patchwork("annotation")
+  plot_list <- reveal_patchwork(p)
+  expect_type(plot_list, "list")
+  expect_s3_class(plot_list[[1]], "ggplot")
+  expect_length(plot_list, 3)
+  expect_doppelganger("plot1 - annotated", plot_list[[1]])
+  expect_doppelganger("plot2 - annotated", plot_list[[2]])
+  expect_doppelganger("plot3 - annotated", plot_list[[3]])
+})
+
+test_that("annotated plot works", {
+  p <- make_test_patchwork("nested")
+  plot_list <- reveal_patchwork(p)
+  expect_type(plot_list, "list")
+  expect_s3_class(plot_list[[1]], "ggplot")
+  expect_length(plot_list, 5)
+  expect_doppelganger("plot1 - nested", plot_list[[1]])
+  expect_doppelganger("plot2 - nested", plot_list[[2]])
+  expect_doppelganger("plot3 - nested", plot_list[[3]])
+  expect_doppelganger("plot4 - nested", plot_list[[4]])
+  expect_doppelganger("plot5 - nested", plot_list[[5]])
+})
+
+test_that("inset works", {
+  p <- make_test_patchwork("inset")
+  plot_list <- reveal_patchwork(p)
+  expect_type(plot_list, "list")
+  expect_s3_class(plot_list[[1]], "ggplot")
+  expect_length(plot_list, 2)
+  expect_doppelganger("plot1 - inset", plot_list[[1]])
+  expect_doppelganger("plot2 - inset", plot_list[[2]])
+})
+
+test_that("plot with table works", {
+  p <- make_test_patchwork("table")
+  plot_list <- reveal_patchwork(p)
+  expect_type(plot_list, "list")
+  expect_s3_class(plot_list[[1]], "ggplot")
+  expect_length(plot_list, 2)
+  expect_doppelganger("plot1 - with table", plot_list[[1]])
+  expect_doppelganger("plot2 - with table", plot_list[[2]])
+})
+
+test_that("plot with text grob", {
+  p <- make_test_patchwork("textgrob")
+  plot_list <- reveal_patchwork(p)
+  expect_type(plot_list, "list")
+  expect_s3_class(plot_list[[1]], "ggplot")
+  expect_length(plot_list, 2)
+  expect_doppelganger("plot1 - with text grob", plot_list[[1]])
+  expect_doppelganger("plot2 - with text grob", plot_list[[2]])
+})
