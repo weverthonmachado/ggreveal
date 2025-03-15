@@ -1,3 +1,5 @@
+library(patchwork)
+
 test_that("basic plot works", {
   p <- make_test_patchwork()
   plot_list <- reveal_patchwork(p)
