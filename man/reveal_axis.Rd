@@ -35,13 +35,12 @@ categories in the x or y axis.
 library(ggplot2)
 data("mtcars")
 
-p <- mtcars |>
-  ggplot(aes(factor(vs), 
+p <- ggplot(mtcars, aes(factor(vs), 
              color = gear,
              fill= gear, 
              group = gear)) +
-  geom_bar() +
-  facet_wrap(~am)
+     geom_bar() +
+     facet_wrap(~am)
 p
 
 plot_list <- reveal_x(p)

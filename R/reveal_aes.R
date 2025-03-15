@@ -25,14 +25,13 @@
 #' # Create full plot
 #' library(ggplot2)
 #'
-#'  p <- mtcars |>
-#'    ggplot(aes(mpg, wt,
+#'  p <-  ggplot(mtcars, aes(mpg, wt,
 #'               color = factor(vs),
 #'               group = factor(vs))) +
-#'    geom_point(aes(shape=factor(am)), size=2) +
-#'    geom_smooth(method="lm",
-#'                formula = 'y ~ x',
-#'                linewidth=1) 
+#'        geom_point(aes(shape=factor(am)), size=2) +
+#'        geom_smooth(method="lm",
+#'                    formula = 'y ~ x',
+#'                    linewidth=1) 
 #'  p
 #'
 #'  plot_list <- reveal_aes(p, "shape")

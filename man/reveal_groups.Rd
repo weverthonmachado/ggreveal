@@ -35,15 +35,14 @@ plot, \code{ggplot2} will set it to the interaction of all discrete variables (s
 library(ggplot2)
 data("mtcars")
 
-p <- mtcars |>
-  ggplot(aes(mpg, wt,
+p <- ggplot(mtcars, aes(mpg, wt,
              color = factor(vs),
              group = factor(vs))) +
-  geom_point() +
-  geom_smooth(method="lm",
-              formula = 'y ~ x',
-              linewidth=1) +
-  facet_wrap(~am)
+     geom_point() +
+     geom_smooth(method="lm",
+                 formula = 'y ~ x',
+                 linewidth=1) +
+     facet_wrap(~am)
 p
 
 plot_list <- reveal_groups(p)
