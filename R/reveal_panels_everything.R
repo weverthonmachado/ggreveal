@@ -73,10 +73,7 @@ make_step_by_panel_everything <- function(p_gt, panels_increment, return_gt = F)
 
 #' @noRd
 #' @importFrom rlang .data
-select_sort_elements <- function(layout_obj,
-                                 element=c("panel","axis", "strip", "patch")) {
-
-  element <- rlang::arg_match(element)
+select_sort_elements <- function(layout_obj, element) {
 
   panel_df <- layout_obj
   panel_df <- dplyr::filter(panel_df, stringr::str_detect(.data$name, "panel"))
@@ -92,7 +89,7 @@ select_sort_elements <- function(layout_obj,
 
   } else if(element=="patch"){
 
-    out <- dplyr::filter(layout_obj, stringr::str_detect(.data$name, "panel|patchwork-table"))
+    out <- dplyr::filter(layout_obj, stringr::str_detect(.data$name, "panel|patchwork-table|inset|full"))
     out <- out$name
 
   } else {
@@ -118,11 +115,12 @@ select_sort_elements <- function(layout_obj,
     v <- panel_element_df
     v <- dplyr::mutate(v,
                         letter = stringr::str_extract(.data$element_name, "\\w(?=-\\d)"),
+                        element_type = stringr::str_extract(.data$element_name, "^\\w*(?=-)"),
                         dist_t = abs(.data$panel_t - .data$element_t),
                         dist_l = abs(.data$panel_l - .data$element_l),
                         dist_sum = .data$dist_t + .data$dist_l)
     v <- dplyr::group_by(v,
-                          .data$panel_name, .data$letter)
+                          .data$panel_name, .data$letter, .data$element_type)
     v <-  dplyr::arrange(v,
                           .data$panel_t, .data$panel_l, .data$letter, .data$dist_sum)
     v <- dplyr::filter(v,

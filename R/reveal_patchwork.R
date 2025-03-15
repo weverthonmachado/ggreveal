@@ -6,13 +6,39 @@ reveal_patchwork <- function(p){
 
 
 #' @noRd
-reveal_patch <- function(p, omit_blank=T, axis = T, label = T, return_gt = F){
+reveal_patch <- function(p, omit_blank=T, return_gt = F){
+
+  rlang::check_installed("patchwork", reason = "to use this function")
+
+  annot <- c()
+  recurse_tags <- utils::getFromNamespace('recurse_tags', 'patchwork')
+  get_patches <- utils::getFromNamespace('get_patches', 'patchwork')
+  build_patchwork <- utils::getFromNamespace('build_patchwork', 'patchwork')
+  annotate_table <- utils::getFromNamespace('annotate_table', 'patchwork')
 
   if ("gtable_patchwork" %in% class(p)){
+
     p_gt <- p
+
   } else {
-    plot <- patchwork:::get_patches(p)
-    p_gt <- patchwork:::build_patchwork(plot)
+
+    if (!is.null(p$patches$annotation)){
+
+      annotation <-  p$patches$annotation 
+      p <- recurse_tags(p, annotation$tag_levels, annotation$tag_prefix,
+                         annotation$tag_suffix, annotation$tag_sep)$patches
+    }
+    
+    plot <- get_patches(p)
+    p_gt <- build_patchwork(plot) 
+   
+    if (!is.null(p$patches$annotation)){
+
+      p_gt <- annotate_table(p_gt, plot$annotation)
+      annot <- c("title", "subtitle", "caption")
+
+    } 
+    
   }
 
   is_zerogrob <- unlist(lapply(p_gt$grobs, function(x) "zeroGrob" %in% class(x)))
@@ -20,18 +46,13 @@ reveal_patch <- function(p, omit_blank=T, axis = T, label = T, return_gt = F){
 
   patches <- select_sort_elements(layout_obj, "patch")
   panels <- select_sort_elements(layout_obj, "panel")
-  strips <-  as.list(rep("", length(panels)))
-  axes <- select_sort_elements(layout_obj, "axis")
-  rest <- layout_obj$name[!(stringr::str_detect(layout_obj$name, "panel|strip|axis|patchwork-table"))]
+  labels <- select_sort_elements(layout_obj, "axis|xlab|ylab|title|strip|tag")
+  rest <- layout_obj$name[!(stringr::str_detect(layout_obj$name, 
+                                                "panel|axis|xlab|ylab|title|strip|tag|patchwork-table|inset|full"))]
+  rest <- c(rest, annot)
 
   panels_increment <- list(rest)
   plot_list <- list()
-
-  # Handle facet titles (strips)
-  strip_list <- strips
-  # Handle axes
-  axes_list <- axes
-
 
   # Make step and append
   if (!omit_blank & !return_gt){
@@ -49,8 +70,7 @@ reveal_patch <- function(p, omit_blank=T, axis = T, label = T, return_gt = F){
 
       panels_increment <- append(panels_increment,
                                 list(c(panels[panel_counter], 
-                                       strip_list[[panel_counter]], 
-                                       axes_list[[panel_counter]])))
+                                        labels[[panel_counter]])))
       # Make step and append
       p_step <- make_step_by_panel_everything(p_gt, panels_increment, return_gt = return_gt)
       plot_list <- append(plot_list, list(p_step))
@@ -70,9 +90,16 @@ reveal_patch <- function(p, omit_blank=T, axis = T, label = T, return_gt = F){
         p_step$grobs[p_step$layout$name==patches[i]][[1]] <- patch_grobs[[j]]
         p_step <- ggplotify::as.ggplot(p_step)
         plot_list <- append(plot_list, list(p_step))
-
       }
 
+    } else if (stringr::str_detect(patches[i], "inset|full")){
+      
+      panels_increment <- append(panels_increment,
+                                   list(patches[i]))
+      # Make step and append
+      p_step <- make_step_by_panel_everything(p_gt, panels_increment, return_gt = return_gt)
+      plot_list <- append(plot_list, list(p_step))
+  
     }
 
   }
