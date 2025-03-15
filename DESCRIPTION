@@ -22,7 +22,8 @@ Suggests:
     withr,
     vdiffr,
     mockery,
-    patchwork
+    patchwork,
+    gt
 Config/testthat/edition: 3
 URL: http://www.weverthon.com/ggreveal/, https://github.com/weverthonmachado/ggreveal
 BugReports: https://github.com/weverthonmachado/ggreveal/issues

@@ -1,4 +1,5 @@
 library(patchwork)
+library(gt)
 
 test_that("basic plot works", {
   p <- make_test_patchwork()
