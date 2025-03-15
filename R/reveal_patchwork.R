@@ -46,7 +46,9 @@ reveal_patch <- function(p, omit_blank=T, return_gt = F){
 
   patches <- select_sort_elements(layout_obj, "patch")
   panels <- select_sort_elements(layout_obj, "panel")
-  labels <- select_sort_elements(layout_obj, "axis|xlab|ylab|title|strip|tag")
+  if (length(panels) > 0){
+    labels <- select_sort_elements(layout_obj, "axis|xlab|ylab|title|strip|tag")
+  }
   rest <- layout_obj$name[!(stringr::str_detect(layout_obj$name, 
                                                 "panel|axis|xlab|ylab|title|strip|tag|patchwork-table|inset|full"))]
   rest <- c(rest, annot)
@@ -88,7 +90,9 @@ reveal_patch <- function(p, omit_blank=T, return_gt = F){
 
         p_step <- make_step_by_panel_everything(p_gt, panels_increment, return_gt = T)
         p_step$grobs[p_step$layout$name==patches[i]][[1]] <- patch_grobs[[j]]
-        p_step <- ggplotify::as.ggplot(p_step)
+        if (!return_gt) {
+          p_step <- ggplotify::as.ggplot(p_step)
+        }
         plot_list <- append(plot_list, list(p_step))
       }
 

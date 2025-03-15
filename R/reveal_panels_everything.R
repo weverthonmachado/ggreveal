@@ -73,10 +73,11 @@ make_step_by_panel_everything <- function(p_gt, panels_increment, return_gt = F)
 
 #' @noRd
 #' @importFrom rlang .data
-select_sort_elements <- function(layout_obj, element) {
+select_sort_elements <- function(layout_obj, element, dedup = F) {
 
   panel_df <- layout_obj
   panel_df <- dplyr::filter(panel_df, stringr::str_detect(.data$name, "panel"))
+  panel_df <- dplyr::mutate(panel_df, number = dplyr::row_number())
   panel_df <- dplyr::rename_all(panel_df, ~paste0("panel_", .))
 
 
@@ -97,6 +98,7 @@ select_sort_elements <- function(layout_obj, element) {
 
     element_df <- layout_obj
     element_df <-  dplyr::filter(element_df, stringr::str_detect(.data$name, element))
+    element_df <-  dplyr::filter(element_df, !stringr::str_detect(.data$name, "panel|patchwork-table|inset|full"))
     element_df <-  dplyr::rename_all(element_df, ~paste0("element_", .))
 
     n_panels <- NROW(panel_df)
@@ -110,7 +112,7 @@ select_sort_elements <- function(layout_obj, element) {
     panel_element_df <- dplyr::mutate(panel_element_df, elements = element_df_list)
     panel_element_df <- tidyr::unnest(panel_element_df, cols = "elements")
 
-    # Get the closest axis/strip by letter (t, b, l, r)
+    # Get the closest element to each panel, by letter (t, b, l, r) and type
     # Closest =  minimum sum of t and l coordinates
     v <- panel_element_df
     v <- dplyr::mutate(v,
@@ -125,12 +127,25 @@ select_sort_elements <- function(layout_obj, element) {
                           .data$panel_t, .data$panel_l, .data$letter, .data$dist_sum)
     v <- dplyr::filter(v,
                         dplyr::row_number()==1)
-    v <- dplyr::pull(v, .data$element_name)
+    
+    if (dedup){
+      # If same element was assigned to more than one panel,
+      # keep it assigned to the closest panel
+      v <- dplyr::group_by(v,
+                          .data$element_name)
+      v <- dplyr::filter(v,
+                        dplyr::n()==1 | .data$dist_sum==min(.data$dist_sum)) 
+      v <- dplyr::group_by(v, .data$panel_number)
+      v <- dplyr::summarise(v, l = list(.data$element_name))
+      out <- v$l
 
-    # Split vector into list
-    out <- split(v, ceiling(seq_along(v) / (length(v)/n_panels)))
+    } else {
+      v <- dplyr::pull(v, .data$element_name)
+      # Split vector into list
+      out <- split(v, ceiling(seq_along(v) / (length(v)/n_panels)))
+    }
     length(out)==n_panels || rlang::abort("length(out) != length(n_panels)")
-  }
+    }
 
   return(out)
 
