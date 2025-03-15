@@ -1,3 +1,42 @@
+#' Reveal a patchwork
+#'
+#' Turns a [patchwork](https://patchwork.data-imaginist.com/) into a list of plots that can be shown incrementally.
+#'
+#' @param p A patchwork object
+#' 
+#' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
+#' @export
+#' @examples
+#' # Compose plots with patchwork
+#' if (require("patchwork")) {
+#' 
+#'    library(ggplot2)
+#'    library(patchwork)
+#'    data("mtcars")
+#'    
+#'    p1 <- ggplot(mtcars) +
+#'            geom_point(aes(mpg, disp)) +
+#'            ggtitle('Plot 1')
+#'    
+#'    p2 <- ggplot(mtcars) +
+#'            geom_boxplot(aes(gear, disp, group = gear)) +
+#'            ggtitle('Plot 2')
+#'    
+#'    p3 <- ggplot(mtcars) +
+#'           geom_point(aes(hp, wt)) +
+#'           ggtitle('Plot 3')
+#'    
+#'    p <- (p1 | p2) / p3
+#'    p <- p + plot_annotation(title = 'The surprising truth about mtcars',
+#'                             tag_levels = 'A'
+#'                             )
+#'    
+#'    plot_list <- reveal_patchwork(p)
+#'    plot_list[[1]]
+#'    plot_list[[2]]
+#'    plot_list[[3]]
+#' 
+#' }
 reveal_patchwork <- function(p){
 
   reveal_patch(p)

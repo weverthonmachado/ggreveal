@@ -20,7 +20,8 @@ make_step <- function(p_build, p_build_original, var, increment){
 
 #' @noRd
 #' @importFrom rlang .data
-make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar", "multiple_axis", "grouped_bar"),
+make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", 
+                                    "facet_wrap", "bar", "multiple_axis", "grouped_bar"),
                            custom_aes = NULL) {
   `%+%` <- ggplot2::`%+%`
   type <- rlang::arg_match(type)
@@ -119,4 +120,59 @@ make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", 
 expect_doppelganger <- function(title, fig, path = NULL, ...) {
   testthat::skip_if_not_installed("vdiffr")
   vdiffr::expect_doppelganger(title, fig,...)
+}
+
+#' @importFrom rlang .data
+make_test_patchwork <- function(type=c("basic", "nested", "annotation", "inset", 
+                                       "table", "textgrob")){
+  `%+%` <- ggplot2::`%+%`
+  mtcars <- datasets::mtcars
+  p1 <- ggplot2::ggplot(mtcars) +
+          ggplot2::geom_point(ggplot2::aes(.data$mpg, .data$disp)) +
+          ggplot2::ggtitle('Plot 1')
+          ggplot2::ggtitle('Plot 1')
+
+  p2 <- ggplot2::ggplot(mtcars) +
+          ggplot2::geom_boxplot(ggplot2::aes(.data$gear, .data$disp, group = .data$gear)) +
+            ggplot2::ggtitle('Plot 2')
+
+  p3 <- ggplot2::ggplot(mtcars) +
+          ggplot2::geom_point(ggplot2::aes(.data$hp, .data$wt, colour = .data$mpg)) +
+          ggplot2::ggtitle('Plot 3')
+
+  type <- rlang::arg_match(type)
+  if (type=="basic"){
+
+    p <- (p1 / p2)
+
+  } else if (type=="nested") {
+
+    p <- (p1 | p2) / (p3 | (p1 / p2))
+
+  } else if (type=="annotation") {
+
+    p <- (p1 | p2) / p3
+    p <- p +  patchwork::plot_annotation(
+      title = 'The surprising truth about mtcars',
+      subtitle = 'These 3 plots will reveal yet-untold secrets about our beloved data-set',
+      caption = 'Disclaimer: None of these plots are insightful',
+      tag_levels = 'A'
+    )
+    
+  } else if (type=="inset") {
+
+    p <- p1 + patchwork::inset_element(p2, left = 0.6, bottom = 0.6, right = 1, top = 1)
+
+  } else if (type=="table") {
+
+    p <- p1 + patchwork::wrap_table(mtcars[1:10, c('mpg', 'disp')], panel = "full", space = "fixed")
+
+  } else if (type=="textgrob"){
+
+    p <- p1 + grid::textGrob('Some really important text')
+
+  }
+  
+  suppressWarnings(return(p))
+
 }
