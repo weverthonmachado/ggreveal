@@ -23,7 +23,7 @@ test_that("annotated plot works", {
   expect_doppelganger("plot3 - annotated", plot_list[[3]])
 })
 
-test_that("annotated plot works", {
+test_that("nested plot works", {
   p <- make_test_patchwork("nested")
   plot_list <- reveal_patchwork(p)
   expect_type(plot_list, "list")
