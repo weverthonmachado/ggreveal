@@ -24,8 +24,7 @@
 #' library(ggplot2)
 #' data("mtcars")
 #'
-#' p <- mtcars |>
-#'   ggplot(aes(factor(vs), 
+#' p <- ggplot(mtcars, aes(factor(vs), 
 #'              color = gear,
 #'              fill= gear, 
 #'              group = gear)) +

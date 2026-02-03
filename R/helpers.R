@@ -22,7 +22,6 @@ make_step <- function(p_build, p_build_original, var, increment){
 #' @importFrom rlang .data
 make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", "facet_wrap", "bar", "multiple_axis", "grouped_bar"),
                            custom_aes = NULL) {
-  `%+%` <- ggplot2::`%+%`
   type <- rlang::arg_match(type)
   df <- dplyr::filter(ggplot2::diamonds,
                       .data$cut %in% c("Fair", "Good", "Premium"),
@@ -106,8 +105,8 @@ make_test_plot <- function(type = c("default", "nogroup", "nolayer", "nofacet", 
 
   }
 
-  p <- ggplot2::ggplot(df, mapping) %+%
-      layers %+%
+  p <- ggplot2::ggplot(df, mapping) +
+      layers +
       facet
 
   suppressWarnings(return(p))

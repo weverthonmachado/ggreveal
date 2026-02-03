@@ -25,8 +25,7 @@
 #' # Create full plot
 #' library(ggplot2)
 #'
-#'  p <- mtcars |>
-#'    ggplot(aes(mpg, wt,
+#'  p <- ggplot(mtcars, aes(mpg, wt,
 #'               color = factor(vs),
 #'               group = factor(vs))) +
 #'    geom_point(aes(shape=factor(am)), size=2) +

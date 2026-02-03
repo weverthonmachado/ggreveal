@@ -23,8 +23,7 @@
 #' library(ggplot2)
 #' data("mtcars")
 #'
-#' p <- mtcars |>
-#'   ggplot(aes(mpg, wt,
+#' p <- ggplot(mtcars, aes(mpg, wt,
 #'              color = factor(vs),
 #'              group = factor(vs))) +
 #'   geom_point() +
