@@ -50,8 +50,7 @@ A list of ggplot2 objects, which can be passed to
 # Create full plot
 library(ggplot2)
 
- p <- mtcars |>
-   ggplot(aes(mpg, wt,
+ p <- ggplot(mtcars, aes(mpg, wt,
               color = factor(vs),
               group = factor(vs))) +
    geom_point(aes(shape=factor(am)), size=2) +
@@ -77,10 +76,10 @@ reveal_save(plot_list, "myplot.png", width = 8, height = 4, path = tempdir())
 #> 
 #> ── Saving incremental plots ──
 #> 
-#> ✔ /tmp/RtmpvWWrNI/myplot_0.png
-#> ✔ /tmp/RtmpvWWrNI/myplot_1.png
-#> ✔ /tmp/RtmpvWWrNI/myplot_2.png
-#> ✔ /tmp/RtmpvWWrNI/myplot_3_last.png
+#> ✔ /tmp/RtmpXzWhqn/myplot_0.png
+#> ✔ /tmp/RtmpXzWhqn/myplot_1.png
+#> ✔ /tmp/RtmpXzWhqn/myplot_2.png
+#> ✔ /tmp/RtmpXzWhqn/myplot_3_last.png
 
 # Clean temp files
 file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 
