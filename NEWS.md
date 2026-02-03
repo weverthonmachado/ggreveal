@@ -1,3 +1,6 @@
+# ggreveal (development version)
+* Remove unecessary dependency on package `withr`.
+
 # ggreveal 0.1.4
 
 * Remove unecessary dependency on package `lemon`.
