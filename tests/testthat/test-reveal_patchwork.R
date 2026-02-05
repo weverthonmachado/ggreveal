@@ -38,6 +38,6 @@ test_that("plots look like they should - nested2",{
   plot_list <- reveal_patchwork(make_test_patchwork("nested2"), order = c(3,4,1))
   expect_doppelganger("plot1 - nested2", plot_list[[1]])
   expect_doppelganger("plot2 - nested2", plot_list[[2]])
-  expect_doppelganger("plot3 - snested2imple", plot_list[[3]])
+  expect_doppelganger("plot3 - nested2", plot_list[[3]])
   expect_doppelganger("plot4 - nested2", plot_list[[4]])
 })

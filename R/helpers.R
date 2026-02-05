@@ -143,14 +143,16 @@ make_test_patchwork <- function(type = c("simple", "nested1", "nested2")){
         ggplot2::ggtitle('Plot 4')
   
   if (type=="simple"){
-    pw <- p1 + p2 + p3
+    pw <- patchwork::wrap_plots(p1, p2, p3)
   } else if (type=="nested1") {
-    pw <- p1 + (p2 + p3)
+    pw <- patchwork::wrap_plots(p1, patchwork::wrap_plots(p2, p3))
 
   } else if (type=="nested2") {
-    pw <- p1 + (p2 + (p3 /p4))
+    pw <- patchwork::wrap_plots(p1, 
+              patchwork::wrap_plots(p2, 
+                        patchwork::wrap_plots(p3, p4, nrow=2)))
   }
 
-  return(pw  + plot_annotation(title = "Patchwork", tag_levels = "a"))
+  return(pw  + patchwork::plot_annotation(title = "Patchwork", tag_levels = "a"))
 
 }
