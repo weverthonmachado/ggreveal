@@ -2,11 +2,28 @@
 % Please edit documentation in R/reveal_patchwork.R
 \name{reveal_patchwork}
 \alias{reveal_patchwork}
-\title{Reveal plots in a patchwork object}
+\title{Reveal plots from a patchwork object}
 \usage{
-reveal_patchwork(p, order = NULL)
+reveal_patchwork(pw, order = NULL)
+}
+\arguments{
+\item{pw}{A patchwork object}
+
+\item{order}{(optional) A numeric vector specifying in which order to reveal the plots
+
+For example, if there are three plots in the patchwork, \code{order = c(3, 2, 1)} will invert the
+order in which they are revealed.
+
+Any plot not included in the vector will be omitted from the incremental
+plots. E.g.: with \code{order = c(3, 1)}, the second plot is not shown.
+
+By default, the first plot returned by this function is blank, showing layout elements
+of the patchwork but none of its child plots. To omit the blank plot, include \code{-1}: e.g.
+\code{order = c(-1, 3, 1)}, or \code{order = -1}.}
+}
+\value{
+A list of ggplot2 objects
 }
 \description{
-Turns a patchwork into a list of plots that reveal each child plot (including
-nested patchworks) one-by-one. The function handles arbitrary nesting levels.
+Turns a \link[patchwork:patchwork-package]{patchwork} into a list of plots that reveal each child plot incrementally.
 }

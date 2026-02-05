@@ -1,30 +1,29 @@
-#' Reveal plots in a patchwork object
+#' Reveal plots from a patchwork object
 #'
-#' Turns a patchwork into a list of plots that reveal each child plot (including
-#' nested patchworks) one-by-one. The function handles arbitrary nesting levels.
+#' Turns a [patchwork][patchwork::patchwork] into a list of plots that reveal each child plot incrementally. 
 #' 
-#' @param p A ggplot2 object
-#' @param order (optional) A numeric vector specifying in which order to reveal the groups
+#' @param pw A patchwork object
+#' @param order (optional) A numeric vector specifying in which order to reveal the plots
 #'   
-#'   For example, if there are three groups in the plot, `order = c(3, 2, 1)` will invert the 
+#'   For example, if there are three plots in the patchwork, `order = c(3, 2, 1)` will invert the 
 #'   order in which they are revealed. 
 #' 
-#'   Any group not included in the vector will be omitted from the incremental
-#'   plots. E.g.: with `order = c(3, 1)`, the second group is not shown.
+#'   Any plot not included in the vector will be omitted from the incremental
+#'   plots. E.g.: with `order = c(3, 1)`, the second plot is not shown.
 #' 
-#'   By default, the first plot is blank, showing layout elements (title,
-#'   legends, axes, etc) but no data. To omit the blank plot, include `-1`: e.g. 
+#'   By default, the first plot returned by this function is blank, showing layout elements
+#'   of the patchwork but none of its child plots. To omit the blank plot, include `-1`: e.g. 
 #'   `order = c(-1, 3, 1)`, or `order = -1`.
 #'   
-#' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
+#' @return A list of ggplot2 objects
 #' @export
-reveal_patchwork <- function(p, order = NULL){
+reveal_patchwork <- function(pw, order = NULL){
 
   # Check arguments
-  "patchwork" %in% class(p) || cli::cli_abort("{deparse(substitute(p))} is not a patchwork object")
+  "patchwork" %in% class(pw) || cli::cli_abort("{deparse(substitute(pw))} is not a patchwork object")
 
   # Collect all plot paths (handles nested patchworks)
-  path_info <- collect_all_plot_paths(p)
+  path_info <- collect_all_plot_paths(pw)
   plot_paths <- path_info$plot_paths
   top_plot_info <- path_info$top_plot_info
   
@@ -52,7 +51,7 @@ reveal_patchwork <- function(p, order = NULL){
   }
 
   # Convert patchwork to gtable
-  patchwork_gtable <- patchwork::patchworkGrob(p)
+  patchwork_gtable <- patchwork::patchworkGrob(pw)
 
   plot_list <- list()
 
