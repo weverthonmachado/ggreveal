@@ -119,3 +119,38 @@ expect_doppelganger <- function(title, fig, path = NULL, ...) {
   testthat::skip_if_not_installed("vdiffr")
   vdiffr::expect_doppelganger(title, fig,...)
 }
+
+
+#' @noRd
+make_test_patchwork <- function(type = c("simple", "nested1", "nested2")){
+
+  type <- rlang::arg_match(type)
+
+  p1 <- ggplot2::ggplot(mtcars) + 
+         ggplot2::geom_point(aes(mpg, disp)) + 
+         ggplot2::ggtitle('Plot 1')
+
+  p2 <-  ggplot2::ggplot(mtcars) + 
+          ggplot2::geom_boxplot(aes(gear, disp, group = gear)) + 
+          ggplot2::ggtitle('Plot 2')
+
+  p3 <-  ggplot2::ggplot(mtcars) + 
+          ggplot2::geom_point(aes(hp, wt, colour = mpg)) + 
+          ggplot2::ggtitle('Plot 3')
+  
+  p4 <- ggplot2::ggplot(mtcars) + 
+        ggplot2::geom_bar(aes(gear)) + 
+        ggplot2::ggtitle('Plot 4')
+  
+  if (type=="simple"){
+    pw <- p1 + p2 + p3
+  } else if (type=="nested1") {
+    pw <- p1 + (p2 + p3)
+
+  } else if (type=="nested2") {
+    pw <- p1 + (p2 + (p3 /p4))
+  }
+
+  return(pw)
+
+}
