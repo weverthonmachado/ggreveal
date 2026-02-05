@@ -120,6 +120,8 @@ the ggplot object.
   : Reveal plot by layer
 - [`reveal_panels()`](http://www.weverthon.com/ggreveal/reference/reveal_panels.md)
   : Reveal plot by panel
+- [`reveal_patchwork()`](http://www.weverthon.com/ggreveal/reference/reveal_patchwork.md)
+  : Reveal plots from a patchwork object
 - [`reveal_save()`](http://www.weverthon.com/ggreveal/reference/reveal_save.md)
   : Saves incremental plots
 
