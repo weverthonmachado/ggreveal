@@ -151,6 +151,6 @@ make_test_patchwork <- function(type = c("simple", "nested1", "nested2")){
     pw <- p1 + (p2 + (p3 /p4))
   }
 
-  return(pw)
+  return(pw  + plot_annotation(title = "Patchwork", tag_levels = "a"))
 
 }

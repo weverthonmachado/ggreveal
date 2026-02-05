@@ -3,6 +3,20 @@
 #' Turns a patchwork into a list of plots that reveal each child plot (including
 #' nested patchworks) one-by-one. The function handles arbitrary nesting levels.
 #' 
+#' @param p A ggplot2 object
+#' @param order (optional) A numeric vector specifying in which order to reveal the groups
+#'   
+#'   For example, if there are three groups in the plot, `order = c(3, 2, 1)` will invert the 
+#'   order in which they are revealed. 
+#' 
+#'   Any group not included in the vector will be omitted from the incremental
+#'   plots. E.g.: with `order = c(3, 1)`, the second group is not shown.
+#' 
+#'   By default, the first plot is blank, showing layout elements (title,
+#'   legends, axes, etc) but no data. To omit the blank plot, include `-1`: e.g. 
+#'   `order = c(-1, 3, 1)`, or `order = -1`.
+#'   
+#' @return A list of ggplot2 objects, which can be passed to [reveal_save()]
 #' @export
 reveal_patchwork <- function(p, order = NULL){
 
