@@ -126,20 +126,20 @@ make_test_patchwork <- function(type = c("simple", "nested1", "nested2")){
 
   type <- rlang::arg_match(type)
 
-  p1 <- ggplot2::ggplot(mtcars) + 
-         ggplot2::geom_point(aes(mpg, disp)) + 
+  p1 <- ggplot2::ggplot(datasets::mtcars) + 
+         ggplot2::geom_point(ggplot2::aes(.data$mpg, .data$disp)) + 
          ggplot2::ggtitle('Plot 1')
 
-  p2 <-  ggplot2::ggplot(mtcars) + 
-          ggplot2::geom_boxplot(aes(gear, disp, group = gear)) + 
+  p2 <-  ggplot2::ggplot(datasets::mtcars) + 
+          ggplot2::geom_boxplot( ggplot2::aes(.data$gear, .data$disp, group = .data$gear)) + 
           ggplot2::ggtitle('Plot 2')
 
-  p3 <-  ggplot2::ggplot(mtcars) + 
-          ggplot2::geom_point(aes(hp, wt, colour = mpg)) + 
+  p3 <-  ggplot2::ggplot(datasets::mtcars) + 
+          ggplot2::geom_point(ggplot2::aes(.data$hp, .data$wt, colour = .data$mpg)) + 
           ggplot2::ggtitle('Plot 3')
   
-  p4 <- ggplot2::ggplot(mtcars) + 
-        ggplot2::geom_bar(aes(gear)) + 
+  p4 <- ggplot2::ggplot(datasets::mtcars) + 
+        ggplot2::geom_bar( ggplot2::aes(.data$gear)) + 
         ggplot2::ggtitle('Plot 4')
   
   if (type=="simple"){

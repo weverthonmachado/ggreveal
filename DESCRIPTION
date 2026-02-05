@@ -16,7 +16,8 @@ Imports:
     ggplotify,
     rlang,
     stringr,
-    tidyr
+    tidyr,
+    patchwork
 Suggests: 
     testthat (>= 3.0.0),
     vdiffr,
