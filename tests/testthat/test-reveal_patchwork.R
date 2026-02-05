@@ -1,7 +1,7 @@
 test_that("output has correct type", {
   pw <- make_test_patchwork()
-  expect_type(result, "list")
-  expect_s3_class(result[[1]], "ggplot")
+  expect_type(reveal_patchwork(pw), "list")
+  expect_s3_class(reveal_patchwork(pw)[[1]], "ggplot")
 })
 
 test_that("output has correct length - simple", {
