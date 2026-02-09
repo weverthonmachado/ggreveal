@@ -97,7 +97,7 @@ collect_all_plot_paths <- function(patchwork_obj) {
           plot_paths <- append(plot_paths, list(c(child_index, nested_path)))
         }
       } else {
-        # Regular plot - simple path
+        # Regular plot (or inset) - simple path
         plot_paths <- append(plot_paths, list(c(child_index)))
       }
     }
@@ -179,7 +179,7 @@ hide_all_plots_except <- function(gtable_obj, paths_to_reveal, top_plot_info = N
     if (has_empty_path) {
       reveal_top_plot <- TRUE
       
-      # If onky the empty path exists, reveal only the top plot
+      # If only the empty path exists, reveal only the top plot
       if (length(paths_to_reveal) == 1) {
         reveal_top_plot_only <- TRUE
         child_indices_to_keep <- top_plot_index
@@ -192,8 +192,22 @@ hide_all_plots_except <- function(gtable_obj, paths_to_reveal, top_plot_info = N
   # Zero out grobs not in child_indices_to_keep
   for (grob_index in seq_len(length(gtable_obj))) {
     grob_name <- gtable_obj$layout[grob_index, "name"]
+    grob_obj <- gtable_obj$grobs[[grob_index]]
     
-    # extrat trailing number suffix (e.g., "panel-1-2" -> 2)
+    # Handle insets - extract inset number from name like "inset_2-1"
+    if ("inset_table" %in% class(grob_obj)) {
+      inset_match <- stringr::str_extract(grob_name, "inset_(\\d+)")
+      if (!is.na(inset_match)) {
+        inset_child_index <- as.integer(stringr::str_remove(inset_match, "inset_"))
+        # Zero out inset if its child index is not in child_indices_to_keep
+        if (!(inset_child_index %in% child_indices_to_keep)) {
+          gtable_obj$grobs[[grob_index]] <- ggplot2::zeroGrob()
+        }
+      }
+      next
+    }
+    
+    # Regular grob - extract number suffix
     number_match <- stringr::str_extract(grob_name, "-(\\d+)$")
     
     if (!is.na(number_match)) {

@@ -122,7 +122,7 @@ expect_doppelganger <- function(title, fig, path = NULL, ...) {
 
 
 #' @noRd
-make_test_patchwork <- function(type = c("simple", "nested1", "nested2")){
+make_test_patchwork <- function(type = c("simple", "nested1", "nested2", "inset")){
 
   type <- rlang::arg_match(type)
 
@@ -151,6 +151,14 @@ make_test_patchwork <- function(type = c("simple", "nested1", "nested2")){
     pw <- patchwork::wrap_plots(p1, 
               patchwork::wrap_plots(p2, 
                         patchwork::wrap_plots(p3, p4, nrow=2)))
+    
+  } else if (type=="inset") {
+    pw <-  patchwork::wrap_plots(p1, 
+                patchwork::wrap_plots(p2, 
+                                    inset_element(p3,  left = 0.6, bottom = 0.6, right = 1, top = 1),  
+                                    inset_element(p4,  left = 0, bottom = 0, right = 0.6, top = 0.6)),
+                                    nrow=2)
+
   }
 
   return(pw  + patchwork::plot_annotation(title = "Patchwork", tag_levels = "a"))

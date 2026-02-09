@@ -22,6 +22,16 @@ test_that("output has correct length - nested2", {
   expect_length(reveal_patchwork(pw, order = c(2, -1)), 1)
 })
 
+test_that("output has correct length - inset", {
+  pw <- make_test_patchwork("inset")
+  expect_length(reveal_patchwork(pw), 5)
+  expect_length(reveal_patchwork(pw, order = -1), 4)
+  expect_length(reveal_patchwork(pw, order = c(2,1)), 3)
+  expect_length(reveal_patchwork(pw, order = c(2)), 2)
+  expect_length(reveal_patchwork(pw, order = c(2, -1)), 1)
+})
+
+
 test_that("plots look like they should - simple",{
   skip_on_ci()
   skip_on_cran()
@@ -40,4 +50,15 @@ test_that("plots look like they should - nested2",{
   expect_doppelganger("plot2 - nested2", plot_list[[2]])
   expect_doppelganger("plot3 - nested2", plot_list[[3]])
   expect_doppelganger("plot4 - nested2", plot_list[[4]])
+})
+
+test_that("plots look like they should - inset",{
+  skip_on_ci()
+  skip_on_cran()
+  plot_list <- reveal_patchwork(make_test_patchwork("inset"), order = c(3,4,1,2))
+  expect_doppelganger("plot1 - inset", plot_list[[1]])
+  expect_doppelganger("plot2 - inset", plot_list[[2]])
+  expect_doppelganger("plot3 - inset", plot_list[[3]])
+  expect_doppelganger("plot4 - inset", plot_list[[4]])
+  expect_doppelganger("plot5 - inset", plot_list[[5]])
 })
