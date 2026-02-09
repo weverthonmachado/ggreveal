@@ -145,7 +145,7 @@ make_test_patchwork <- function(type = c("simple", "nested1", "nested2", "inset"
   if (type=="simple"){
     pw <- patchwork::wrap_plots(p1, p2, p3)
   } else if (type=="nested1") {
-    pw <- patchwork::wrap_plots(p1, patchwork::wrap_plots(p2, p3))
+    pw <- patchwork::wrap_plots(patchwork::wrap_plots(p1, p2, nrow=2), patchwork::wrap_plots(p3, p4, nrow=2))
 
   } else if (type=="nested2") {
     pw <- patchwork::wrap_plots(p1, 

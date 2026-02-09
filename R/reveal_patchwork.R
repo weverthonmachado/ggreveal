@@ -1,6 +1,7 @@
 #' Reveal plots from a patchwork object
 #'
 #' Turns a [patchwork][patchwork::patchwork] into a list of plots that reveal each child plot incrementally. 
+#' Also works with nesting and insets.
 #' 
 #' @param pw A patchwork object
 #' @param order (optional) A numeric vector specifying in which order to reveal the plots
@@ -25,14 +26,20 @@ reveal_patchwork <- function(pw, order = NULL){
   # Collect all plot paths (handles nested patchworks)
   path_info <- collect_all_plot_paths(pw)
   plot_paths <- path_info$plot_paths
-  top_plot_info <- path_info$top_plot_info
+  all_top_plots <- path_info$all_top_plots
   
-  # Add top plot path to list if it exists
-  if (!is.null(top_plot_info)) {
-    plot_paths <- c(plot_paths, list(top_plot_info$path))
+  # Add root-level top plot path if it exists
+  if (length(all_top_plots) > 0) {
+    # Find the top plot at root level (empty path)
+    for (top_plot in all_top_plots) {
+      if (length(top_plot$path) == 0) {
+        plot_paths <- c(plot_paths, list(integer(0)))
+        break
+      }
+    }
   }
 
-  # Handle order argument (same pattern as reveal_aes and reveal_panels)
+  # Handle order argument 
   omit_blank <- FALSE
   if (!is.null(order)) {
     if (is.numeric(order)) {
@@ -57,14 +64,14 @@ reveal_patchwork <- function(pw, order = NULL){
 
   # Add blank first step unless omit_blank is TRUE
   if (!omit_blank) {
-    gtable_blank <- hide_all_plots_except(patchwork_gtable, list(), top_plot_info)
+    gtable_blank <- hide_all_plots_except(patchwork_gtable, list(), all_top_plots)
     plot_list <- append(plot_list, list(ggplotify::as.ggplot(gtable_blank)))
   }
 
   # Build incremental steps
   for (step_index in seq_len(length(plot_paths))) {
     paths_to_reveal <- plot_paths[seq_len(step_index)]
-    gtable_step <- hide_all_plots_except(patchwork_gtable, paths_to_reveal, top_plot_info)
+    gtable_step <- hide_all_plots_except(patchwork_gtable, paths_to_reveal, all_top_plots)
     plot_list <- append(plot_list, list(ggplotify::as.ggplot(gtable_step)))
   }
 
@@ -79,12 +86,20 @@ reveal_patchwork <- function(pw, order = NULL){
 
 # Collect all plot paths in nested patchwork
 # Each path is an integer vector of child indices at each nesting level
-# Returns list with plot_paths and top_plot_info
+# Returns list with plot_paths and all_top_plots
 collect_all_plot_paths <- function(patchwork_obj) {
   
   plot_paths <- list()
+  all_top_plots <- list()
   
-  if (!is.null(patchwork_obj$patches) && !is.null(patchwork_obj$patches$plots)) {
+  # Count how many direct children this patchwork has (not nested paths)
+  num_direct_children <- if (!is.null(patchwork_obj$patches) && !is.null(patchwork_obj$patches$plots)) {
+    length(patchwork_obj$patches$plots)
+  } else {
+    0
+  }
+  
+  if (num_direct_children > 0) {
     for (child_index in seq_along(patchwork_obj$patches$plots)) {
       child_plot <- patchwork_obj$patches$plots[[child_index]]
       
@@ -92,9 +107,31 @@ collect_all_plot_paths <- function(patchwork_obj) {
       if (!is.null(child_plot$patches) && !is.null(child_plot$patches$plots)) {
         nested_info <- collect_all_plot_paths(child_plot)
         
+        # Check if the nested patchwork has a top plot at its own root level (before prepending)
+        has_nested_root_top_plot <- FALSE
+        if (length(nested_info$all_top_plots) > 0) {
+          for (top_plot in nested_info$all_top_plots) {
+            if (length(top_plot$path) == 0) {
+              has_nested_root_top_plot <- TRUE
+              break
+            }
+          }
+        }
+        
         # Prepend current child_index to each nested path
         for (nested_path in nested_info$plot_paths) {
           plot_paths <- append(plot_paths, list(c(child_index, nested_path)))
+        }
+        
+        # Collect all nested top plots, prepending current child_index to their paths
+        for (top_plot in nested_info$all_top_plots) {
+          top_plot$path <- c(child_index, top_plot$path)
+          all_top_plots <- append(all_top_plots, list(top_plot))
+        }
+        
+        # If the nested patchwork has a top plot at its root, add the path for it
+        if (has_nested_root_top_plot) {
+          plot_paths <- append(plot_paths, list(c(child_index)))
         }
       } else {
         # Regular plot (or inset) - simple path
@@ -103,50 +140,21 @@ collect_all_plot_paths <- function(patchwork_obj) {
     }
   }
   
-  top_plot_info <- find_top_plot_info(patchwork_obj, length(plot_paths))
+  # Check if this patchwork itself has a top plot
+  if ("patchwork" %in% class(patchwork_obj) && length(patchwork_obj@layers) > 0) {
+    top_plot_info <- list(
+      path = integer(0),  # Empty path at this level
+      child_index = num_direct_children + 1
+    )
+    all_top_plots <- append(all_top_plots, list(top_plot_info))
+  }
   
-  return(list(plot_paths = plot_paths, top_plot_info = top_plot_info))
+  return(list(plot_paths = plot_paths, all_top_plots = all_top_plots))
 }
 
-# Find the "top plot" (the last plot added to the patchwork)
-# Returns NULL if no top plot, or list with path and child_index
-find_top_plot_info <- function(patchwork_obj, num_children, current_path = integer(0)) {
-  
-  # Check if patchwork_obj itself has layers
-  if ("patchwork" %in% class(patchwork_obj) && length(patchwork_obj@layers) > 0) {
-    # Top plot appears after all children in the gtable
-    return(list(
-      path = current_path,
-      child_index = num_children + 1
-    ))
-  }
-  
-  # Recurse through children to find top plot
-  if (!is.null(patchwork_obj$patches) && !is.null(patchwork_obj$patches$plots)) {
-    for (child_index in seq_along(patchwork_obj$patches$plots)) {
-      child_plot <- patchwork_obj$patches$plots[[child_index]]
-      
-      if ("patchwork" %in% class(child_plot)) {
-        # Count children at this level
-        child_num_children <- if (!is.null(child_plot$patches) && !is.null(child_plot$patches$plots)) {
-          length(child_plot$patches$plots)
-        } else {
-          0
-        }
-        
-        result <- find_top_plot_info(child_plot, child_num_children, c(current_path, child_index))
-        if (!is.null(result)) {
-          return(result)
-        }
-      }
-    }
-  }
-  
-  return(NULL)
-}
 
 # Hide all plots in gtable except those in paths_to_reveal
-hide_all_plots_except <- function(gtable_obj, paths_to_reveal, top_plot_info = NULL, current_path = integer(0)) {
+hide_all_plots_except <- function(gtable_obj, paths_to_reveal, all_top_plots = list(), current_path = integer(0)) {
   
   # which child indices to keep at this nesting level?
   child_indices_to_keep <- integer(0)
@@ -161,30 +169,34 @@ hide_all_plots_except <- function(gtable_obj, paths_to_reveal, top_plot_info = N
     child_indices_to_keep <- child_indices_to_keep[!is.na(child_indices_to_keep)]
   }
   
-  # Check if we're at the top plot level and should reveal it
-  at_top_plot_level <- !is.null(top_plot_info) && 
-                       length(top_plot_info$path) == length(current_path) &&
-                       (length(current_path) == 0 || all(top_plot_info$path == current_path))
-  
+  # Check if we're at any top plot level and should reveal it
   reveal_top_plot <- FALSE
   reveal_top_plot_only <- FALSE
-  top_plot_index <- NULL
+  top_plot_indices <- integer(0)
   
-  if (at_top_plot_level) {
-    top_plot_index <- top_plot_info$child_index
-    
-    # Check if any path in paths_to_reveal is empty (reveals top plot)
+  if (length(all_top_plots) > 0) {
+    # Check if any path in paths_to_reveal is empty (reveals top plot at this level)
     has_empty_path <- any(vapply(paths_to_reveal, function(path) length(path) == 0, logical(1)))
     
     if (has_empty_path) {
-      reveal_top_plot <- TRUE
+      # Find all top plots at this level
+      for (top_plot in all_top_plots) {
+        at_this_level <- length(top_plot$path) == length(current_path) &&
+                        (length(current_path) == 0 || all(top_plot$path == current_path))
+        if (at_this_level) {
+          reveal_top_plot <- TRUE
+          top_plot_indices <- c(top_plot_indices, top_plot$child_index)
+        }
+      }
       
-      # If only the empty path exists, reveal only the top plot
-      if (length(paths_to_reveal) == 1) {
-        reveal_top_plot_only <- TRUE
-        child_indices_to_keep <- top_plot_index
-      } else {
-        child_indices_to_keep <- unique(c(child_indices_to_keep, top_plot_index))
+      if (reveal_top_plot) {
+        # If only the empty path exists, reveal only the top plot(s)
+        if (length(paths_to_reveal) == 1) {
+          reveal_top_plot_only <- TRUE
+          child_indices_to_keep <- top_plot_indices
+        } else {
+          child_indices_to_keep <- unique(c(child_indices_to_keep, top_plot_indices))
+        }
       }
     }
   }
@@ -253,7 +265,7 @@ hide_all_plots_except <- function(gtable_obj, paths_to_reveal, top_plot_info = N
         nested_gtable_modified <- hide_all_plots_except(
           nested_gtable, 
           deeper_paths, 
-          top_plot_info, 
+          all_top_plots, 
           c(current_path, child_index)
         )
         gtable_obj$grobs[[nested_gtable_index]] <- nested_gtable_modified
