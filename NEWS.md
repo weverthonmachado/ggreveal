@@ -1,5 +1,6 @@
 # ggreveal (development version)
-* Remove unecessary dependency on package `withr`.
+* New function: `reveal_patchwork()`
+* Minor tweaks to the documentation
 
 # ggreveal 0.1.4
 

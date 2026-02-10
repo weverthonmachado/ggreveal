@@ -2,7 +2,7 @@
 % Please edit documentation in R/reveal_panels.R
 \name{reveal_panels}
 \alias{reveal_panels}
-\title{Reveal plot by panel}
+\title{Reveal faceted plot by panel}
 \usage{
 reveal_panels(p, order = NULL, what = c("data", "everything"))
 }
@@ -37,7 +37,8 @@ Turns a ggplot into a list of plots, showing data incrementally by panels.
 library(ggplot2)
 data("mtcars")
 
-p <- ggplot(mtcars, aes(mpg, wt,
+p <- ggplot(mtcars, 
+         aes(mpg, wt,
              color = factor(vs),
              group = factor(vs))) +
   geom_point() +

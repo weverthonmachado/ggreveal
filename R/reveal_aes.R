@@ -1,4 +1,4 @@
-#' Reveal plot by aes
+#' Reveal plot by aesthetic
 #'
 #' Turns a ggplot into a list of plots, showing data incrementally by an
 #' arbitrary aesthetic. 
@@ -25,7 +25,8 @@
 #' # Create full plot
 #' library(ggplot2)
 #'
-#'  p <- ggplot(mtcars, aes(mpg, wt,
+#'  p <- ggplot(mtcars, 
+#'           aes(mpg, wt,
 #'               color = factor(vs),
 #'               group = factor(vs))) +
 #'    geom_point(aes(shape=factor(am)), size=2) +

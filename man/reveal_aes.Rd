@@ -2,7 +2,7 @@
 % Please edit documentation in R/reveal_aes.R
 \name{reveal_aes}
 \alias{reveal_aes}
-\title{Reveal plot by aes}
+\title{Reveal plot by aesthetic}
 \usage{
 reveal_aes(p, aes = "group", order = NULL, max = 20)
 }
@@ -36,7 +36,8 @@ arbitrary aesthetic.
 # Create full plot
 library(ggplot2)
 
- p <- ggplot(mtcars, aes(mpg, wt,
+ p <- ggplot(mtcars, 
+          aes(mpg, wt,
               color = factor(vs),
               group = factor(vs))) +
    geom_point(aes(shape=factor(am)), size=2) +

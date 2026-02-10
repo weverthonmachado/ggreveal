@@ -16,6 +16,7 @@ library(palmerpenguins)
 library(ggplot2)
 library(magick)
 library(ggreveal)
+library(patchwork)
 
 p <-  ggplot(penguins[!is.na(penguins$sex),],
              aes(body_mass_g, bill_length_mm,
@@ -48,7 +49,41 @@ p2 <- ggplot(penguins[!is.na(penguins$sex),],
 plots_x <- reveal_save(reveal_x(p2), 
                           "x.png", width=9, height=5, bg = "white", path = tempdir())
 
-img_list <- lapply(c(plots_group, plots_panel, plots_layer, plots_x), image_read)
+# Patchwork
+pw1 <- ggplot(penguins[!is.na(penguins$sex),],
+             aes(body_mass_g, bill_length_mm,
+                 group=species,
+                 color=species)) +
+      geom_point() +
+      guides(color = "none") +
+      theme_minimal()
+
+
+pw2 <- ggplot(penguins[!is.na(penguins$sex),],
+             aes(x = year,
+                 group=species, 
+                 fill = species)) +
+      geom_bar(position = position_dodge(.9)) +
+      theme_minimal() 
+
+pw3 <- ggplot(penguins[!is.na(penguins$sex),],
+             aes(flipper_length_mm ,
+                 fill=species)) +
+      geom_histogram(position = "identity") +
+      theme_minimal() 
+
+pw <- pw1 + 
+  (pw2/pw3) + 
+  plot_layout(guides = "collect") +
+  plot_annotation(title = "reveal_patchwork()",
+                  tag_levels = "a",
+                  theme = theme(plot.title = element_text(size = 16, hjust = 0.5))) 
+  
+plots_pw <- reveal_save(reveal_patchwork(pw), 
+                          "pw.png", width=9, height=5, bg = "white", path = tempdir())
+                     
+
+img_list <- lapply(c(plots_group, plots_panel, plots_layer, plots_x, plots_pw), image_read)
 img_joined <- image_join(img_list)
 gif <- image_animate(img_joined, fps = 1)
 ```
@@ -58,6 +93,7 @@ gif <- image_animate(img_joined, fps = 1)
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/ggreveal)](https://cran.r-project.org/package=ggreveal)
+![](https://cranlogs.r-pkg.org/badges/grand-total/ggreveal)
 [![R-CMD-check](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -67,7 +103,7 @@ gif <- image_animate(img_joined, fps = 1)
 gif
 ```
 
-*Why* would you want to do that? Because it's fun — and often very useful for teaching and giving talks. 
+*Why* would you want to do that? Because it's fun and very useful for teaching and giving talks. 
 
 
 ## Installation
@@ -98,14 +134,17 @@ p
 p
 ```
 
-Then use one of the `reveal_*` functions (e.g. `reveal_groups()`, `reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show elements incrementally. 
+Then use one of the `reveal_*` functions (`reveal_groups()`, `reveal_layers()`, `reveal_aes()`, `reveal_panel()`, `reveal_axis()`) to obtain a list of plots that show elements incrementally. 
 
 ```{r, dpi=300, out.width="70%"}
 plot_list <- reveal_groups(p)
 plot_list
 ```
 
-You probably want to save these plots to include them later in a presentation. Use `reveal_save()`:
+You can also use `reveal_patchwork()` to incrementally reveal the individual plots in a patchwork object.
+
+The most common use case is to show the plots in different slides of a presentation. You can work directly with the list of plots returned by the functions (useful for Quarto and R Markdown presentations), or save the plots as separate files and include them in your presentation software of choice. `reveal_save()` is a convenient function to save the plots in a list:
+
 ```r
 reveal_save(plot_list, "myplot.png", width = 8, height = 4)
 ```

@@ -24,7 +24,8 @@ Saves incremental plots
 library(ggplot2)
 data("mtcars")
 
-p <- ggplot(mtcars, aes(mpg, wt,
+p <- ggplot(mtcars, 
+         aes(mpg, wt,
              color = factor(vs),
              group = factor(vs))) +
   geom_point() +

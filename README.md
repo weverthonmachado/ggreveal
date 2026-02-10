@@ -7,6 +7,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ggreveal)](https://cran.r-project.org/package=ggreveal)
+![](https://cranlogs.r-pkg.org/badges/grand-total/ggreveal)
 [![R-CMD-check](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -15,10 +16,10 @@ graphs incrementally. The functions in this package take a plot and
 break it down into a series of intermediary plots that can be shown in
 sequence (e.g. in different slides). Like this:
 
-<img src="man/figures/unnamed-chunk-2-1.gif" width="100%" />
+<img src="man/figures/unnamed-chunk-2-1.gif" alt="" width="100%" />
 
-*Why* would you want to do that? Because it’s fun — and often very
-useful for teaching and giving talks.
+*Why* would you want to do that? Because it’s fun and very useful for
+teaching and giving talks.
 
 ## Installation
 
@@ -45,11 +46,11 @@ p <-  ggplot(penguins[!is.na(penguins$sex),],
 p
 ```
 
-<img src="man/figures/unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/unnamed-chunk-3-1.png" alt="" width="100%" />
 
-Then use one of the `reveal_*` functions (e.g. `reveal_groups()`,
-`reveal_layers()`, `reveal_aes()`) to obtain a list of plots that show
-elements incrementally.
+Then use one of the `reveal_*` functions (`reveal_groups()`,
+`reveal_layers()`, `reveal_aes()`, `reveal_panel()`, `reveal_axis()`) to
+obtain a list of plots that show elements incrementally.
 
 ``` r
 plot_list <- reveal_groups(p)
@@ -57,20 +58,27 @@ plot_list
 #> [[1]]
 ```
 
-<img src="man/figures/unnamed-chunk-4-1.png" width="70%" />
+<img src="man/figures/unnamed-chunk-4-1.png" alt="" width="70%" />
 
     #> 
     #> [[2]]
 
-<img src="man/figures/unnamed-chunk-4-2.png" width="70%" />
+<img src="man/figures/unnamed-chunk-4-2.png" alt="" width="70%" />
 
     #> 
     #> [[3]]
 
-<img src="man/figures/unnamed-chunk-4-3.png" width="70%" />
+<img src="man/figures/unnamed-chunk-4-3.png" alt="" width="70%" />
 
-You probably want to save these plots to include them later in a
-presentation. Use `reveal_save()`:
+You can also use `reveal_patchwork()` to incrementally reveal the
+individual plots in a patchwork object.
+
+The most common use case is to show the plots in different slides of a
+presentation. You can work directly with the list of plots returned by
+the functions (useful for Quarto and R Markdown presentations), or save
+the plots as separate files and include them in your presentation
+software of choice. `reveal_save()` is a convenient function to save the
+plots in a list:
 
 ``` r
 reveal_save(plot_list, "myplot.png", width = 8, height = 4)
