@@ -37,7 +37,8 @@ The paths of the saved plots, invisibly
 library(ggplot2)
 data("mtcars")
 
-p <- ggplot(mtcars, aes(mpg, wt,
+p <- ggplot(mtcars, 
+         aes(mpg, wt,
              color = factor(vs),
              group = factor(vs))) +
   geom_point() +
@@ -61,9 +62,9 @@ reveal_save(plot_list, "myplot.png", width = 8, height = 4, path = tempdir())
 #> 
 #> ── Saving incremental plots ──
 #> 
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_0.png
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_1.png
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_2_last.png
+#> ✔ /tmp/RtmpqKdB56/myplot_0.png
+#> ✔ /tmp/RtmpqKdB56/myplot_1.png
+#> ✔ /tmp/RtmpqKdB56/myplot_2_last.png
 
 # Clean temp files
 file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 

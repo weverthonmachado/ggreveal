@@ -3,7 +3,7 @@
 ## All functions
 
 - [`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md)
-  : Reveal plot by aes
+  : Reveal plot by aesthetic
 - [`reveal_x()`](http://www.weverthon.com/ggreveal/reference/reveal_axis.md)
   [`reveal_y()`](http://www.weverthon.com/ggreveal/reference/reveal_axis.md)
   : Reveal plot by axis
@@ -12,7 +12,7 @@
 - [`reveal_layers()`](http://www.weverthon.com/ggreveal/reference/reveal_layers.md)
   : Reveal plot by layer
 - [`reveal_panels()`](http://www.weverthon.com/ggreveal/reference/reveal_panels.md)
-  : Reveal plot by panel
+  : Reveal faceted plot by panel
 - [`reveal_patchwork()`](http://www.weverthon.com/ggreveal/reference/reveal_patchwork.md)
   : Reveal plots from a patchwork object
 - [`reveal_save()`](http://www.weverthon.com/ggreveal/reference/reveal_save.md)

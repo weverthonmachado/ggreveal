@@ -45,7 +45,8 @@ A list of ggplot2 objects, which can be passed to
 library(ggplot2)
 data("mtcars")
 
-p <- ggplot(mtcars, aes(factor(vs), 
+p <- ggplot(mtcars, 
+           aes(factor(vs), 
              color = gear,
              fill= gear, 
              group = gear)) +
@@ -67,9 +68,9 @@ reveal_save(plot_list, "myplot.png", width = 8, height = 4, path = tempdir())
 #> 
 #> ── Saving incremental plots ──
 #> 
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_0.png
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_1.png
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_2_last.png
+#> ✔ /tmp/RtmpqKdB56/myplot_0.png
+#> ✔ /tmp/RtmpqKdB56/myplot_1.png
+#> ✔ /tmp/RtmpqKdB56/myplot_2_last.png
 
 # Clean temp files
 file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 

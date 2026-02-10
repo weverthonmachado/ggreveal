@@ -52,8 +52,8 @@
 <!-- badges: start -->
 
 <p><code>ggreveal</code> is an R package that makes it easy to present data on ggplot2 graphs incrementally. The functions in this package take a plot and break it down into a series of intermediary plots that can be shown in sequence (e.g. in different slides). Like this:</p>
-<p><img src="reference/figures/unnamed-chunk-2-1.gif" width="100%"></p>
-<p><em>Why</em> would you want to do that? Because it’s fun — and often very useful for teaching and giving talks.</p>
+<p><img src="reference/figures/unnamed-chunk-2-1.gif" alt="" width="100%"></p>
+<p><em>Why</em> would you want to do that? Because it’s fun and very useful for teaching and giving talks.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -77,20 +77,21 @@
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-3-1.png" width="100%"></p>
-<p>Then use one of the <code>reveal_*</code> functions (e.g. <code><a href="reference/reveal_groups.html">reveal_groups()</a></code>, <code><a href="reference/reveal_layers.html">reveal_layers()</a></code>, <code><a href="reference/reveal_aes.html">reveal_aes()</a></code>) to obtain a list of plots that show elements incrementally.</p>
+<p><img src="reference/figures/unnamed-chunk-3-1.png" alt="" width="100%"></p>
+<p>Then use one of the <code>reveal_*</code> functions (<code><a href="reference/reveal_groups.html">reveal_groups()</a></code>, <code><a href="reference/reveal_layers.html">reveal_layers()</a></code>, <code><a href="reference/reveal_aes.html">reveal_aes()</a></code>, <code>reveal_panel()</code>, <code>reveal_axis()</code>) to obtain a list of plots that show elements incrementally.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reveal_groups.html">reveal_groups</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="va">plot_list</span></span>
 <span><span class="co">#&gt; [[1]]</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-4-1.png" width="70%"></p>
+<p><img src="reference/figures/unnamed-chunk-4-1.png" alt="" width="70%"></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-4-2.png" width="70%"></p>
+<p><img src="reference/figures/unnamed-chunk-4-2.png" alt="" width="70%"></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-4-3.png" width="70%"></p>
-<p>You probably want to save these plots to include them later in a presentation. Use <code><a href="reference/reveal_save.html">reveal_save()</a></code>:</p>
+<p><img src="reference/figures/unnamed-chunk-4-3.png" alt="" width="70%"></p>
+<p>You can also use <code><a href="reference/reveal_patchwork.html">reveal_patchwork()</a></code> to incrementally reveal the individual plots in a patchwork object.</p>
+<p>The most common use case is to show the plots in different slides of a presentation. You can work directly with the list of plots returned by the functions (useful for Quarto and R Markdown presentations), or save the plots as separate files and include them in your presentation software of choice. <code><a href="reference/reveal_save.html">reveal_save()</a></code> is a convenient function to save the plots in a list:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/reveal_save.html">reveal_save</a></span><span class="op">(</span><span class="va">plot_list</span>, <span class="st">"myplot.png"</span>, width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>── Saving incremental plots ──</span>

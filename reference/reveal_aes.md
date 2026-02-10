@@ -1,4 +1,4 @@
-# Reveal plot by aes
+# Reveal plot by aesthetic
 
 Turns a ggplot into a list of plots, showing data incrementally by an
 arbitrary aesthetic.
@@ -50,7 +50,8 @@ A list of ggplot2 objects, which can be passed to
 # Create full plot
 library(ggplot2)
 
- p <- ggplot(mtcars, aes(mpg, wt,
+ p <- ggplot(mtcars, 
+          aes(mpg, wt,
               color = factor(vs),
               group = factor(vs))) +
    geom_point(aes(shape=factor(am)), size=2) +
@@ -76,10 +77,10 @@ reveal_save(plot_list, "myplot.png", width = 8, height = 4, path = tempdir())
 #> 
 #> ── Saving incremental plots ──
 #> 
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_0.png
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_1.png
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_2.png
-#> ✔ /tmp/Rtmpn3vJ4V/myplot_3_last.png
+#> ✔ /tmp/RtmpqKdB56/myplot_0.png
+#> ✔ /tmp/RtmpqKdB56/myplot_1.png
+#> ✔ /tmp/RtmpqKdB56/myplot_2.png
+#> ✔ /tmp/RtmpqKdB56/myplot_3_last.png
 
 # Clean temp files
 file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 

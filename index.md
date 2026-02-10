@@ -7,8 +7,8 @@ sequence (e.g. in different slides). Like this:
 
 ![](reference/figures/unnamed-chunk-2-1.gif)
 
-*Why* would you want to do that? Because it’s fun — and often very
-useful for teaching and giving talks.
+*Why* would you want to do that? Because it’s fun and very useful for
+teaching and giving talks.
 
 ## Installation
 
@@ -38,10 +38,11 @@ p
 ![](reference/figures/unnamed-chunk-3-1.png)
 
 Then use one of the `reveal_*` functions
-(e.g. [`reveal_groups()`](http://www.weverthon.com/ggreveal/reference/reveal_groups.md),
+([`reveal_groups()`](http://www.weverthon.com/ggreveal/reference/reveal_groups.md),
 [`reveal_layers()`](http://www.weverthon.com/ggreveal/reference/reveal_layers.md),
-[`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md))
-to obtain a list of plots that show elements incrementally.
+[`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md),
+`reveal_panel()`, `reveal_axis()`) to obtain a list of plots that show
+elements incrementally.
 
 ``` r
 plot_list <- reveal_groups(p)
@@ -65,9 +66,17 @@ plot_list
 
 ![](reference/figures/unnamed-chunk-4-3.png)
 
-You probably want to save these plots to include them later in a
-presentation. Use
-[`reveal_save()`](http://www.weverthon.com/ggreveal/reference/reveal_save.md):
+You can also use
+[`reveal_patchwork()`](http://www.weverthon.com/ggreveal/reference/reveal_patchwork.md)
+to incrementally reveal the individual plots in a patchwork object.
+
+The most common use case is to show the plots in different slides of a
+presentation. You can work directly with the list of plots returned by
+the functions (useful for Quarto and R Markdown presentations), or save
+the plots as separate files and include them in your presentation
+software of choice.
+[`reveal_save()`](http://www.weverthon.com/ggreveal/reference/reveal_save.md)
+is a convenient function to save the plots in a list:
 
 ``` r
 reveal_save(plot_list, "myplot.png", width = 8, height = 4)

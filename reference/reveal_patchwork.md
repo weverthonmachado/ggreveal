@@ -2,7 +2,8 @@
 
 Turns a
 [patchwork](https://patchwork.data-imaginist.com/reference/patchwork-package.html)
-into a list of plots that reveal each child plot incrementally.
+into a list of plots that reveal each child plot incrementally. Also
+works with nesting and insets.
 
 ## Usage
 
@@ -36,3 +37,49 @@ reveal_patchwork(pw, order = NULL)
 ## Value
 
 A list of ggplot2 objects
+
+## Examples
+
+``` r
+library(ggplot2)
+library(patchwork)
+data("mtcars")
+p1 <- ggplot(mtcars, 
+        aes(cyl,
+            fill = factor(am))) +
+      geom_bar()  +
+      labs(title = "Plot 1")
+
+p2 <- ggplot(mtcars, 
+        aes(disp,
+            fill = factor(am))) +
+      geom_histogram()  +
+      labs(title = "Plot 2")
+
+p3 <- ggplot(mtcars, 
+        aes(mpg, wt,
+            color = factor(vs))) +
+      geom_point() +
+      guides(color="none") +
+      labs(title = "Plot 3")
+
+p4<- p3 + 
+      coord_polar() +
+      theme_minimal() +
+      theme(axis.title = element_blank()) +
+      labs(title = "Plot 4")
+ 
+pw <- (p1 + p2)/(p3 + inset_element(p4, 0.4, 0.4, 1.4, 1 ))
+
+plot_list <- reveal_patchwork(pw)
+#> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+plot_list[[1]]
+
+plot_list[[2]]
+
+plot_list[[3]]
+
+plot_list[[4]]
+
+plot_list[[5]]
+```
