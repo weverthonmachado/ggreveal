@@ -4,7 +4,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Getting Started}
+  %\VignetteIndexEntry{Get Started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -73,13 +73,13 @@ plot_list <- reveal_groups(p1) # wrapper for reveal_aes(p1, "group")
 
 Which produces a list of 3 plots:
 
-*Note: In this vignette, the plot lists returned by the reveal_* functions are shown as animated gifs for sake of concision.*
-
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 plot_list |> 
   create_gif()
 ```
 
+*Note: ggreveal does not produce animations. The functions return a list of plots, which are shown here in animated gifs for sake of concision.*
+ 
 Alternatively, we might want to focus on comparing the three species, and thus reveal each panel (facet) at a time:
 ```r
 plot_list <- reveal_panels(p1)
