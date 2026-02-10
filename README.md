@@ -48,8 +48,8 @@ p
 
 <img src="man/figures/unnamed-chunk-3-1.png" alt="" width="100%" />
 
-Then use one of the `reveal_*` functions (`reveal_groups()`,
-`reveal_layers()`, `reveal_aes()`, `reveal_panel()`, `reveal_axis()`) to
+Then use one of the `reveal_*` functions (`reveal_layers()`,
+`reveal_aes()`, `reveal_groups()`, `reveal_panels()`, `reveal_x()`) to
 obtain a list of plots that show elements incrementally.
 
 ``` r
