@@ -9,3 +9,6 @@ docs
 *.png
 cran-comments.md
 _notes/
+inst/doc
+/doc/
+/Meta/

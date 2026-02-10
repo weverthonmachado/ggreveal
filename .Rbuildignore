@@ -12,3 +12,5 @@
 magic\.gif
 README_files/
 ^_notes$
+^doc$
+^Meta$

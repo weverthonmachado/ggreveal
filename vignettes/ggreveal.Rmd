@@ -1,0 +1,106 @@
+---
+title: "Get Started"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%",
+  dpi = 200
+)
+library(magick)
+library(purrr)
+
+create_gif <- function(plot_list, width=9, height=5.1) {
+  temp_files <- tempfile(fileext = paste0("_", seq_along(plot_list), ".png"))
+  plot_list <- plot_list  |>  
+                imap(~{
+                .x + ggtitle(paste0("plot_list[[", .y, "]]"))
+                })
+  for (i in seq_along(plot_list)) {
+    ggsave(temp_files[i], plot_list[[i]], width = width, height = height, dpi = 200)
+  }
+
+  imgs <- image_read(temp_files)
+  image_animate(imgs, fps = 1)
+}
+```
+
+```{r setup}
+library(ggreveal)
+```
+
+
+The goal of ggreveal is to make it easy to incrementally show parts of a ggplot. The package offers different ways to split a finished plot into steps. 
+
+# Basic usage
+
+Let's create a plot that can can illustrate different ways to reveal elements. We are using the `penguins` dataset from the `palmerpenguins` package, which contains measurements of penguins from three different species.
+
+```{r, message=FALSE, warning=FALSE, fig.width=9, fig.height=5}
+library(palmerpenguins)
+library(ggplot2)
+
+p1 <-  ggplot(penguins[!is.na(penguins$sex),],
+             aes(body_mass_g, bill_length_mm,
+                 group=sex, color=sex)) +
+      geom_point() +
+      geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
+      facet_wrap(~species) +
+      theme_minimal() 
+
+p1
+```
+
+We have a scatter plot of body mass vs bill length, colored by sex and faceted by species. On top of the points, we have linear regression lines for each combination of sex and species.
+
+We might want to reveal it by sex. In this case, sex is mapped to both the `group` and `color` aesthetics. So we can use either of those aesthetics with `reveal_aes()`. 
+
+```{r}
+# For this plot, these are equivalent:
+plot_list <- reveal_aes(p1, "color") 
+plot_list <- reveal_aes(p1, "group")
+plot_list <- reveal_groups(p1) # wrapper for reveal_aes(p1, "group") 
+```
+
+Which produces a list of 3 plots:
+
+*Note: In this vignette, the plot lists returned by the reveal_* functions are shown as animated gifs for sake of concision.*
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+plot_list |> 
+  create_gif()
+```
+
+Alternatively, we might want to focus on comparing the three species, and thus reveal each panel (facet) at a time:
+```r
+plot_list <- reveal_panels(p1)
+plot_list
+```
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+reveal_panels(p1) |> 
+  create_gif()
+```
+
+Finally, we might want to focus on the raw data and then highlight the regression lines at the end. In this case, we can reveal the layers one at a time:
+```r
+plot_list <- reveal_layers(p1)
+plot_list
+```
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+reveal_layers(p1) |> 
+  create_gif()
+```
+
+
+# Rearranging the order of elements
+
+# Revealing a patchwork
