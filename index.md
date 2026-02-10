@@ -38,11 +38,12 @@ p
 ![](reference/figures/unnamed-chunk-3-1.png)
 
 Then use one of the `reveal_*` functions
-([`reveal_groups()`](http://www.weverthon.com/ggreveal/reference/reveal_groups.md),
-[`reveal_layers()`](http://www.weverthon.com/ggreveal/reference/reveal_layers.md),
+([`reveal_layers()`](http://www.weverthon.com/ggreveal/reference/reveal_layers.md),
 [`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md),
-`reveal_panel()`, `reveal_axis()`) to obtain a list of plots that show
-elements incrementally.
+[`reveal_groups()`](http://www.weverthon.com/ggreveal/reference/reveal_groups.md),
+[`reveal_panels()`](http://www.weverthon.com/ggreveal/reference/reveal_panels.md),
+[`reveal_x()`](http://www.weverthon.com/ggreveal/reference/reveal_axis.md))
+to obtain a list of plots that show elements incrementally.
 
 ``` r
 plot_list <- reveal_groups(p)

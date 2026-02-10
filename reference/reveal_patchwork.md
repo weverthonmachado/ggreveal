@@ -69,7 +69,8 @@ p4<- p3 +
       theme(axis.title = element_blank()) +
       labs(title = "Plot 4")
  
-pw <- (p1 + p2)/(p3 + inset_element(p4, 0.4, 0.4, 1.4, 1 ))
+pw <- (p1 + p2)/(p3 + inset_element(p4, 0.4, 0.4, 1.4, 1 )) +
+         plot_layout(guides = "collect")
 
 plot_list <- reveal_patchwork(pw)
 #> `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
