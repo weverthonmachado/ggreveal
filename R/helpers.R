@@ -1,11 +1,18 @@
-make_step <- function(p_build, p_build_original, var, increment){
+make_step <- function(p_build, p_build_original, aes, increment){
 
   p_step <- p_build
 
   for (d in seq_along(p_step$data)) {
-    if (var %in% names(p_step$data[[d]])) {
-      filter <- p_step$data[[d]][, var] %in% increment
+    # If the layer (i.e. each element of the list p_step$data) has the aes
+    # (no matter how it was defined: globally of only for the layer),
+    # keep only the levels defined in the object increment
+    # If the layers does not have the aes, drop all data
+    # (reveal of layers without the aes is handled in reveal_aes.R)
+    if (aes %in% names(p_step$data[[d]])) {
+      filter <- p_step$data[[d]][, aes] %in% increment
       p_step$data[[d]] <- p_step$data[[d]][filter,]
+    } else {
+      p_step$data[[d]] <- p_step$data[[d]][FALSE,]
     }
   }
   

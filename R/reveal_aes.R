@@ -137,7 +137,7 @@ reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
 
   # Make step and append
   if (!omit_blank) {
-    p_step <- make_step_by_layer(p, p_build, layers_increment = list())
+    p_step <- make_step(p_build, p_build_original, aes, levels_increment)
     plot_list <- append(plot_list, list(p_step))
   }
 
