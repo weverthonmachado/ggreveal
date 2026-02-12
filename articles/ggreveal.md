@@ -8,10 +8,10 @@ The goal of ggreveal is to make it easy to incrementally show parts of a
 ggplot. The package offers different ways to split a finished plot into
 steps.
 
-## Basic usage
+## Examples
 
-Let’s create a plot that can can illustrate different ways to reveal
-elements. We are using the `penguins` dataset from the `palmerpenguins`
+Let’s create a plot that to illustrate different ways to reveal
+elements. We will use the `penguins` dataset from the `palmerpenguins`
 package, which contains measurements of penguins from three different
 species.
 
@@ -19,9 +19,12 @@ species.
 library(palmerpenguins)
 library(ggplot2)
 
-p1 <-  ggplot(penguins[!is.na(penguins$sex),],
-             aes(body_mass_g, bill_length_mm,
-                 group=sex, color=sex)) +
+penguins <-penguins[!is.na(penguins$sex),]
+
+p1 <-  ggplot(penguins,
+             aes(x = body_mass_g, 
+                 y = bill_length_mm,
+                 color = sex)) +
       geom_point() +
       geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
       facet_wrap(~species) +
@@ -36,46 +39,135 @@ We have a scatter plot of body mass vs bill length, colored by sex and
 faceted by species. On top of the points, we have linear regression
 lines for each combination of sex and species.
 
-We might want to reveal it by sex. In this case, sex is mapped to both
-the `group` and `color` aesthetics. So we can use either of those
-aesthetics with
+### Reveal by aesthetic
+
+Let’s say that during a presentation we want to highlight the
+differences between female and male pennguins. The `sex` variable is
+mapped to the `color` aesthetic, so we can use it with
 [`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md).
 
 ``` r
-# For this plot, these are equivalent:
-plot_list <- reveal_aes(p1, "color") 
-plot_list <- reveal_aes(p1, "group")
-plot_list <- reveal_groups(p1) # wrapper for reveal_aes(p1, "group") 
+plot_list <- reveal_aes(p1, aes = "color") 
 ```
 
-Which produces a list of 3 plots:
+`plot_list` is a list of 3 plots: the first shows only layout elements
+(axes, legend, etc) but no data; the second adds the data for female
+penguins; and the third adds the data for male penguins, thus arriving
+at the original plot.
 
 ![](ggreveal_files/figure-html/unnamed-chunk-4-1.gif)
 
 *Note: ggreveal does not produce animations. The functions return a list
 of plots, which are shown here in animated gifs for sake of concision.*
 
-Alternatively, we might want to focus on comparing the three species,
-and thus reveal each panel (facet) at a time:
+The
+[`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md)
+function is quite flexible and can be used to reveal pretty much any
+aesthetic mapping. Suppose we map sex the *shape* aesthetic instead:
+[¹](#fn1)
+
+``` r
+p2 <-  ggplot(penguins,
+             aes(x = body_mass_g, 
+                 y = bill_length_mm,
+                 shape= sex)) +
+      geom_point() +
+      geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
+      scale_shape_manual(values = c(1,15))
+      facet_wrap(~species) +
+      theme_minimal() 
+
+plot_list <- reveal_aes(p2, aes = "shape")
+plot_list
+```
+
+![](ggreveal_files/figure-html/unnamed-chunk-5-1.gif)
+
+Or say we want to reveal categories in the x axis:
+
+``` r
+p3 <-  ggplot(penguins,
+             aes(x = sex, y = bill_length_mm )) +
+      geom_boxplot() +
+      theme_minimal() 
+
+plot_list <- reveal_aes(p3, aes = "x")
+plot_list
+```
+
+![](ggreveal_files/figure-html/unnamed-chunk-6-1.gif)
+
+[`reveal_x()`](http://www.weverthon.com/ggreveal/reference/reveal_axis.md)
+is a shortcut for `reveal_aes(aes = "x")`, and similarly for
+[`reveal_y()`](http://www.weverthon.com/ggreveal/reference/reveal_axis.md).
+Revealing axes works better when the x or y variable is discrete, or has
+few values, otherwise you can get a lot of intermediary plots. If you
+find yourself needing to incrementally reveal a large amount of values
+(e.g. a time series developing over the x axis), you might want to use
+[`gganimate`](https://gganimate.com/) instead.
+
+There is also reveal_groups
+
+### Reveal by panel/facet
+
+Returning to our first plot, we might instead want to draw attention to
+differences across species, and thus reveal each panel (facet) at a time
+with
+[`reveal_panels()`](http://www.weverthon.com/ggreveal/reference/reveal_panels.md).
+Now we get four plots: one “blank”, then one plot for each of the three
+species revealed cumulatively. Again, the last element in the list
+corresponds to the original plot:
 
 ``` r
 plot_list <- reveal_panels(p1)
 plot_list
 ```
 
-![](ggreveal_files/figure-html/unnamed-chunk-5-1.gif)
+![](ggreveal_files/figure-html/unnamed-chunk-7-1.gif)
 
-Finally, we might want to focus on the raw data and then highlight the
-regression lines at the end. In this case, we can reveal the layers one
-at a time:
+### Reveal by layer
+
+Finally, we might want to first show the raw data and then add the
+regression lines. These elements are defined by different layers, so we
+can use
+[`reveal_layers()`](http://www.weverthon.com/ggreveal/reference/reveal_layers.md):
 
 ``` r
 plot_list <- reveal_layers(p1)
 plot_list
 ```
 
-![](ggreveal_files/figure-html/unnamed-chunk-6-1.gif)
+![](ggreveal_files/figure-html/unnamed-chunk-8-1.gif)
+
+### Reveal a patchwork object
+
+Inetad of element sin a single plot, we can also reveal elements in a
+patchwork object. For example, we can combine our first plot with a bar
+plot of the number of penguins by species:
+
+``` r
+library(patchwork)  
+
+p4 <- ggplot(penguins, 
+             aes(x = species)) +
+      geom_bar() +
+      theme_minimal()
+
+pw <- p1 / (p3 + p4)
+
+#reveal_patchwork(pw) |> 
+  #create_gif(9,8)
+```
 
 ## Rearranging the order of elements
 
-## Revealing a patchwork
+------------------------------------------------------------------------
+
+1.  Even though geom_smooth() does not use the shape aesthetic,
+    [`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md)
+    correctly groups the lines by sex because the shape aesthetic was
+    defined in the global aes(). If we had instead defined shape inside
+    geom_point(),
+    [`reveal_aes()`](http://www.weverthon.com/ggreveal/reference/reveal_aes.md)
+    would first reveal the points for each sex, then all the regression
+    lines together. Try it!

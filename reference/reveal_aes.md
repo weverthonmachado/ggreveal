@@ -77,10 +77,10 @@ reveal_save(plot_list, "myplot.png", width = 8, height = 4, path = tempdir())
 #> 
 #> ── Saving incremental plots ──
 #> 
-#> ✔ /tmp/Rtmp3IckKE/myplot_0.png
-#> ✔ /tmp/Rtmp3IckKE/myplot_1.png
-#> ✔ /tmp/Rtmp3IckKE/myplot_2.png
-#> ✔ /tmp/Rtmp3IckKE/myplot_3_last.png
+#> ✔ /tmp/RtmpK1FQo1/myplot_0.png
+#> ✔ /tmp/RtmpK1FQo1/myplot_1.png
+#> ✔ /tmp/RtmpK1FQo1/myplot_2.png
+#> ✔ /tmp/RtmpK1FQo1/myplot_3_last.png
 
 # Clean temp files
 file.remove(list.files(path = tempdir(), pattern = "myplot", full.names = TRUE)) 

@@ -66,19 +66,22 @@
 of a ggplot. The package offers different ways to split a finished plot
 into steps.</p>
 <div class="section level2">
-<h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
-<p>Let’s create a plot that can can illustrate different ways to reveal
-elements. We are using the <code>penguins</code> dataset from the
+<p>Let’s create a plot that to illustrate different ways to reveal
+elements. We will use the <code>penguins</code> dataset from the
 <code>palmerpenguins</code> package, which contains measurements of
 penguins from three different species.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/" class="external-link">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span>,<span class="op">]</span>,</span>
-<span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">body_mass_g</span>, <span class="va">bill_length_mm</span>,</span>
-<span>                 group<span class="op">=</span><span class="va">sex</span>, color<span class="op">=</span><span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">penguins</span> <span class="op">&lt;-</span><span class="va">penguins</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">$</span><span class="va">sex</span><span class="op">)</span>,<span class="op">]</span></span>
+<span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>,</span>
+<span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">body_mass_g</span>, </span>
+<span>                 y <span class="op">=</span> <span class="va">bill_length_mm</span>,</span>
+<span>                 color <span class="op">=</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span>, formula <span class="op">=</span> <span class="st">'y ~ x'</span>, linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
@@ -89,41 +92,114 @@ penguins from three different species.</p>
 <p>We have a scatter plot of body mass vs bill length, colored by sex
 and faceted by species. On top of the points, we have linear regression
 lines for each combination of sex and species.</p>
-<p>We might want to reveal it by sex. In this case, sex is mapped to
-both the <code>group</code> and <code>color</code> aesthetics. So we can
-use either of those aesthetics with <code><a href="../reference/reveal_aes.html">reveal_aes()</a></code>.</p>
+<div class="section level3">
+<h3 id="reveal-by-aesthetic">Reveal by aesthetic<a class="anchor" aria-label="anchor" href="#reveal-by-aesthetic"></a>
+</h3>
+<p>Let’s say that during a presentation we want to highlight the
+differences between female and male pennguins. The <code>sex</code>
+variable is mapped to the <code>color</code> aesthetic, so we can use it
+with <code><a href="../reference/reveal_aes.html">reveal_aes()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># For this plot, these are equivalent:</span></span>
-<span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_aes.html">reveal_aes</a></span><span class="op">(</span><span class="va">p1</span>, <span class="st">"color"</span><span class="op">)</span> </span>
-<span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_aes.html">reveal_aes</a></span><span class="op">(</span><span class="va">p1</span>, <span class="st">"group"</span><span class="op">)</span></span>
-<span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_groups.html">reveal_groups</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span> <span class="co"># wrapper for reveal_aes(p1, "group") </span></span></code></pre></div>
-<p>Which produces a list of 3 plots:</p>
+<code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_aes.html">reveal_aes</a></span><span class="op">(</span><span class="va">p1</span>, aes <span class="op">=</span> <span class="st">"color"</span><span class="op">)</span> </span></code></pre></div>
+<p><code>plot_list</code> is a list of 3 plots: the first shows only
+layout elements (axes, legend, etc) but no data; the second adds the
+data for female penguins; and the third adds the data for male penguins,
+thus arriving at the original plot.</p>
 <p><img src="ggreveal_files/figure-html/unnamed-chunk-4-1.gif" class="r-plt" alt="" width="100%"></p>
 <p><em>Note: ggreveal does not produce animations. The functions return
 a list of plots, which are shown here in animated gifs for sake of
 concision.</em></p>
-<p>Alternatively, we might want to focus on comparing the three species,
-and thus reveal each panel (facet) at a time:</p>
+<p>The <code><a href="../reference/reveal_aes.html">reveal_aes()</a></code> function is quite flexible and can be
+used to reveal pretty much any aesthetic mapping. Suppose we map sex the
+<em>shape</em> aesthetic instead: <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Even though geom_smooth() does not use the shape
+aesthetic, &lt;code&gt;&lt;a href="../reference/reveal_aes.html"&gt;reveal_aes()&lt;/a&gt;&lt;/code&gt; correctly groups the lines by sex
+because the shape aesthetic was defined in the global aes(). If we had
+instead defined shape inside geom_point(), &lt;code&gt;&lt;a href="../reference/reveal_aes.html"&gt;reveal_aes()&lt;/a&gt;&lt;/code&gt;
+would first reveal the points for each sex, then all the regression
+lines together. Try it!&lt;/p&gt;'><sup>1</sup></a></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_panels.html">reveal_panels</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">p2</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>,</span>
+<span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">body_mass_g</span>, </span>
+<span>                 y <span class="op">=</span> <span class="va">bill_length_mm</span>,</span>
+<span>                 shape<span class="op">=</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span>, formula <span class="op">=</span> <span class="st">'y ~ x'</span>, linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_shape_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_aes.html">reveal_aes</a></span><span class="op">(</span><span class="va">p2</span>, aes <span class="op">=</span> <span class="st">"shape"</span><span class="op">)</span></span>
 <span><span class="va">plot_list</span></span></code></pre></div>
 <p><img src="ggreveal_files/figure-html/unnamed-chunk-5-1.gif" class="r-plt" alt="" width="100%"></p>
-<p>Finally, we might want to focus on the raw data and then highlight
-the regression lines at the end. In this case, we can reveal the layers
-one at a time:</p>
+<p>Or say we want to reveal categories in the x axis:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p3</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>,</span>
+<span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sex</span>, y <span class="op">=</span> <span class="va">bill_length_mm</span> <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_aes.html">reveal_aes</a></span><span class="op">(</span><span class="va">p3</span>, aes <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span>
+<span><span class="va">plot_list</span></span></code></pre></div>
+<p><img src="ggreveal_files/figure-html/unnamed-chunk-6-1.gif" class="r-plt" alt="" width="55%"></p>
+<p><code><a href="../reference/reveal_axis.html">reveal_x()</a></code> is a shortcut for
+<code>reveal_aes(aes = "x")</code>, and similarly for
+<code><a href="../reference/reveal_axis.html">reveal_y()</a></code>. Revealing axes works better when the x or y
+variable is discrete, or has few values, otherwise you can get a lot of
+intermediary plots. If you find yourself needing to incrementally reveal
+a large amount of values (e.g. a time series developing over the x
+axis), you might want to use <a href="https://gganimate.com/" class="external-link"><code>gganimate</code></a> instead.</p>
+<p>There is also reveal_groups</p>
+</div>
+<div class="section level3">
+<h3 id="reveal-by-panelfacet">Reveal by panel/facet<a class="anchor" aria-label="anchor" href="#reveal-by-panelfacet"></a>
+</h3>
+<p>Returning to our first plot, we might instead want to draw attention
+to differences across species, and thus reveal each panel (facet) at a
+time with <code><a href="../reference/reveal_panels.html">reveal_panels()</a></code>. Now we get four plots: one
+“blank”, then one plot for each of the three species revealed
+cumulatively. Again, the last element in the list corresponds to the
+original plot:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_panels.html">reveal_panels</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span>
+<span><span class="va">plot_list</span></span></code></pre></div>
+<p><img src="ggreveal_files/figure-html/unnamed-chunk-7-1.gif" class="r-plt" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="reveal-by-layer">Reveal by layer<a class="anchor" aria-label="anchor" href="#reveal-by-layer"></a>
+</h3>
+<p>Finally, we might want to first show the raw data and then add the
+regression lines. These elements are defined by different layers, so we
+can use <code><a href="../reference/reveal_layers.html">reveal_layers()</a></code>:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reveal_layers.html">reveal_layers</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span>
 <span><span class="va">plot_list</span></span></code></pre></div>
-<p><img src="ggreveal_files/figure-html/unnamed-chunk-6-1.gif" class="r-plt" alt="" width="100%"></p>
+<p><img src="ggreveal_files/figure-html/unnamed-chunk-8-1.gif" class="r-plt" alt="" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="reveal-a-patchwork-object">Reveal a patchwork object<a class="anchor" aria-label="anchor" href="#reveal-a-patchwork-object"></a>
+</h3>
+<p>Inetad of element sin a single plot, we can also reveal elements in a
+patchwork object. For example, we can combine our first plot with a bar
+plot of the number of penguins by species:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="va">p4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>, </span>
+<span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pw</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">/</span> <span class="op">(</span><span class="va">p3</span> <span class="op">+</span> <span class="va">p4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#reveal_patchwork(pw) |&gt; </span></span>
+<span>  <span class="co">#create_gif(9,8)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="rearranging-the-order-of-elements">Rearranging the order of elements<a class="anchor" aria-label="anchor" href="#rearranging-the-order-of-elements"></a>
 </h2>
 </div>
-<div class="section level2">
-<h2 id="revealing-a-patchwork">Revealing a patchwork<a class="anchor" aria-label="anchor" href="#revealing-a-patchwork"></a>
-</h2>
-</div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>

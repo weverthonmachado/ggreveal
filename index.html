@@ -53,7 +53,7 @@
 <!-- badges: start -->
 
 <p><code>ggreveal</code> is an R package that makes it easy to present data on ggplot2 graphs incrementally. The functions in this package take a plot and break it down into a series of intermediary plots that can be shown in sequence (e.g. in different slides). Like this:</p>
-<p><img src="reference/figures/unnamed-chunk-2-1.gif" alt="" width="100%"></p>
+<p><img src="reference/figures/unnamed-chunk-2-1.gif" alt="" width="800px"></p>
 <p><em>Why</em> would you want to do that? Because it’s fun and very useful for teaching and giving talks.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -78,7 +78,7 @@
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">species</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-3-1.png" alt="" width="100%"></p>
+<p><img src="reference/figures/unnamed-chunk-3-1.png" alt="" width="800px"></p>
 <p>Then use one of the <code>reveal_*</code> functions (<code><a href="reference/reveal_layers.html">reveal_layers()</a></code>, <code><a href="reference/reveal_aes.html">reveal_aes()</a></code>, <code><a href="reference/reveal_groups.html">reveal_groups()</a></code>, <code><a href="reference/reveal_panels.html">reveal_panels()</a></code>, <code><a href="reference/reveal_axis.html">reveal_x()</a></code>) to obtain a list of plots that show elements incrementally.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/reveal_groups.html">reveal_groups</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
@@ -154,6 +154,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=ggreveal" class="external-link"><img src="https://www.r-pkg.org/badges/version/ggreveal" alt="CRAN status"></a></li>
+<li><a href="https://cran.r-project.org/package=ggreveal" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/ggreveal" alt="Downloads"></a></li>
 <li><a href="https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
