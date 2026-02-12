@@ -15,3 +15,4 @@ README_files/
 ^doc$
 ^Meta$
 ^vignettes/articles$
+^tests/testthat/_snaps$

@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/",
-  out.width = "100%"
+  out.width = "800px",
+  dpi=150
 )
 
 library(palmerpenguins)
@@ -17,6 +18,9 @@ library(ggplot2)
 library(magick)
 library(ggreveal)
 library(patchwork)
+
+out_width <- 9
+out_height <- 5
 
 p <-  ggplot(penguins[!is.na(penguins$sex),],
              aes(body_mass_g, bill_length_mm,
@@ -30,11 +34,14 @@ p <-  ggplot(penguins[!is.na(penguins$sex),],
 p
 
 plots_group <- reveal_save(reveal_groups(p + labs(title = "reveal_groups()")), 
-                          "group.png", width=9, height=5, bg = "white", path = tempdir())
+                          "group.png", width=out_width, height=out_height, 
+                          bg = "white", path = tempdir(), dpi=150)
 plots_panel <- reveal_save(reveal_panels(p + labs(title = "reveal_panels()")), 
-                          "panel.png", width=9, height=5, bg = "white", path = tempdir())
+                          "panel.png", width=out_width, height=out_height, 
+                          bg = "white", path = tempdir(), dpi=150)
 plots_layer <- reveal_save(reveal_layers(p + labs(title = "reveal_layers()")), 
-                          "layer.png", width=9, height=5, bg = "white", path = tempdir())
+                          "layer.png", width=out_width, height=out_height, 
+                          bg = "white", path = tempdir(), dpi=150)
 
 
 p2 <- ggplot(penguins[!is.na(penguins$sex),],
@@ -47,7 +54,8 @@ p2 <- ggplot(penguins[!is.na(penguins$sex),],
       labs(title = "reveal_x()")
 
 plots_x <- reveal_save(reveal_x(p2), 
-                          "x.png", width=9, height=5, bg = "white", path = tempdir())
+                          "x.png", width=out_width, height=out_height,
+                          bg = "white", path = tempdir(), dpi=150)
 
 # Patchwork
 pw1 <- ggplot(penguins[!is.na(penguins$sex),],
@@ -80,7 +88,8 @@ pw <- pw1 +
                   theme = theme(plot.title = element_text(size = 16, hjust = 0.5))) 
   
 plots_pw <- reveal_save(reveal_patchwork(pw), 
-                          "pw.png", width=9, height=5, bg = "white", path = tempdir())
+                          "pw.png", width=out_width, height=out_height, 
+                          bg = "white", path = tempdir(), dpi=150)
                      
 
 img_list <- lapply(c(plots_group, plots_panel, plots_layer, plots_x, plots_pw), image_read)
@@ -93,13 +102,13 @@ gif <- image_animate(img_joined, fps = 1)
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/ggreveal)](https://cran.r-project.org/package=ggreveal)
-![](https://cranlogs.r-pkg.org/badges/grand-total/ggreveal)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggreveal)](https://cran.r-project.org/package=ggreveal)
 [![R-CMD-check](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `ggreveal` is an R package that makes it easy to present data on ggplot2 graphs incrementally. The functions in this package take a plot and break it down into a series of intermediary plots that can be shown in sequence (e.g. in different slides). Like this:
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE, dpi=300}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 gif
 ```
 
@@ -130,13 +139,13 @@ p <-  ggplot(penguins[!is.na(penguins$sex),],
       theme_minimal()
 p
 ```
-```{r, message=FALSE, warning=FALSE, echo=FALSE,  dpi=300}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 p
 ```
 
 Then use one of the `reveal_*` functions (`reveal_layers()`, `reveal_aes()`, `reveal_groups()`, `reveal_panels()`, `reveal_x()`) to obtain a list of plots that show elements incrementally. 
 
-```{r, dpi=300, out.width="70%"}
+```{r, out.width="70%"}
 plot_list <- reveal_groups(p)
 plot_list
 ```

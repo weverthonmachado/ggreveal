@@ -7,7 +7,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ggreveal)](https://cran.r-project.org/package=ggreveal)
-![](https://cranlogs.r-pkg.org/badges/grand-total/ggreveal)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggreveal)](https://cran.r-project.org/package=ggreveal)
 [![R-CMD-check](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/weverthonmachado/ggreveal/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
@@ -16,7 +16,7 @@ graphs incrementally. The functions in this package take a plot and
 break it down into a series of intermediary plots that can be shown in
 sequence (e.g. in different slides). Like this:
 
-<img src="man/figures/unnamed-chunk-2-1.gif" alt="" width="100%" />
+<img src="man/figures/unnamed-chunk-2-1.gif" alt="" width="800px" />
 
 *Why* would you want to do that? Because it’s fun and very useful for
 teaching and giving talks.
@@ -46,7 +46,7 @@ p <-  ggplot(penguins[!is.na(penguins$sex),],
 p
 ```
 
-<img src="man/figures/unnamed-chunk-3-1.png" alt="" width="100%" />
+<img src="man/figures/unnamed-chunk-3-1.png" alt="" width="800px" />
 
 Then use one of the `reveal_*` functions (`reveal_layers()`,
 `reveal_aes()`, `reveal_groups()`, `reveal_panels()`, `reveal_x()`) to
