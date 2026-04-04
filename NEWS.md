@@ -1,4 +1,5 @@
-# ggreveal (development version)
+# ggreveal 0.2.0
+
 * New function: `reveal_patchwork()`.
 * Tweaks to the documentation.
 * Fix axis title not showing in first plot with reval_aes() + certain geoms.  
