@@ -18,12 +18,13 @@ knitr::opts_chunk$set(
 )
 library(magick)
 library(purrr)
+library(ggreveal)
 
 create_gif <- function(plot_list, width=9, height=5.1) {
   temp_files <- tempfile(fileext = paste0("_", seq_along(plot_list), ".png"))
   plot_list <- plot_list  |>  
                 imap(~{
-                .x + ggtitle(paste0("plot_list[[", .y, "]]"))
+                .x + ggtitle(paste0("[[", .y, "]]"))
                 })
   for (i in seq_along(plot_list)) {
     ggsave(temp_files[i], plot_list[[i]], width = width, height = height, dpi = 200)
@@ -34,157 +35,253 @@ create_gif <- function(plot_list, width=9, height=5.1) {
 }
 ```
 
-```{r setup}
-library(ggreveal)
-```
 
+The goal of ggreveal is to make it easy to incrementally reveal parts of a ggplot. The package offers several ways to split a finished plot into a sequence of steps, each showing a bit more than the last. 
 
-The goal of ggreveal is to make it easy to incrementally show parts of a ggplot. The package offers different ways to split a finished plot into steps. 
-
-# Examples
-
-Let's create a plot that to illustrate different ways to reveal elements. We will use the `penguins` dataset from the `palmerpenguins` package, which contains measurements of penguins from three different species.
+For the examples below, we will use the `penguins` dataset from [`palmerpenguins`](https://allisonhorst.github.io/palmerpenguins/), which contains measurements of penguins from three species.
 
 ```{r, message=FALSE, warning=FALSE, fig.width=9, fig.height=5}
 library(palmerpenguins)
 library(ggplot2)
+library(ggreveal)
 
-penguins <-penguins[!is.na(penguins$sex),]
+penguins <- penguins[!is.na(penguins$sex), ]
 
-p1 <-  ggplot(penguins,
-             aes(x = body_mass_g, 
+p1 <- ggplot(penguins,
+             aes(x = body_mass_g,
                  y = bill_length_mm,
                  color = sex)) +
       geom_point() +
-      geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
+      geom_smooth(method = "lm", formula = "y ~ x", linewidth = 1) +
       facet_wrap(~species) +
-      theme_minimal() 
+      theme_minimal()
 
 p1
 ```
 
-We have a scatter plot of body mass vs bill length, colored by sex and faceted by species. On top of the points, we have linear regression lines for each combination of sex and species.
-
-## Reveal by aesthetic
-
-Let's say that during a presentation we want to highlight the differences between female and male pennguins. The `sex` variable is mapped to the `color` aesthetic, so we can use it with `reveal_aes()`. 
-
-```{r}
-plot_list <- reveal_aes(p1, aes = "color") 
-```
-
-`plot_list` is a list of 3 plots: the first shows only layout elements (axes, legend, etc) but no data; the second adds the data for female penguins; and the third adds the data for male penguins, thus arriving at the original plot.
-
+*Note: ggreveal does not produce animations. All functions return a **list of ggplot objects**. The animated GIFs here are just a compact way to display that list.*
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
-plot_list |> 
-  create_gif()
+# Mask functions for demonstration
+reveal_aes <- function(..., width=9, height=5.1){ggreveal::reveal_aes(...) |> create_gif(width = width, height = height)}
+reveal_x <- function(..., width=9, height=5.1){ggreveal::reveal_x(...) |> create_gif(width = width, height = height)}
+reveal_y <- function(..., width=9, height=5.1){ggreveal::reveal_y(...) |> create_gif(width = width, height = height)}
+reveal_layers <- function(..., width=9, height=5.1){ggreveal::reveal_layers(...) |> create_gif(width = width, height = height)}
+reveal_panels <- function(..., width=9, height=5.1){ggreveal::reveal_panels(...) |> create_gif(width = width, height = height)}
 ```
 
-*Note: ggreveal does not produce animations. The functions return a list of plots, which are shown here in animated gifs for sake of concision.*
+# Reveal by aesthetic
 
-The `reveal_aes()` function is quite flexible and can be used to reveal pretty much any aesthetic mapping. Suppose we map sex the *shape* aesthetic instead: [^fn1]
+`reveal_aes()` splits the plot by the levels of any aesthetic mapping. Here, sex is mapped to color, so `reveal_aes(p1, aes = "color")` produces a list with three plots: first a blank layout, then a plot adding male penguins, and finally one that adds female penguins. 
 
-[^fn1]: Even though geom_smooth() does not use the shape aesthetic, `reveal_aes()` correctly groups the lines by sex because the shape aesthetic was defined in the global aes(). If we had instead defined shape inside geom_point(), `reveal_aes()` would first reveal the points for each sex, then all the regression lines together. Try it!
-
-```r
-p2 <-  ggplot(penguins,
-             aes(x = body_mass_g, 
-                 y = bill_length_mm,
-                 shape= sex)) +
-      geom_point() +
-      geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
-      scale_shape_manual(values = c(1,15))
-      facet_wrap(~species) +
-      theme_minimal() 
-
-plot_list <- reveal_aes(p2, aes = "shape")
-plot_list
+```{r, message=FALSE, warning=FALSE}
+reveal_aes(p1, aes = "color")
 ```
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-p2 <-  ggplot(penguins,
-             aes(x = body_mass_g, 
+
+By default, the first plot in the list is the blank frame showing only layout elements (axes, legend, facet labels, etc) with no data, and the last plot is identical to the original plot. See section [Controlling reveal order](#order) for how to modify this behaviour. 
+
+`reveal_aes()` accepts any aesthetic. Mapping sex to shape instead:
+
+```{r, message=FALSE, warning=FALSE}
+p2 <- ggplot(penguins,
+             aes(x = body_mass_g,
                  y = bill_length_mm,
                  shape = sex)) +
       geom_point() +
-      geom_smooth(method="lm", formula = 'y ~ x', linewidth=1) +
+      geom_smooth(method = "lm", formula = "y ~ x", linewidth = 1) +
       facet_wrap(~species) +
-      scale_shape_manual(values = c(1,15)) +
-      theme_minimal() 
+      scale_shape_manual(values = c(1, 15)) +
+      theme_minimal()
 
-reveal_aes(p2, aes = "shape") |> 
-  create_gif()
+reveal_aes(p2, aes = "shape") 
 ```
 
-Or say we want to reveal categories in the x axis:
+Note that even though `geom_smooth()` does not use the `shape` aesthetic, `reveal_aes()` also groups the lines by sex because `shape` was defined in the global call to `aes()`. If `shape` were defined only inside `geom_point()`, the regression lines would all appear together in a single step. 
 
+`reveal_x()` and `reveal_y()` are shortcuts for `reveal_aes(aes = "x")` and `reveal_aes(aes = "y")`. They work best when the axis variable is discrete or has only a few values:
 ```r
-p3 <-  ggplot(penguins,
-             aes(x = sex, y = bill_length_mm )) +
+p3 <- ggplot(penguins,
+             aes(x = sex, y = bill_length_mm)) +
       geom_boxplot() +
-      theme_minimal() 
+      theme_minimal()
 
-plot_list <- reveal_aes(p3, aes = "x")
-plot_list
+reveal_aes(p3, aes = "x") 
 ```
-
-```{r, message=FALSE, warning=FALSE, echo=FALSE, out.width = "55%"}
-p3 <-  ggplot(penguins,
-             aes(x = sex, y = bill_length_mm )) +
+```{r, message=FALSE, warning=FALSE, echo=FALSE, out.width="55%"}
+p3 <- ggplot(penguins,
+             aes(x = sex, y = bill_length_mm)) +
       geom_boxplot() +
-      theme_minimal() 
+      theme_minimal()
 
-reveal_aes(p3, aes = "x") |> 
-  create_gif(5,5)
+reveal_aes(p3, aes = "x", width=5, height=5) 
 ```
 
-`reveal_x()` is a shortcut for `reveal_aes(aes = "x")`, and similarly for `reveal_y()`. Revealing axes works better when the x or y variable is discrete, or has few values, otherwise you can get a lot of intermediary plots. If you find yourself needing to incrementally reveal a large amount of values (e.g. a time series developing over the x axis), you might want to use [`gganimate`](https://gganimate.com/) instead. 
+If you find yourself needing to incrementally reveal a large number of values (e.g. a time series developing over the x axis), you might want to use [`gganimate`](https://gganimate.com/) instead. 
 
-There is also reveal_groups
+`reveal_groups()` is equivalent to `reveal_aes(aes = "group")`. It is useful when groups are implicit (ggplot2 automatically groups data by the interaction of all discrete variables).
 
 
-## Reveal by panel/facet
+# Reveal by panel/facet
 
-Returning to our first plot, we might instead want to draw attention to differences across species, and thus reveal each panel (facet) at a time with `reveal_panels()`. Now we get four plots: one "blank", then one plot for each of the three species revealed cumulatively. Again, the last element in the list corresponds to the original plot:
-
-```r
-plot_list <- reveal_panels(p1)
-plot_list
-```
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-reveal_panels(p1) |> 
-  create_gif()
-```
-
-## Reveal by layer
-
-Finally, we might want to first show the raw data and then add the regression lines. These elements are defined by different layers, so we can use `reveal_layers()`:
-
-```r
-plot_list <- reveal_layers(p1)
-plot_list
-```
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-reveal_layers(p1) |> 
-  create_gif()
-```
-
-## Reveal a patchwork object
-
-Inetad of element sin a single plot, we can also reveal elements in a patchwork object. For example, we can combine our first plot with a bar plot of the number of penguins by species:
+`reveal_panels()` reveals one facet at a time. By default (`what = "data"`) the layout elements are visible from the start, and only the geoms appear incrementally. Again, the last element in the list corresponds to the original plot:
 
 ```{r, message=FALSE, warning=FALSE}
-library(patchwork)  
+reveal_panels(p1) 
+```
 
-p4 <- ggplot(penguins, 
-             aes(x = species)) +
+Set `what = "everything"` to incrementally reveal entire panels, including their axes and labels:
+
+```{r, message=FALSE, warning=FALSE}
+reveal_panels(p1, what = "everything")
+```
+
+# Reveal by layer
+
+`reveal_layers()` shows, you guessed it, one layer at a time. Here, the points appear first, then the regression lines are added on top:
+
+```{r, message=FALSE, warning=FALSE}
+reveal_layers(p1)
+```
+
+# Reveal a patchwork
+
+`reveal_patchwork()` works on composite figures built with the [patchwork](https://patchwork.data-imaginist.com/) package, revealing one constituent plot at a time. The first element in the list shows the overall patchwork layout with all child plots blanked out. Each subsequent element adds one more child plot, in the order they were composed. The final element matches the original patchwork.
+
+```r
+library(patchwork)
+
+p4 <- ggplot(penguins, aes(x = species)) +
       geom_bar() +
       theme_minimal()
 
 pw <- p1 / (p3 + p4)
 
-#reveal_patchwork(pw) |> 
-  #create_gif(9,8)
+reveal_patchwork(pw)
+```
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+library(patchwork)
+p4 <- ggplot(penguins, aes(x = species)) +
+      geom_bar() +
+      theme_minimal()
+pw <- p1 / (p3 + p4)
+reveal_patchwork(pw) |> create_gif(9, 8)
 ```
 
-# Rearranging the order of elements
 
+# Controlling reveal order  {#order}
+
+The main `reveal_*` functions accept an `order` argument: a numeric vector that specifies which elements to reveal and in what sequence. This lets you:
+
+*Reorder* the sequence. For example, to reveal species in reverse order in `reveal_panels()`:
+
+```{r, message=FALSE, warning=FALSE}
+# Default: Adelie → Chinstrap → Gentoo
+# Reversed: Gentoo → Chinstrap → Adelie
+reveal_panels(p1, order = c(3, 2, 1))
+```
+
+*Skip elements.* Omit a step entirely by leaving its index out:
+```{r, message=FALSE, warning=FALSE}
+# Only reveal Adelie (panel 1) and Gentoo (panel 3), skipping Chinstrap
+reveal_panels(p1, order = c(1, 3))
+```
+
+*Drop the blank opening frame* by including `-1` in the order vector:
+
+```{r, message=FALSE, warning=FALSE}
+# Start directly with data, no blank frame
+reveal_panels(p1, order = c(-1, 1, 2, 3))
+```
+
+The same `order` argument works identically across `reveal_aes()`, `reveal_groups()`, `reveal_layers()`, `reveal_panels()`, and `reveal_patchwork()`.
+
+# Saving incremental plots
+
+`reveal_save()` saves each plot in the list to a numbered file using `ggsave()`. Any extra arguments (e.g. `width`, `height`) are forwarded directly to `ggsave()`:
+
+```r
+reveal_save(plot_list, "myplot.png", width = 9, height = 5)
+```
+
+This produces files like `myplot_0.png`, `myplot_1.png`, `myplot_2_last.png`.
+
+# Examples with other ggplot2 extensions
+
+Because they manipulate basic components of a ggplot object (layers, geoms, facets), the functions in ggreveal should work with most ggplot2 extensions.[^fn1] Some examples:
+
+[^fn1]: Unless the extension modifies the internal structure of the ggplot object, like `patchwork` does. 
+
+```{r, message=FALSE, warning=FALSE}
+library(ggridges)
+
+p_ridges <- ggplot(penguins,
+                   aes(x = bill_length_mm,
+                       y = species,
+                       fill = sex)) +
+            geom_density_ridges(alpha = 0.6) +
+            theme_minimal()
+
+reveal_y(p_ridges)
+```
+
+```{r, message=FALSE, warning=FALSE}
+# Adapted from ggpubr docs
+library(ggpubr)
+data("ToothGrowth")
+my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
+
+p_ggpubr <- ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
+                    palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+                   add = "boxplot", add.params = list(fill = "white")) +
+            stat_compare_means(comparisons = my_comparisons, label = "p.signif")
+
+reveal_layers(p_ggpubr)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(geobr)
+library(sf)
+library(ggmapinset)
+
+states <- read_state()
+campos <- read_municipality(code_muni=3301009)
+rj <- read_municipality(code_muni=3304557)
+
+inset1 <- configure_inset(
+  shape_circle(
+    centre =  st_centroid(campos),
+    radius = 70
+  ),
+  scale = 4,
+  translation = c(450, 0)
+)
+
+inset2 <- configure_inset(
+  shape_circle(
+    centre =  st_centroid(rj),
+    radius = 70
+  ),
+  scale = 4,
+  translation = c(0, -450)
+)
+
+p_br <- ggplot() +
+      geom_sf(data = states, 
+              group = 1) +
+
+      geom_sf_inset(data = campos, 
+                    inset = inset1,
+                    fill = "#00BFC4",
+                    group = 2) +
+      geom_inset_frame(inset = inset1, 
+                       group = 2) +
+      
+      geom_sf_inset(data = rj, 
+                    inset = inset2,
+                    fill = "#00BFC4",
+                    group = 3) +
+      geom_inset_frame(inset = inset2,
+                       group = 3) +
+      theme_minimal() 
+
+reveal_aes(p_br, "group")
+```
