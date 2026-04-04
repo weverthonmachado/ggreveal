@@ -36,8 +36,3 @@ test_that("plots look like they should - dodged bar",{
   expect_doppelganger("plot3 - grouped_bar", plot_list[[3]])
   expect_doppelganger("plot4 - grouped_bar", plot_list[[4]])
 })
-
-test_that("fails with multiple definitions of axis", {
-  p <- make_test_plot("multiple_axis")
-  expect_error(reveal_axis(p))
-})

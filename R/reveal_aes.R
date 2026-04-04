@@ -58,7 +58,7 @@ reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
   if (aes=="panel") {aes <- "PANEL"}
   if (aes=="color") {aes <- "colour"}
 
-  # Check whether aes if explicitly (and uniquely) mapped to a variable
+  # Check whether aes is explicitly mapped to a variable
   search_list <- list(p)
   search_list  <- append(search_list, p$layers)
   aes_mapping <- sapply(search_list, function(x) {"quosure" %in% class(x$mapping[aes][[1]])})
@@ -91,9 +91,7 @@ reveal_aes <- function(p, aes = "group", order = NULL, max = 20){
   }
 
 
-  if(sum(aes_mapping) > 1) {
-    cli::cli_abort("It seems that the definition of '{aes}' varies across layers. Please use reveal_layers() instead.")
-  } else if (sum(aes_mapping) == 0 & !(aes %in% aes_names_data)){
+  if (sum(aes_mapping) == 0 & !(aes %in% aes_names_data)){
     cli::cli_abort("'{aes}' is not defined in any layer.")
   } else if (sum(aes_mapping) == 0 & (aes %in% aes_names_data) & length(aes_levels)==1){
     m <- if (aes %in% c("group", "PANEL", "colour")) "" else "unique value of "
