@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/weverthonmachado/ggreveal/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/weverthonmachado/ggreveal/blob/v0.2.0/DESCRIPTION)
 
 Machado W (2026). *ggreveal: Reveal a 'ggplot' Incrementally*. R package
 version 0.2.0, <http://www.weverthon.com/ggreveal/>.
