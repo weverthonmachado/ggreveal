@@ -1,6 +1,8 @@
 # Changelog
 
-## ggreveal (development version)
+## ggreveal 0.2.0
+
+CRAN release: 2026-04-04
 
 - New function:
   [`reveal_patchwork()`](http://www.weverthon.com/ggreveal/reference/reveal_patchwork.md).

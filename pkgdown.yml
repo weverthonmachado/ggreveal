@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   articles/ggreveal: ggreveal.html
-last_built: 2026-04-04T21:42Z
+last_built: 2026-04-05T15:18Z
 urls:
   reference: http://www.weverthon.com/ggreveal/reference
   article: http://www.weverthon.com/ggreveal/articles
